@@ -19,8 +19,9 @@
                              <a href="javascript:;">@lang('button.settings')</a>
                          </li>
                          <li><a href="javascript:;">@lang('button.help')</a></li>
-                         <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i>@lang('button.logout')</a>
-                         </li>
+                         <li><a onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
+                                     class="fa fa-sign-out pull-right"></i>@lang('button.logout')</a> </li>
+                         <form action="{{ route('logout') }}" method="post" id="logout-form">@csrf</form>
                      </ul>
                  </li>
 
