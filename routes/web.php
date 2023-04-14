@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Fortify;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('pages.auth.login');
-});
+Route::redirect('/', 'iniciar-sesion');
+
+Route::view('iniciar-sesion', 'pages.auth.login')->name('login')->middleware('guest');
+
+Route::view('inicio', 'pages.dashboard')->name('home')->middleware('auth');
