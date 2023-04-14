@@ -16,4 +16,6 @@ use Laravel\Fortify\Fortify;
 
 Route::redirect('/', 'iniciar-sesion');
 
-Route::view('iniciar-sesion', 'pages.auth.login');
+Route::view('iniciar-sesion', 'pages.auth.login')->name('login')->middleware('guest');
+
+Route::view('inicio', 'pages.dashboard')->name('home')->middleware('auth');

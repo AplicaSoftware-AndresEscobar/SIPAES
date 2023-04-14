@@ -10,6 +10,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -35,11 +36,28 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
 
-            return Limit::perMinute(10)->by($email.$request->ip());
+            return Limit::perMinute(10)->by($email . $request->ip());
         });
 
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        });
+
+
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse
+        {
+            /**
+             * Create an HTTP response that represents the object.
+             *
+             * @param  \Illuminate\Http\Request  $request
+             * @return \Symfony\Component\HttpFoundation\Response
+             */
+            public function toResponse($request)
+            {
+                return $request->wantsJson()
+                    ? response()->json(['two_factor' => false])
+                    : redirect()->intended('iniciar-sesion');
+            }
         });
     }
 }

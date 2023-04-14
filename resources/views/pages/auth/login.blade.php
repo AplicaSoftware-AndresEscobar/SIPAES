@@ -37,7 +37,7 @@
 
                         <p>@lang('title.login')</p>
                         <div>
-                            <input type="text" class="form-control @error('email') parsley-error @enderror"
+                            <input type="text" name="email" class="form-control @error('email') parsley-error @enderror"
                                 placeholder="{{ __('field.email') }}" />
                         </div>
                         @error('email')
@@ -47,7 +47,7 @@
                         @enderror
 
                         <div>
-                            <input type="password" class="form-control @error('password') parsley-error @enderror"
+                            <input type="password" name="password" class="form-control @error('password') parsley-error @enderror"
                                 placeholder="{{ __('field.password') }}" />
                         </div>
                         @error('password')

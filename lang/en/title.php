@@ -7,5 +7,5 @@ return [
 
     'login-bottom' => 'Suplataforma Administrative',
 
-    'login-footer' => '©2023 All Rights Reserved.'
+    'login-footer' => '©2023 All Rights Reserved.',
 ];
