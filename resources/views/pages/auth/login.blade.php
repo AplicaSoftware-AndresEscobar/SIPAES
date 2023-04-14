@@ -54,9 +54,8 @@
                             <br />
 
                             <div>
-                                <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                                <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and
-                                    Terms</p>
+                                <h1><i class="fa fa-institution"></i> @lang('title.login-bottom')!</h1>
+                                <p>@lang('title.login-footer')</p>
                             </div>
                         </div>
                     </form>
