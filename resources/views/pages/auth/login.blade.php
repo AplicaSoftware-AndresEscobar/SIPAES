@@ -29,21 +29,35 @@
         <a class="hiddenanchor" id="signin"></a>
 
         <div class="login_wrapper">
-            <div class="animate form login_form">
+            <div class="form login_form">
                 <section class="login_content">
                     <img src="{{ asset('assets/images/logo-fesc') }}" alt="" class="img-fluid">
-                    <form>
+                    <form action="{{ url('login') }}" method="POST">
+                        @csrf
+
                         <p>@lang('title.login')</p>
                         <div>
-                            <input type="text" class="form-control" placeholder="{{ __('field.email') }}"
-                                required="" />
+                            <input type="text" class="form-control @error('email') parsley-error @enderror"
+                                placeholder="{{ __('field.email') }}" />
                         </div>
+                        @error('email')
+                            <p class="text-danger text-left">
+                                {{ $message }}
+                            </p>
+                        @enderror
+
                         <div>
-                            <input type="password" class="form-control" placeholder="{{ __('field.password') }}"
-                                required="" />
+                            <input type="password" class="form-control @error('password') parsley-error @enderror"
+                                placeholder="{{ __('field.password') }}" />
                         </div>
+                        @error('password')
+                            <p class="text-danger text-left">
+                                {{ $message }}
+                            </p>
+                        @enderror
+
                         <div>
-                            <a class="btn btn-danger submit" href="index.html">@lang('button.login')</a>
+                            <button class="btn btn-danger">@lang('button.login')</button>
                             <a class="reset_pass" href="#">@lang('button.forgot-password')</a>
                         </div>
 
@@ -56,43 +70,6 @@
                             <div>
                                 <h1><i class="fa fa-institution"></i> @lang('title.login-bottom')!</h1>
                                 <p>@lang('title.login-footer')</p>
-                            </div>
-                        </div>
-                    </form>
-                </section>
-            </div>
-
-            <div id="register" class="animate form registration_form">
-                <section class="login_content">
-                    <form>
-                        <h1>Create Account</h1>
-                        <div>
-                            <input type="text" class="form-control" placeholder="Username" required="" />
-                        </div>
-                        <div>
-                            <input type="email" class="form-control" placeholder="Email" required="" />
-                        </div>
-                        <div>
-                            <input type="password" class="form-control" placeholder="Password" required="" />
-                        </div>
-                        <div>
-                            <a class="btn btn-default submit" href="index.html">Submit</a>
-                        </div>
-
-                        <div class="clearfix"></div>
-
-                        <div class="separator">
-                            <p class="change_link">Already a member ?
-                                <a href="#signin" class="to_register"> Log in </a>
-                            </p>
-
-                            <div class="clearfix"></div>
-                            <br />
-
-                            <div>
-                                <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                                <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and
-                                    Terms</p>
                             </div>
                         </div>
                     </form>
