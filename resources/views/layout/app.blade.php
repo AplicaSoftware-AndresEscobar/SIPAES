@@ -21,7 +21,7 @@
         rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="{{ asset('assets/gentelella/build/css/custom.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/gentelella/build/css/custom.css') }}" rel="stylesheet">
 
     @yield('css')
 
@@ -34,8 +34,8 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella
-                                Alela!</span></a>
+                        <a href="#" class="site_title"><i class="fa fa-institution"></i>
+                            <span>@lang('title.login-bottom')!</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -43,17 +43,16 @@
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
                         <div class="profile_pic">
-                            <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                            <img src="{{ asset('assets/images/img.jpg') }}" alt="..."
+                                class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
-                            <span>Welcome,</span>
-                            <h2>John Doe</h2>
+                            <span>Bienvenido,</span>
+                            <h2>{{ current_user()->name }}</h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
-
                     <br />
-
                     @include('partials.sidebar')
 
 
@@ -112,7 +111,8 @@
                                         <div class="profile_img">
                                             <div id="crop-avatar">
                                                 <!-- Current avatar -->
-                                                <img class="img-responsive avatar-view" src="images/picture.jpg"
+                                                <img class="img-responsive avatar-view"
+                                                    src="{{ asset('assets/gentelella/images/picture.jpg') }}"
                                                     alt="Avatar" title="Change the avatar">
                                             </div>
                                         </div>
@@ -214,7 +214,8 @@
                                                     <!-- start recent activity -->
                                                     <ul class="messages">
                                                         <li>
-                                                            <img src="images/img.jpg" class="avatar" alt="Avatar">
+                                                            <img src="{{ asset('assets/images/img.jpg') }}"
+                                                                class="avatar" alt="Avatar">
                                                             <div class="message_date">
                                                                 <h3 class="date text-info">24</h3>
                                                                 <p class="month">May</p>
@@ -235,7 +236,8 @@
                                                             </div>
                                                         </li>
                                                         <li>
-                                                            <img src="images/img.jpg" class="avatar" alt="Avatar">
+                                                            <img src="{{ asset('assets/images/img.jpg') }}"
+                                                                class="avatar" alt="Avatar">
                                                             <div class="message_date">
                                                                 <h3 class="date text-error">21</h3>
                                                                 <p class="month">May</p>
@@ -256,7 +258,8 @@
                                                             </div>
                                                         </li>
                                                         <li>
-                                                            <img src="images/img.jpg" class="avatar" alt="Avatar">
+                                                            <img src="{{ asset('assets/images/img.jpg') }}"
+                                                                class="avatar" alt="Avatar">
                                                             <div class="message_date">
                                                                 <h3 class="date text-info">24</h3>
                                                                 <p class="month">May</p>
@@ -277,7 +280,8 @@
                                                             </div>
                                                         </li>
                                                         <li>
-                                                            <img src="images/img.jpg" class="avatar" alt="Avatar">
+                                                            <img src="{{ asset('assets/images/img.jpg') }}"
+                                                                class="avatar" alt="Avatar">
                                                             <div class="message_date">
                                                                 <h3 class="date text-error">21</h3>
                                                                 <p class="month">May</p>
