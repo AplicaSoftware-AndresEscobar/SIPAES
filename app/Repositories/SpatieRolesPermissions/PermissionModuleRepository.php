@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\SpatieRolesPermissions;
 
-use App\Models\PermissionModule;
+use App\Repositories\AbstractRepository;
+
+use App\Models\SpatieRolesPermissions\PermissionModule;
 
 class PermissionModuleRepository extends AbstractRepository
 {

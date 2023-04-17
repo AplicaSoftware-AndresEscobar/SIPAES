@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\SpatieRolesPermissions;
 
 use Spatie\Permission\Models\Permission as PermissionBaseModel;
 

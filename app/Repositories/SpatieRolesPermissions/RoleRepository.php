@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\SpatieRolesPermissions;
 
-use App\Models\Role;
+use App\Repositories\AbstractRepository;
+
+use App\Models\SpatieRolesPermissions\Role;
 
 class RoleRepository extends AbstractRepository
 {
