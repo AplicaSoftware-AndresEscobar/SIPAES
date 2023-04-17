@@ -14,11 +14,9 @@ return new class extends Migration
         Schema::create('countries', function (Blueprint $table) {
             $table->unsignedSmallInteger('id', true);
             $table->string('name');
-            $table->string('slug');
             $table->timestamps();
 
             $table->unique('name', 'unique_name_countries');
-            $table->unique('slug', 'unique_slug_countries');
         });
     }
 

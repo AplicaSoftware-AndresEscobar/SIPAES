@@ -15,11 +15,9 @@ return new class extends Migration
             $table->unsignedInteger('id', true);
             $table->unsignedMediumInteger('department_id');
             $table->string('name');
-            $table->string('slug');
             $table->timestamps();
 
             $table->unique(['department_id', 'name'], 'unique_name_cities');
-            $table->unique(['department_id', 'slug'], 'unique_slug_cities');
             $table->foreign('department_id', 'fk_departments_cities')->references('id')->on('departments');
         });
     }

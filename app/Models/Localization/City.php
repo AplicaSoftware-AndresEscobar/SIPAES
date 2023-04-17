@@ -14,7 +14,7 @@ class City extends Model
      *
      * @var array
      */
-    protected $fillable = ['department_id', 'name', 'slug'];
+    protected $fillable = ['department_id', 'name'];
 
     /**
      * Get Department relationed with Department.
@@ -39,22 +39,6 @@ class City extends Model
             return $query->whereIn("{$this->getTable()}.name", $value);
         } else {
             return $query->where("{$this->getTable()}.name", $value);
-        }
-    }
-
-    /**
-     * Scope a query to only include Slug.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param array|string $value
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeBySlug($query, $value)
-    {
-        if (is_array($value) && $value) {
-            return $query->whereIn("{$this->getTable()}.slug", $value);
-        } else {
-            return $query->where("{$this->getTable()}.slug", $value);
         }
     }
 }

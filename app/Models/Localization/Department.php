@@ -17,7 +17,7 @@ class Department extends Model
      *
      * @var array
      */
-    protected $fillable = ['country_id', 'name', 'slug'];
+    protected $fillable = ['country_id', 'name'];
 
     /**
      * Get Country relationed with Department.
@@ -52,22 +52,6 @@ class Department extends Model
             return $query->whereIn("{$this->getTable()}.name", $value);
         } else {
             return $query->where("{$this->getTable()}.name", $value);
-        }
-    }
-
-    /**
-     * Scope a query to only include Slug.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param array|string $value
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeBySlug($query, $value)
-    {
-        if (is_array($value) && $value) {
-            return $query->whereIn("{$this->getTable()}.slug", $value);
-        } else {
-            return $query->where("{$this->getTable()}.slug", $value);
         }
     }
 }
