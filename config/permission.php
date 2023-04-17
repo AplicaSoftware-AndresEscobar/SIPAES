@@ -158,4 +158,41 @@ return [
 
         'store' => 'default',
     ],
+
+    /*
+     * By default wildcard permission lookups are disabled.
+     */
+    'default-data' => [
+        'permission_modules' => [
+            array(
+                'title' => 'Módulo de Información del Personal',
+                'description' => 'Este es el módulo encargado de administrar la información del personal de la Universidad FESC. 
+                Incluyendo usuarios como Administrativos, Docentes, Coordinadores, Estudiantes, Egresados, entre otros. '
+            ),
+        ],
+        'permissions' => [
+            array(
+                'module_id' => 1,
+                'title' => 'Visualizar lista de Administrativos',
+                'name' => 'administratives.index'
+            ),
+            array(
+                'module_id' => 1,
+                'title' => 'Visualizar la información de un Administrativo',
+                'name' => 'administratives.show'
+            ),
+            array(
+                'module_id' => 1,
+                'title' => 'Actualizar la información de un Administrativo',
+                'name' => 'administratives.update'
+            ),
+            array(
+                'module_id' => 1,
+                'title' => 'Eliminar un Administrativo',
+                'name' => 'administratives.destroy'
+            )
+
+        ]
+    ]
+
 ];
