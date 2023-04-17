@@ -148,4 +148,22 @@ return [
 
     ],
 
+
+    'default-data' => [
+        'document_types' => [
+            array(
+                'name' => 'Cédula de Ciudadanía',
+                'slug' => 'CC'
+            ),
+            array(
+                'name' => 'Cédula de Extranjería',
+                'slug' => 'CE'
+            ),
+            array(
+                'name' => 'Tarjeta de Identidad',
+                'slug' => 'TI'
+            )
+        ]
+    ]
+
 ];
