@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('educational_institutes', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->unsignedMediumInteger('id', true);
             $table->string('name');
             $table->string('email')->nullable();
@@ -21,10 +21,10 @@ return new class extends Migration
             $table->string('telephone')->nullable();
             $table->timestamps();
 
-            $table->unique('name', 'unique_name_educational_institutes');
-            $table->unique('email', 'unique_email_educational_institutes');
-            $table->unique('nit', 'unique_nit_educational_institutes');
-            $table->unique('phone', 'unique_phone_educational_institutes');
+            $table->unique('name', 'unique_name_companies');
+            $table->unique('email', 'unique_email_companies');
+            $table->unique('nit', 'unique_nit_companies');
+            $table->unique('phone', 'unique_phone_companies');
         });
     }
 
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('educational_institutes');
+        Schema::dropIfExists('companies');
     }
 };
