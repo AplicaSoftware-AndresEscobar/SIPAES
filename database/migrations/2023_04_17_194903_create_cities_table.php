@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['department_id', 'name'], 'unique_name_cities');
-            $table->foreign('department_id', 'fk_departments_cities')->references('id')->on('departments');
+            $table->foreign('department_id', 'fk_departments_cities')->references('id')->on('departments')->cascadeOnUpdate()->restrictOnDelete();
         });
     }
 

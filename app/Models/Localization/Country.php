@@ -20,31 +20,11 @@ class Country extends Model
      * Scope a query to only include Name.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param array|string $value
+     * @param string $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeByName($query, $value)
     {
-        if (is_array($value) && $value) {
-            return $query->whereIn("{$this->getTable()}.name", $value);
-        } else {
-            return $query->where("{$this->getTable()}.name", $value);
-        }
-    }
-
-    /**
-     * Scope a query to only include Slug.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param array|string $value
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeBySlug($query, $value)
-    {
-        if (is_array($value) && $value) {
-            return $query->whereIn("{$this->getTable()}.slug", $value);
-        } else {
-            return $query->where("{$this->getTable()}.slug", $value);
-        }
+        return $query->where("{$this->getTable()}.name", $value);
     }
 }

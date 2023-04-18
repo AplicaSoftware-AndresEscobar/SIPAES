@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -18,7 +19,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
     ];
@@ -41,4 +42,38 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get User Information
+     * 
+     * @return HasOne|UserInformation
+     */
+    public function user_information()
+    {
+        return $this->hasOne(UserInformation::class, 'user_id');
+    }
+
+    /**
+     * Scope a query to only include Username
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param string $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByUsername($query, $value)
+    {
+        return $query->where("{$this->getTable()}.username", $value);
+    }
+
+    /**
+     * Scope a query to only include Email
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param string $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByEmail($query, $value)
+    {
+        return $query->where("{$this->getTable()}.email", $value);
+    }
 }
