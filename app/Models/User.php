@@ -3,7 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,6 +54,18 @@ class User extends Authenticatable
     public function user_information()
     {
         return $this->hasOne(UserInformation::class, 'user_id');
+    }
+
+    /**
+     * Get User Academic Studies
+     * 
+     * @return BelongsToMany|Collection<EducationalInstitute>
+     */
+    public function academic_studies()
+    {
+        return $this->belongsToMany(EducationalInstitute::class, 'user_academic_studies')
+            ->using(UserAcademicStudy::class)
+            ->withPivot(['name', 'year', 'academic_study_level_id']);
     }
 
     /**

@@ -14,3 +14,11 @@ if (!function_exists('current_user')) {
         return auth('web')->user();
     }
 }
+
+if (!function_exists('randomBoolean')) {
+
+    function randomBoolean(): bool
+    {
+        return (bool) rand(0,1);
+    }
+}

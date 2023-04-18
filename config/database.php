@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Str;
 
+use function PHPSTORM_META\map;
+
 return [
 
     /*
@@ -170,6 +172,44 @@ return [
             ),
             array(
                 'name' => 'Femenino',
+            ),
+        ],
+        'academic_study_levels' => [
+            array(
+                'name' => 'Educación Primaria'
+            ),
+            array(
+                'name' => 'Educación de Bachiller'
+            ),
+            array(
+                'name' => 'Curso'
+            ),
+            array(
+                'name' => 'Diplomado'
+            ),
+            array(
+                'name' => 'Técnico'
+            ),
+            array(
+                'name' => 'Tecnológo'
+            ),
+            array(
+                'name' => 'Licenciatura'
+            ),
+            array(
+                'name' => 'Educación Profesional'
+            ),
+            array(
+                'name' => 'Especialización/Postgrado'
+            ),
+            array(
+                'name' => 'Maestría'
+            ),
+            array(
+                'name' => 'Doctorado'
+            ),
+            array(
+                'name' => 'Postdoctorado'
             ),
         ]
     ]

@@ -28,6 +28,8 @@ class DocumentTypeSeeder extends Seeder
     {
         $documentTypesArray = config('database.default-data.document_types');
 
+        $this->info('Creando todos los tipos de documentos disponibles de la aplicación');
+
         $this->command->getOutput()->progressStart(count($documentTypesArray));
 
         foreach ($documentTypesArray as $documentTypeItem) {

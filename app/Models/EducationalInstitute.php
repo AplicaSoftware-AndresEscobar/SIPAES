@@ -24,6 +24,18 @@ class EducationalInstitute extends Model
     ];
 
     /**
+     * Get User Academic Studies
+     * 
+     * @return BelongsToMany|Collection<User>
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_academic_studies')
+            ->using(UserAcademicStudy::class)
+            ->withPivot(['name', 'year', 'academic_study_level_id']);
+    }
+
+    /**
      * Scope a query to only include Name.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
