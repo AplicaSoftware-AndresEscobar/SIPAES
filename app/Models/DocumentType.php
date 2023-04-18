@@ -28,7 +28,7 @@ class DocumentType extends Model
         if (is_array($value) && $value) {
             return $query->whereIn("{$this->getTable()}.name", $value);
         } else {
-            return $query->where("{$this->getTable()}.name", $value);
+            return $query->where("{$this->getTable()}.name", "like", "%$value%");
         }
     }
 

@@ -16,19 +16,15 @@ class Gender extends Model
      */
     protected $fillable = ['name'];
 
-      /**
+    /**
      * Scope a query to only include Name.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param array|string $value
+     * @param string $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeByName($query, $value)
     {
-        if (is_array($value) && $value) {
-            return $query->whereIn("{$this->getTable()}.name", $value);
-        } else {
-            return $query->where("{$this->getTable()}.name", $value);
-        }
+        return $query->where("{$this->getTable()}.name", "like", "%$value%");
     }
 }

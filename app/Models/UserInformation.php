@@ -99,7 +99,7 @@ class UserInformation extends Model
      */
     public function scopeByName($query, $value)
     {
-        return $query->where("{$this->getTable()}.name", $value);
+        return $query->where("{$this->getTable()}.name", "like", "%$value%");
     }
 
     /**
