@@ -39,6 +39,7 @@ class UserInformation extends Model
      */
     protected $fillable = [
         'fullname',
+        'gender_id',
         'email_fesc',
         'document',
         'document_type_id',
@@ -57,6 +58,16 @@ class UserInformation extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get Gender relationed with the information.
+     * 
+     * @return BelongsTo|Gender
+     */
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class);
     }
 
     /**

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('user_information', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id', false)->primary();
             $table->string('fullname');
+            $table->unsignedTinyInteger('gender_id');
             $table->string('email_fesc')->nullable();
             $table->string('document');
             $table->unsignedSmallInteger('document_type_id');
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->foreign('user_id', 'fk_user_information')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('document_type_id', 'fk_document_types_user_information')->references('id')->on('document_types')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreign('birthday_place_id', 'fk_birthdate_place_user_information')->references('id')->on('cities')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreign('gender_id', 'fk_genders_user_information')->references('id')->on('genders')->cascadeOnUpdate()->restrictOnDelete();
         });
     }
 
