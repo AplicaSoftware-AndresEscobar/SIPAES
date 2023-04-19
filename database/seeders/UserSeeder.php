@@ -4,15 +4,18 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Console\Concerns\InteractsWithIO;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Str;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 use App\Repositories\UserRepository;
 use App\Repositories\UserInformationRepository;
 use App\Repositories\UserAcademicStudyRepository;
+use App\Repositories\UserWorkExperiencieRepository;
+use App\Repositories\CompanyRepository;
+use App\Repositories\EducationalInstituteRepository;
 use App\Repositories\AcademicStudyLevelRepository;
 use App\Repositories\DocumentTypeRepository;
-use App\Repositories\EducationalInstituteRepository;
 use App\Repositories\GenderRepository;
 use App\Repositories\Localization\CityRepository;
 
@@ -22,10 +25,8 @@ use App\Models\AcademicStudyLevel;
 use App\Models\Company;
 use App\Models\DocumentType;
 use App\Models\Gender;
-use App\Models\Localization\City;
 use App\Models\User;
-use App\Repositories\CompanyRepository;
-use App\Repositories\UserWorkExperiencieRepository;
+use App\Models\Localization\City;
 
 class UserSeeder extends Seeder
 {
@@ -101,8 +102,11 @@ class UserSeeder extends Seeder
         $educationalInstitutes = $this->educationalInstituteRepository->all(['id']);
         $companies = $this->companyRepository->all(['id']);
 
-        /** .Complement Data */
+        /** Create Superadmin */
+        $user = $this->createSuperAdmin();
+        $this->createUserInformation($user, $documentTypes, $cities, $genders);
 
+        /** .Complement Data */
         $usersNum = (int) $this->command->ask("¿Cuántos Usuarios desea crear para el ambiente de desarrollo? \nPor defecto se crearán 5 usuarios.", 5);
         $usersNum = !is_numeric($usersNum) || $usersNum <= 0 ? 5 : $usersNum;
         $users = $this->userRepository->createFactory($usersNum);
@@ -112,12 +116,34 @@ class UserSeeder extends Seeder
             $this->createUserInformation($userItem, $documentTypes, $cities, $genders);
 
             if (randomBoolean()) $this->hasAcademicStudies($userItem, $academicStudyLevels, $educationalInstitutes);
-            
+
             if (randomBoolean()) $this->hasWorkExperiencies($userItem, $companies);
 
             $this->command->getOutput()->progressAdvance();
         }
         $this->command->getOutput()->progressFinish();
+    }
+
+    /** 
+     * Create Super Admin
+     * 
+     * @return User
+     */
+    private function createSuperAdmin()
+    {
+        /** @var User $user */
+        $user = $this->userRepository->create([
+            'username' => 'superadmin-sipaes',
+            'email' => 'superadmin@gmail.com',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'email_verified_at' => now(),
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+        ]);
+
+        $this->info("\n-Se ha creado satisfactoriamente el usuario superadministrador\n");
+        $user->assignRole('super-admin');
+        return $user;
     }
 
     /**

@@ -170,6 +170,16 @@ return [
                 Incluyendo usuarios como Administrativos, Docentes, Coordinadores, Estudiantes, Egresados, entre otros. '
             ),
         ],
+        'roles' => [
+            array(
+                'title' => 'Superadministrador',
+                'name' => 'super-admin'
+            ),
+            array(
+                'title' => 'Administrador',
+                'name' => 'admin'
+            ),
+        ],
         'permissions' => [
             array(
                 'module_id' => 1,
