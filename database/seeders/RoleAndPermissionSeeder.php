@@ -55,6 +55,27 @@ class RoleAndPermissionSeeder extends Seeder
         }
         $this->command->getOutput()->progressFinish();
 
+        /** #Creando Roles del Sistema */
+        $rolesArray = config('permission.default-data.roles');
+
+        $this->info('Creando los roles predeterminados de la aplicación');
+
+        $this->command->getOutput()->progressStart(count($rolesArray));
+
+        /** @var \App\Models\SpatieRolesPermissions\Role $superRole */
+        $superRole = null;
+        foreach ($rolesArray as $index => $roleItem) {
+            sleep(1);
+
+            $this->info("\n-Creando el rol: '{$roleItem['title']}'\n");
+            $role = $this->roleRepository->create($roleItem);
+            if ($index == 0) {
+                $superRole = $role;
+            }
+            $this->command->getOutput()->progressAdvance();
+        }
+        $this->command->getOutput()->progressFinish();
+
         /** #Creando Permisos del Sistema# */
         $permissionsArray = config('permission.default-data.permissions');
 
@@ -62,12 +83,16 @@ class RoleAndPermissionSeeder extends Seeder
 
         $this->command->getOutput()->progressStart(count($permissionsArray));
 
+        $permissionCollection = collect();
         foreach ($permissionsArray as $permissionItem) {
             sleep(1);
             $this->info("\n-Creando el permiso: '{$permissionItem['title']}'\n");
-            $this->permissionRepository->create($permissionItem);
+            $permission = $this->permissionRepository->create($permissionItem);
+            $permissionCollection->push($permission);
             $this->command->getOutput()->progressAdvance();
         }
+
+        $superRole->syncPermissions($permissionCollection);
         $this->command->getOutput()->progressFinish();
     }
 }
