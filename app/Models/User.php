@@ -69,6 +69,18 @@ class User extends Authenticatable
     }
 
     /**
+     * Get User Work Experiencies
+     * 
+     * @return BelongsToMany|Collection<Company>
+     */
+    public function work_experiencies()
+    {
+        return $this->belongsToMany(Company::class, 'user_work_experiencies')
+            ->using(UserWorkExperiencie::class)
+            ->withPivot(['job_title', 'start_date', 'end_date']);
+    }
+
+    /**
      * Scope a query to only include Username
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query

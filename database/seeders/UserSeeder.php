@@ -5,20 +5,27 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Console\Concerns\InteractsWithIO;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Illuminate\Database\Eloquent\Collection;
 
 use App\Repositories\UserRepository;
+use App\Repositories\UserInformationRepository;
+use App\Repositories\UserAcademicStudyRepository;
 use App\Repositories\AcademicStudyLevelRepository;
 use App\Repositories\DocumentTypeRepository;
 use App\Repositories\EducationalInstituteRepository;
 use App\Repositories\GenderRepository;
 use App\Repositories\Localization\CityRepository;
-use App\Repositories\UserInformationRepository;
 
 
 use App\Models\EducationalInstitute;
 use App\Models\AcademicStudyLevel;
+use App\Models\Company;
+use App\Models\DocumentType;
+use App\Models\Gender;
+use App\Models\Localization\City;
 use App\Models\User;
-use App\Repositories\UserAcademicStudyRepository;
+use App\Repositories\CompanyRepository;
+use App\Repositories\UserWorkExperiencieRepository;
 
 class UserSeeder extends Seeder
 {
@@ -33,6 +40,9 @@ class UserSeeder extends Seeder
     /** @var UserAcademicStudyRepository */
     protected $userAcademicStudyRepository;
 
+    /** @var UserWorkExperiencieRepository */
+    protected $userWorkExperiencieRepository;
+
     /** @var DocumentTypeRepository */
     protected $documentTypeRepository;
 
@@ -41,6 +51,9 @@ class UserSeeder extends Seeder
 
     /** @var GenderRepository */
     protected $genderRepository;
+
+    /** @var CompanyRepository */
+    protected $companyRepository;
 
     /** @var AcademicStudyLevelRepository */
     protected $academicStudyLevelRepository;
@@ -52,18 +65,23 @@ class UserSeeder extends Seeder
         UserRepository $userRepository,
         UserInformationRepository $userInformationRepository,
         UserAcademicStudyRepository $userAcademicStudyRepository,
+        UserWorkExperiencieRepository $userWorkExperiencieRepository,
         DocumentTypeRepository $documentTypeRepository,
         CityRepository $cityRepository,
         GenderRepository $genderRepository,
+        CompanyRepository $companyRepository,
         AcademicStudyLevelRepository $academicStudyLevelRepository,
         EducationalInstituteRepository $educationalInstituteRepository,
     ) {
         $this->userRepository = $userRepository;
         $this->userInformationRepository = $userInformationRepository;
         $this->userAcademicStudyRepository = $userAcademicStudyRepository;
+        $this->userWorkExperiencieRepository = $userWorkExperiencieRepository;
         $this->documentTypeRepository = $documentTypeRepository;
         $this->cityRepository = $cityRepository;
         $this->genderRepository = $genderRepository;
+        $this->companyRepository = $companyRepository;
+
         $this->academicStudyLevelRepository = $academicStudyLevelRepository;
         $this->educationalInstituteRepository = $educationalInstituteRepository;
 
@@ -81,6 +99,7 @@ class UserSeeder extends Seeder
         $genders = $this->genderRepository->all(['id']);
         $academicStudyLevels = $this->academicStudyLevelRepository->all(['id']);
         $educationalInstitutes = $this->educationalInstituteRepository->all(['id']);
+        $companies = $this->companyRepository->all(['id']);
 
         /** .Complement Data */
 
@@ -90,27 +109,11 @@ class UserSeeder extends Seeder
         $this->command->getOutput()->progressStart(count($users));
 
         foreach ($users as $userItem) {
-            /** @var User $userItem */
-
-            /** @var \App\Models\DocumentType $randomDocumentType */
-            $randomDocumentType = $documentTypes->random(1)->first();
-
-            /** @var \App\Models\Localization\City $randomCity */
-            $randomCity = $cities->random(1)->first();
-
-            /** @var \App\Models\Gender $randomGender */
-            $randomGender = $genders->random(1)->first();
-
-            sleep(1);
-            $userInformation = $this->userInformationRepository->createOneFactory([
-                'user_id' => $userItem->id,
-                'gender_id' => $randomGender->id,
-                'document_type_id' => $randomDocumentType->id,
-                'birthday_place_id' => $randomCity->id
-            ]);
-            $this->info("\n-Creando Usuario: '{$userInformation->fullname}'\n");
+            $this->createUserInformation($userItem, $documentTypes, $cities, $genders);
 
             if (randomBoolean()) $this->hasAcademicStudies($userItem, $academicStudyLevels, $educationalInstitutes);
+            
+            if (randomBoolean()) $this->hasWorkExperiencies($userItem, $companies);
 
             $this->command->getOutput()->progressAdvance();
         }
@@ -119,8 +122,35 @@ class UserSeeder extends Seeder
 
     /**
      * @param User $user
-     * @param \Illuminate\Database\Eloquent\Collection<AcademicStudyLevel> $academicStudyLevels
-     * @param \Illuminate\Database\Eloquent\Collection<EducationalInstitute> $educationalInstitutes
+     * @param Collection<DocumentType> $documentTypes
+     * @param Collection<City> $cities
+     * @param Collection<Gender> $genders
+     */
+    private function createUserInformation($user, $documentTypes, $cities, $genders)
+    {
+        /** @var \App\Models\DocumentType $randomDocumentType */
+        $randomDocumentType = $documentTypes->random(1)->first();
+
+        /** @var \App\Models\Localization\City $randomCity */
+        $randomCity = $cities->random(1)->first();
+
+        /** @var \App\Models\Gender $randomGender */
+        $randomGender = $genders->random(1)->first();
+
+        sleep(1);
+        $userInformation = $this->userInformationRepository->createOneFactory([
+            'user_id' => $user->id,
+            'gender_id' => $randomGender->id,
+            'document_type_id' => $randomDocumentType->id,
+            'birthday_place_id' => $randomCity->id
+        ]);
+        $this->info("\n-Creando Usuario: '{$userInformation->fullname}'\n");
+    }
+
+    /**
+     * @param User $user
+     * @param Collection<AcademicStudyLevel> $academicStudyLevels
+     * @param Collection<EducationalInstitute> $educationalInstitutes
      */
     private function hasAcademicStudies($user, $academicStudyLevels, $educationalInstitutes)
     {
@@ -141,5 +171,26 @@ class UserSeeder extends Seeder
         }
 
         $this->comment('Se ha registrado informaación académica al usuario.');
+    }
+
+    /**
+     * @param User $user
+     * @param Collection<Company> $companies
+     */
+    private function hasWorkExperiencies($user, $companies)
+    {
+        $randomWorkExperiencies = rand(1, 4);
+
+        for ($i = 0; $i < $randomWorkExperiencies; $i++) {
+            /** @var Company $randomCompany */
+            $randomCompany = $companies->random(1)->first();
+
+            $this->userWorkExperiencieRepository->createOneFactory([
+                'user_id' => $user->id,
+                'company_id' => $randomCompany->id,
+            ]);
+        }
+
+        $this->comment('Se ha registrado experiencias laborales al usuario.');
     }
 }
