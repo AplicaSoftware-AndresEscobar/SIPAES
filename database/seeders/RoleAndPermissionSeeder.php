@@ -2,14 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Repositories\PermissionModuleRepository;
 use Illuminate\Database\Seeder;
+use Illuminate\Console\Concerns\InteractsWithIO;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
-use App\Repositories\RoleRepository;
-use App\Repositories\PermissionRepository;
+use App\Repositories\SpatieRolesPermissions\PermissionModuleRepository;
+use App\Repositories\SpatieRolesPermissions\RoleRepository;
+use App\Repositories\SpatieRolesPermissions\PermissionRepository;
 
 class RoleAndPermissionSeeder extends Seeder
 {
+    use InteractsWithIO;
+
     /** @var RoleRepository */
     protected $roleRepository;
 
@@ -27,6 +31,8 @@ class RoleAndPermissionSeeder extends Seeder
         $this->roleRepository = $roleRepository;
         $this->permissionRepository = $permissionRepository;
         $this->permissionModuleRepository = $permissionModuleRepository;
+
+        $this->output = new ConsoleOutput();
     }
 
     /**
@@ -34,16 +40,34 @@ class RoleAndPermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $permissionModulesData = config('permission.default-data.permission_modules');
+        /** #Creando Módulos del Sistema# */
+        $permissionModulesArray = config('permission.default-data.permission_modules');
 
-        foreach ($permissionModulesData as $permissionModuleItem) {
+        $this->info('Creando los módulos de la aplicación');
+
+        $this->command->getOutput()->progressStart(count($permissionModulesArray));
+
+        foreach ($permissionModulesArray as $permissionModuleItem) {
+            sleep(1);
+            $this->info("\n-Creando el módulo de permiso: '{$permissionModuleItem['title']}'\n");
             $this->permissionModuleRepository->create($permissionModuleItem);
+            $this->command->getOutput()->progressAdvance();
         }
+        $this->command->getOutput()->progressFinish();
 
-        $permissionsData = config('permission.default-data.permissions');
+        /** #Creando Permisos del Sistema# */
+        $permissionsArray = config('permission.default-data.permissions');
 
-        foreach ($permissionsData as $permissionItem) {
+        $this->info('Creando los permisos disponibles de la aplicación');
+
+        $this->command->getOutput()->progressStart(count($permissionsArray));
+
+        foreach ($permissionsArray as $permissionItem) {
+            sleep(1);
+            $this->info("\n-Creando el permiso: '{$permissionItem['title']}'\n");
             $this->permissionRepository->create($permissionItem);
+            $this->command->getOutput()->progressAdvance();
         }
+        $this->command->getOutput()->progressFinish();
     }
 }

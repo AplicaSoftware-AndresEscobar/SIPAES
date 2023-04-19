@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Str;
 
+use function PHPSTORM_META\map;
+
 return [
 
     /*
@@ -125,7 +127,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
         ],
 
         'default' => [
@@ -147,5 +149,69 @@ return [
         ],
 
     ],
+
+
+    'default-data' => [
+        'document_types' => [
+            array(
+                'name' => 'Cédula de Ciudadanía',
+                'slug' => 'CC'
+            ),
+            array(
+                'name' => 'Cédula de Extranjería',
+                'slug' => 'CE'
+            ),
+            array(
+                'name' => 'Tarjeta de Identidad',
+                'slug' => 'TI'
+            )
+        ],
+        'genders' => [
+            array(
+                'name' => 'Másculino',
+            ),
+            array(
+                'name' => 'Femenino',
+            ),
+        ],
+        'academic_study_levels' => [
+            array(
+                'name' => 'Educación Primaria'
+            ),
+            array(
+                'name' => 'Educación de Bachiller'
+            ),
+            array(
+                'name' => 'Curso'
+            ),
+            array(
+                'name' => 'Diplomado'
+            ),
+            array(
+                'name' => 'Técnico'
+            ),
+            array(
+                'name' => 'Tecnológo'
+            ),
+            array(
+                'name' => 'Licenciatura'
+            ),
+            array(
+                'name' => 'Educación Profesional'
+            ),
+            array(
+                'name' => 'Especialización/Postgrado'
+            ),
+            array(
+                'name' => 'Maestría'
+            ),
+            array(
+                'name' => 'Doctorado'
+            ),
+            array(
+                'name' => 'Postdoctorado'
+            ),
+        ]
+    ]
 
 ];
