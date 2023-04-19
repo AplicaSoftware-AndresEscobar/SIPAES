@@ -51,6 +51,15 @@ class UserInformation extends Model
     ];
 
     /**
+     * @var array<int,string>
+     */
+    protected $with = [
+        'gender',
+        'document_type',
+        'birthday_place',
+    ];
+
+    /**
      * Get User relationed with the information.
      * 
      * @return BelongsTo|User

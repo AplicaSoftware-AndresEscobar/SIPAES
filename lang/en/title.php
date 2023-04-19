@@ -8,4 +8,8 @@ return [
     'login-bottom' => 'Suplataforma Administrative',
 
     'login-footer' => '©2023 All Rights Reserved.',
+
+    'profile' => 'Profile',
+
+    'title-user-information' => 'User Basic Information',
 ];

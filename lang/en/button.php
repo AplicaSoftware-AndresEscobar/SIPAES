@@ -10,4 +10,6 @@ return [
     'profle' => 'Profile',
     'settings' => 'Settings',
     'help' => 'Help',
+
+    'edit-profile' => 'Edit Profile',
 ];

@@ -10,4 +10,6 @@ return [
     'profile' => 'Perfil',
     'settings' => 'Configuración',
     'help' => 'Ayuda',
+
+    'edit-profile' => 'Editar Perfil',
 ];

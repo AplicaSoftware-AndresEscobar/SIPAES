@@ -14,7 +14,7 @@
                          <span class=" fa fa-angle-down"></span>
                      </a>
                      <ul class="dropdown-menu dropdown-usermenu pull-right">
-                         <li><a href="javascript:;">@lang('button.profile')</a></li>
+                         <li><a href="{{ route('profile') }}">@lang('button.profile')</a></li>
                          <li>
                              <a href="javascript:;">@lang('button.settings')</a>
                          </li>
