@@ -47,6 +47,13 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get Reltations on each model.
+     */
+    protected $with = [
+        'user_information'
+    ];
+
+    /**
      * Get User Information
      * 
      * @return HasOne|UserInformation

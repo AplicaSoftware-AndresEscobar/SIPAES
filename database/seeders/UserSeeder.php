@@ -170,7 +170,7 @@ class UserSeeder extends Seeder
             ]);
         }
 
-        $this->comment('Se ha registrado informaación académica al usuario.');
+        $this->comment('Se ha registrado información académica al usuario.');
     }
 
     /**
