@@ -12,4 +12,6 @@ return [
     'profile' => 'Perfil',
 
     'title-user-information' => 'Información Básica del Usuario',
+
+    'dashboard' => 'Menú Principal',
 ];

@@ -12,4 +12,6 @@ return [
     'profile' => 'Profile',
 
     'title-user-information' => 'User Basic Information',
+
+    'dashboard' => 'Dashboard',
 ];

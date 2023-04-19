@@ -1,40 +1,77 @@
- <!-- sidebar menu -->
- <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-     <div class="menu_section">
-         <h3>General</h3>
-         <ul class="nav side-menu">
-             @foreach (config('template.sidebar-menu') as $item)
-                 <li>
-                     <a href="{{ url($item['url']) }}">
-                         <i class="{{ $item['icon'] }}"></i>{{ $item['name'] }}
+ <aside class="main-sidebar sidebar-dark-primary elevation-4">
+     <!-- Brand Logo -->
+     <a href="../../index3.html" class="brand-link">
+         <img src="{{ asset('assets/adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+             class="brand-image img-circle elevation-3" style="opacity: .8">
+         <span class="brand-text font-weight-light">AdminLTE 3</span>
+     </a>
+
+     <!-- Sidebar -->
+     <div class="sidebar">
+         <!-- Sidebar user (optional) -->
+         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+             <div class="image">
+                 <img src="{{ asset('assets/adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2"
+                     alt="User Image">
+             </div>
+             <div class="info">
+                 <a href="#" class="d-block">{{ current_user()->user_information->fullname }}</a>
+             </div>
+         </div>
+
+         <!-- Sidebar Menu -->
+         <nav class="mt-2">
+             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                 data-accordion="false">
+                 <!-- Add icons to the links using the .nav-icon class
+         with font-awesome or any other icon font library -->
+                 @foreach (config('template.sidebar-menu') as $item)
+                     <li class="nav-item">
+                         <a href="{{ url($item['url']) }}" class="nav-link">
+                             @if (isset($item['icon']) && $item['icon'])
+                                 <i class="{{ $item['icon'] }}"></i>
+                             @endif
+                             <p>{{ $item['name'] }}</p>
+                             @if (isset($item['submenu']) && $item['submenu'])
+                                 <span class="right fas fa-angle-left"></span>
+                             @endif
+                         </a>
                          @if (isset($item['submenu']) && $item['submenu'])
-                             <span class="fa fa-chevron-down"></span>
-                         @endif
-                     </a>
-                     @if (isset($item['submenu']) && $item['submenu'])
-                         <ul class="nav child_menu">
-                             @foreach ($item['submenu'] as $subItem)
-                                 <li>
-                                     <a href="{{ $subItem['url'] }}">{{ $subItem['name'] }}
+                             <ul class="nav nav-treeview">
+                                 @foreach ($item['submenu'] as $subItem)
+                                     <li class="nav-item">
+                                         <a href="{{ $subItem['url'] }}" class="nav-link">
+                                             @if (isset($subItem['icon']) && $subItem['icon'])
+                                                 <i class="{{ $subItem['icon'] }}"></i>
+                                             @endif
+                                             <p>{{ $subItem['name'] }}</p>
+                                             @if (isset($subItem['submenu']) && $subItem['submenu'])
+                                                 <span class="right fas fa-angle-left"></span>
+                                             @endif
+                                         </a>
                                          @if (isset($subItem['submenu']) && $subItem['submenu'])
-                                             <span class="fa fa-chevron-down"></span>
+                                             <ul class="nav nav-treeview">
+                                                 @foreach ($subItem['submenu'] as $subItemTwo)
+                                                     <li>
+                                                         <a class="nav-link" href="{{ $subItemTwo['url'] }}">
+                                                             @if (isset($subItemTwo['icon']) && $subItemTwo['icon'])
+                                                                 <i class="{{ $subItemTwo['icon'] }}"></i>
+                                                             @endif
+                                                             <p>{{ $subItemTwo['name'] }}</p>
+                                                         </a>
+                                                     </li>
+                                                 @endforeach
+                                             </ul>
                                          @endif
-                                     </a>
-                                     @if (isset($subItem['submenu']) && $subItem['submenu'])
-                                         <ul class="nav child_menu">
-                                             @foreach ($subItem['submenu'] as $subItemTwo)
-                                                 <li><a href="{{ $subItemTwo['url'] }}">{{ $subItemTwo['name'] }}</a>
-                                                 </li>
-                                             @endforeach
-                                         </ul>
-                                     @endif
-                                 </li>
-                             @endforeach
-                         </ul>
-                     @endif
-                 </li>
-             @endforeach
-         </ul>
+                                     </li>
+                                 @endforeach
+                             </ul>
+                         @endif
+                     </li>
+                 @endforeach
+             </ul>
+         </nav>
+         <!-- /.sidebar-menu -->
      </div>
- </div>
- <!-- /sidebar menu -->
+     <!-- /.sidebar -->
+ </aside>
