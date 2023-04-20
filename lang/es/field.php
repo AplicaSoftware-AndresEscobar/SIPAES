@@ -27,5 +27,21 @@ return [
 
     'remember_me' => 'Recuérdame',
 
-    'gender' => 'Género'
+    'gender' => 'Género',
+
+    'company' => 'Empresa/Compañía',
+
+    'job-title' => 'Cargo',
+
+    'start_date' => 'Inicio',
+
+    'end_date' => 'Fin',
+
+    'duration' => 'Duración',
+
+    'educational_institute' => 'Institución Educativa',
+    
+    'academic_study_level' => 'Nivel Educativo',
+
+    'year' => 'Año',
 ];

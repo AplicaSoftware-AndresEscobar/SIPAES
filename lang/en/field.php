@@ -21,5 +21,15 @@ return [
     
     'remember_me' => 'Remember me',
 
-    'gender' => 'Gender'
+    'gender' => 'Gender',
+
+    'company' => 'Bussiness/Company',
+
+    'job-title' => 'Job Title',
+
+    'start_date' => 'Start Date',
+
+    'end_date' => 'End Date',
+
+    'duration' => 'Duration'
 ];

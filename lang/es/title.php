@@ -13,5 +13,11 @@ return [
 
     'title-user-information' => 'Información Básica',
 
+    'title-user-work-experiencie' => 'Información Laboral',
+    
+    'title-user-academic-study' => 'Información Académica',
+
     'dashboard' => 'Menú Principal',
+
+    'settings' => 'Configuración',
 ];

@@ -1,245 +1,265 @@
 @extends('layout.app')
 
-@section('title-page', __('title.profile'))
+@section('title', __('title.profile'))
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2><small>@lang('title.title-user-information')</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                        <li class="dropdown">
-                        <li><a class="close-link"><i class="fa fa-close"></i></a>
-                        </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="col-md-3 col-sm-3 col-xs-12 profile_right">
-                        <div class="profile_img">
-                            <div id="crop-avatar">
-                                <!-- Current avatar -->
-                                <img class="img-responsive avatar-view" src="{{ asset('assets/images/picture.jpg') }}"
-                                    alt="Avatar" title="Change the avatar">
-                            </div>
+    <div class="container-fluid my-4">
+        <div class="row">
+            <div class="col-md-3">
+
+                <!-- Profile Image -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle"
+                                src="{{ asset('assets/adminlte/dist/img/user4-128x128.jpg') }}" alt="User profile picture">
                         </div>
-                        <h3>{{ current_user_information()->fullname }}</h3>
 
-                        <ul class="list-unstyled user_data">
-                            <li>
-                                <i class="fa fa-briefcase user-profile-icon"></i> Software Engineer
-                            </li>
-                        </ul>
+                        <h3 class="profile-username text-center">{{ current_user_information()->fullname }}</h3>
 
-                        <a class="btn btn-primary"><i class="fa fa-edit m-right-xs"></i>@lang('button.edit-profile')</a>
-                        <br />
+                        <p class="text-muted text-center">{{ current_user()->roles->first()->title }}</p>
+
+                        <a href="#" class="btn btn-primary btn-block"><b>@lang('button.edit-profile')</b></a>
                     </div>
-                    <div class="col-md-9 col-sm-9 col-xs-12">
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
 
-                        <div class="profile_title">
-                            <div class="col-md-6">
-                                <h2>User Activity Report</h2>
-                            </div>
-                            <div class="col-md-6">
-                                <div id="reportrange" class="pull-right"
-                                    style="margin-top: 5px; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #E6E9ED">
-                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                                    <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- start of user-activity-graph -->
-                        <div id="graph_bar" style="width:100%; height:280px;"></div>
-                        <!-- end of user-activity-graph -->
+                <!-- About Me Box -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">@lang('title.title-user-information')</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <strong><i class="fas fa-user mr-1"></i>@lang('field.name')</strong>
 
-                        <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab"
-                                        data-toggle="tab" aria-expanded="true">Recent Activity</a>
-                                </li>
-                                <li role="presentation" class=""><a href="#tab_content2" role="tab"
-                                        id="profile-tab" data-toggle="tab" aria-expanded="false">Projects Worked on</a>
-                                </li>
-                                <li role="presentation" class=""><a href="#tab_content3" role="tab"
-                                        id="profile-tab2" data-toggle="tab" aria-expanded="false">Profile</a>
-                                </li>
-                            </ul>
-                            <div id="myTabContent" class="tab-content">
-                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1"
-                                    aria-labelledby="home-tab">
+                        <p class="text-muted">{{ current_user_information()->fullname }}</p>
 
-                                    <!-- start recent activity -->
-                                    <ul class="messages">
-                                        <li>
-                                            <img src="{{ asset('assets/images/img.jpg') }}" class="avatar" alt="Avatar">
-                                            <div class="message_date">
-                                                <h3 class="date text-info">24</h3>
-                                                <p class="month">May</p>
-                                            </div>
-                                            <div class="message_wrapper">
-                                                <h4 class="heading">Desmond Davison</h4>
-                                                <blockquote class="message">Raw denim you probably
-                                                    haven't heard of them jean shorts Austin. Nesciunt
-                                                    tofu stumptown aliqua butcher retro keffiyeh
-                                                    dreamcatcher synth.</blockquote>
-                                                <br />
-                                                <p class="url">
-                                                    <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                                    <a href="#"><i class="fa fa-paperclip"></i>
-                                                        User Acceptance Test.doc </a>
-                                                </p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <img src="{{ asset('assets/images/img.jpg') }}" class="avatar"
-                                                alt="Avatar">
-                                            <div class="message_date">
-                                                <h3 class="date text-error">21</h3>
-                                                <p class="month">May</p>
-                                            </div>
-                                            <div class="message_wrapper">
-                                                <h4 class="heading">Brian Michaels</h4>
-                                                <blockquote class="message">Raw denim you probably
-                                                    haven't heard of them jean shorts Austin. Nesciunt
-                                                    tofu stumptown aliqua butcher retro keffiyeh
-                                                    dreamcatcher synth.</blockquote>
-                                                <br />
-                                                <p class="url">
-                                                    <span class="fs1" aria-hidden="true" data-icon=""></span>
-                                                    <a href="#" data-original-title="">Download</a>
-                                                </p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <img src="{{ asset('assets/images/img.jpg') }}" class="avatar"
-                                                alt="Avatar">
-                                            <div class="message_date">
-                                                <h3 class="date text-info">24</h3>
-                                                <p class="month">May</p>
-                                            </div>
-                                            <div class="message_wrapper">
-                                                <h4 class="heading">Desmond Davison</h4>
-                                                <blockquote class="message">Raw denim you probably
-                                                    haven't heard of them jean shorts Austin. Nesciunt
-                                                    tofu stumptown aliqua butcher retro keffiyeh
-                                                    dreamcatcher synth.</blockquote>
-                                                <br />
-                                                <p class="url">
-                                                    <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                                    <a href="#"><i class="fa fa-paperclip"></i>
-                                                        User Acceptance Test.doc </a>
-                                                </p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <img src="{{ asset('assets/images/img.jpg') }}" class="avatar"
-                                                alt="Avatar">
-                                            <div class="message_date">
-                                                <h3 class="date text-error">21</h3>
-                                                <p class="month">May</p>
-                                            </div>
-                                            <div class="message_wrapper">
-                                                <h4 class="heading">Brian Michaels</h4>
-                                                <blockquote class="message">Raw denim you probably
-                                                    haven't heard of them jean shorts Austin. Nesciunt
-                                                    tofu stumptown aliqua butcher retro keffiyeh
-                                                    dreamcatcher synth.</blockquote>
-                                                <br />
-                                                <p class="url">
-                                                    <span class="fs1" aria-hidden="true" data-icon=""></span>
-                                                    <a href="#" data-original-title="">Download</a>
-                                                </p>
-                                            </div>
-                                        </li>
+                        <hr>
 
-                                    </ul>
-                                    <!-- end recent activity -->
+                        <strong><i class="fas fa-at mr-1"></i>@lang('field.email_fesc')</strong>
 
-                                </div>
-                                <div role="tabpanel" class="tab-pane fade" id="tab_content2"
-                                    aria-labelledby="profile-tab">
+                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'email_fesc') !!}</p>
 
-                                    <!-- start user projects -->
-                                    <table class="data table table-striped no-margin">
+                        <hr>
+
+                        <strong><i class="fas fa-at mr-1"></i>@lang('field.email')</strong>
+
+                        <p class="text-muted">{{ current_user()->email }}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-id-card mr-1"></i>@lang('field.document_type')</strong>
+
+                        <p class="text-muted">{{ current_user_information()->document_type->name }}</p>
+
+                        <hr>
+
+                        <strong><i class="far fa-id-card mr-1"></i>@lang('field.document')</strong>
+
+                        <p class="text-muted">{{ current_user_information()->document }}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-map-marker-alt mr-1"></i>@lang('field.birthdate')</strong>
+
+                        <p class="text-muted">{{ current_user_information()->birthdate->format('d/m/Y') }}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-map-marker-alt mr-1"></i>@lang('field.birthday_place')</strong>
+
+                        <p class="text-muted">{{ current_user_information()->birthday_place->getLocation() }}</p>
+
+                        <hr>
+
+                        <strong><i class="far fa-id-card mr-1"></i>@lang('field.address')</strong>
+
+                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'address') !!}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-mobile mr-1"></i>@lang('field.phone')</strong>
+
+                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'phone') !!}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-phone mr-1"></i>@lang('field.telephone')</strong>
+
+                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'telephone') !!}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-venus-mars mr-1"></i>@lang('field.gender')</strong>
+
+                        <p class="text-muted">{{ current_user_information()->gender->name }}</p>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- ./About Me Box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link active" href="#user-work-experiencie"
+                                    data-toggle="tab">@lang('title.title-user-work-experiencie')</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#user-academic-study"
+                                    data-toggle="tab">@lang('title.title-user-academic-study')</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#settings"
+                                    data-toggle="tab">@lang('title.settings')</a></li>
+                        </ul>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="active tab-pane" id="user-work-experiencie">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover table-bordered">
                                         <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Project Name</th>
-                                                <th>Client Company</th>
-                                                <th class="hidden-phone">Hours Spent</th>
-                                                <th>Contribution</th>
-                                            </tr>
+                                            <th>@lang('field.company')</th>
+                                            <th>@lang('field.job-title')</th>
+                                            <th>@lang('field.start_date')</th>
+                                            <th>@lang('field.end_date')</th>
+                                            <th>@lang('field.duration')</th>
+                                            <th></th>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>New Company Takeover Review</td>
-                                                <td>Deveint Inc</td>
-                                                <td class="hidden-phone">18</td>
-                                                <td class="vertical-align-mid">
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-success"
-                                                            data-transitiongoal="35"></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>New Partner Contracts Consultanci</td>
-                                                <td>Deveint Inc</td>
-                                                <td class="hidden-phone">13</td>
-                                                <td class="vertical-align-mid">
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-danger"
-                                                            data-transitiongoal="15"></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Partners and Inverstors report</td>
-                                                <td>Deveint Inc</td>
-                                                <td class="hidden-phone">30</td>
-                                                <td class="vertical-align-mid">
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-success"
-                                                            data-transitiongoal="45"></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>New Company Takeover Review</td>
-                                                <td>Deveint Inc</td>
-                                                <td class="hidden-phone">28</td>
-                                                <td class="vertical-align-mid">
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-success"
-                                                            data-transitiongoal="75"></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            @forelse (current_user()->work_experiencies as $item)
+                                                <tr>
+                                                    <td>{!! $item->name !!}</td>
+                                                    <td>{!! $item->pivot->job_title !!}</td>
+                                                    <td>{!! $item->pivot->start_date !!}</td>
+                                                    <td>{!! $item->pivot->end_date !!}</td>
+                                                    <td>{!! diffBetweenTwoDates($item->pivot->start_date, $item->pivot->end_date) !!}</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <form action="" id="form-delete-{{ $item->id }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+
+                                                                <button type="submit" class="btn btn-xs btn-danger"
+                                                                    onclick="destroy(event, {{ $item->id }})">
+                                                                    <i class="fas fa-sm fa-sm fa-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                            @endforelse
+
                                         </tbody>
                                     </table>
-                                    <!-- end user projects -->
-
                                 </div>
-                                <div role="tabpanel" class="tab-pane fade" id="tab_content3"
-                                    aria-labelledby="profile-tab">
-                                    <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla
-                                        single-origin coffee squid. Exercitation +1 labore velit, blog
-                                        sartorial PBR leggings next level wes anderson artisan four loko
-                                        farm-to-table craft beer twee. Qui
-                                        photo booth letterpress, commodo enim craft beer mlkshk </p>
+                                <a href="" class="btn btn-primary btn-sm btn-outline">Agregar</a>
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="user-academic-study">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover table-bordered">
+                                        <thead>
+                                            <th>@lang('field.educational_institute')</th>
+                                            <th>@lang('field.academic_study_level')</th>
+                                            <th>@lang('field.name')</th>
+                                            <th>@lang('field.year')</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+                                            @forelse (current_user()->academic_studies as $item)
+                                                <tr>
+                                                    <td>{!! $item->name !!}</td>
+                                                    <td>{!! $item->pivot->academic_study_level->name !!}</td>
+                                                    <td>{!! $item->pivot->name !!}</td>
+                                                    <td>{!! $item->pivot->year !!}</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <form action="" id="form-delete-{{ $item->id }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+
+                                                                <button type="submit" class="btn btn-xs btn-danger"
+                                                                    onclick="destroy(event, {{ $item->id }})">
+                                                                    <i class="fas fa-sm fa-sm fa-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                            @endforelse
+
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
+                            <!-- /.tab-pane -->
+
+                            <div class="tab-pane" id="settings">
+                                <form class="form-horizontal">
+                                    <div class="form-group row">
+                                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                                        <div class="col-sm-10">
+                                            <input type="email" class="form-control" id="inputName" placeholder="Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                                        <div class="col-sm-10">
+                                            <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="inputName2"
+                                                placeholder="Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="inputSkills"
+                                                placeholder="Skills">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="offset-sm-2 col-sm-10">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox"> I agree to the <a href="#">terms and
+                                                        conditions</a>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="offset-sm-2 col-sm-10">
+                                            <button type="submit" class="btn btn-danger">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.tab-pane -->
                         </div>
-                    </div>
+                        <!-- /.tab-content -->
+                    </div><!-- /.card-body -->
                 </div>
+                <!-- /.card -->
             </div>
+            <!-- /.col -->
         </div>
-    </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
 @endsection
