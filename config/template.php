@@ -13,7 +13,7 @@ return [
          * Inicio, Menú Principal de la Aplicación
          */
         array(
-            'name' => 'Inicio',
+            'name' => 'Menú Principal',
             'url' => 'inicio',
             'icon' => 'fa fa-home'
         ),
@@ -43,7 +43,7 @@ return [
         array(
             'name' => 'Evaluaciones',
             'url' => '#',
-            'icon' => 'fa fa-newspaper-o',
+            'icon' => 'fas fa-newspaper',
             'submenu' => [
                 array(
                     'name' => 'Formatos',
@@ -81,7 +81,7 @@ return [
         array(
             'name' => 'Nómina',
             'url' => '#',
-            'icon' => 'fa fa-money',
+            'icon' => 'fas fa-money-bill',
             'submenu' => [
                 array(
                     'name' => 'Parámetros',

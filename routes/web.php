@@ -19,3 +19,5 @@ Route::redirect('/', 'iniciar-sesion');
 Route::view('iniciar-sesion', 'pages.auth.login')->name('login')->middleware('guest');
 
 Route::view('inicio', 'pages.dashboard')->name('home')->middleware('auth');
+
+Route::view('perfil', 'pages.auth.profile')->name('profile')->middleware('auth');

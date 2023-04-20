@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('document');
             $table->unsignedSmallInteger('document_type_id');
             $table->string('address')->nullable();
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->string('telephone')->nullable();
             $table->string('birthdate')->nullable();
             $table->unsignedInteger('birthday_place_id');

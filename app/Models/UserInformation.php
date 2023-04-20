@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Localization\City;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Carbon\Carbon;
+
+use App\Models\Localization\City;
 
 class UserInformation extends Model
 {
@@ -48,6 +50,24 @@ class UserInformation extends Model
         'telephone',
         'birthdate',
         'birthday_place_id',
+    ];
+
+    /**
+     * @var array<int,string>
+     */
+    protected $with = [
+        'gender',
+        'document_type',
+        'birthday_place',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'birthdate' => 'date:Y-m-d',
     ];
 
     /**

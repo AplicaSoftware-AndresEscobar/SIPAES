@@ -105,6 +105,8 @@ class UserSeeder extends Seeder
         /** Create Superadmin */
         $user = $this->createSuperAdmin();
         $this->createUserInformation($user, $documentTypes, $cities, $genders);
+        $this->hasWorkExperiencies($user, $companies);
+        $this->hasAcademicStudies($user, $academicStudyLevels, $educationalInstitutes);
 
         /** .Complement Data */
         $usersNum = (int) $this->command->ask("¿Cuántos Usuarios desea crear para el ambiente de desarrollo? \nPor defecto se crearán 5 usuarios.", 5);
@@ -118,6 +120,8 @@ class UserSeeder extends Seeder
             if (randomBoolean()) $this->hasAcademicStudies($userItem, $academicStudyLevels, $educationalInstitutes);
 
             if (randomBoolean()) $this->hasWorkExperiencies($userItem, $companies);
+            
+            $userItem->assignRole('admin');
 
             $this->command->getOutput()->progressAdvance();
         }
