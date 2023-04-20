@@ -13,6 +13,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('assets/adminlte/dist/css/adminlte.min.css') }}">
 
+    @vite('resources/css/app.css')
+
     <title>@yield('title')</title>
 
     @yield('css')
@@ -65,6 +67,8 @@
     <script src="{{ asset('assets/adminlte/dist/js/adminlte.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('assets/adminlte/dist/js/demo.js') }}"></script>
+
+    @vite('resources/js/app.js')
 
     @yield('js')
 

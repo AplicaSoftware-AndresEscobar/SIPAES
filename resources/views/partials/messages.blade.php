@@ -1,4 +1,4 @@
-<li class="nav-item dropdown">
+-<li class="nav-item dropdown">
     <a class="nav-link" data-toggle="dropdown" href="#">
         <i class="far fa-comments"></i>
         <span class="badge badge-danger navbar-badge">3</span>
@@ -7,7 +7,7 @@
         <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-                <img src="../../dist/img/user1-128x128.jpg" alt="User Avatar"
+                <img src="{{ asset('assets/adminlte/dist/img/user1-128x128.jpg') }}" alt="User Avatar"
                     class="img-size-50 mr-3 img-circle">
                 <div class="media-body">
                     <h3 class="dropdown-item-title">
@@ -24,7 +24,7 @@
         <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-                <img src="../../dist/img/user8-128x128.jpg" alt="User Avatar"
+                <img src="{{ asset('assets/adminlte/dist/img/user8-128x128.jpg') }}" alt="User Avatar"
                     class="img-size-50 img-circle mr-3">
                 <div class="media-body">
                     <h3 class="dropdown-item-title">
@@ -41,7 +41,7 @@
         <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-                <img src="../../dist/img/user3-128x128.jpg" alt="User Avatar"
+                <img src="{{ asset('assets/adminlte/dist/img/user3-128x128.jpg') }}" alt="User Avatar"
                     class="img-size-50 img-circle mr-3">
                 <div class="media-body">
                     <h3 class="dropdown-item-title">
