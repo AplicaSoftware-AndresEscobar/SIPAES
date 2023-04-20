@@ -11,7 +11,7 @@ return [
 
     'profile' => 'Profile',
 
-    'title-user-information' => 'User Basic Information',
+    'title-user-information' => 'Basic Information',
 
     'dashboard' => 'Dashboard',
 ];

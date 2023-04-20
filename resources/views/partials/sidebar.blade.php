@@ -15,7 +15,7 @@
                      alt="User Image">
              </div>
              <div class="info">
-                 <a href="#" class="d-block">{{ current_user()->user_information->fullname }}</a>
+                 <a href="#" class="d-block">{{ current_user_information()->fullname }}</a>
              </div>
          </div>
 

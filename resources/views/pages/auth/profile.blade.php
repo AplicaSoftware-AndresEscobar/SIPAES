@@ -26,7 +26,7 @@
                                     alt="Avatar" title="Change the avatar">
                             </div>
                         </div>
-                        <h3>{{ current_user()->user_information->fullname }}</h3>
+                        <h3>{{ current_user_information()->fullname }}</h3>
 
                         <ul class="list-unstyled user_data">
                             <li>

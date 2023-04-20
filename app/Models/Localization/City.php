@@ -37,4 +37,20 @@ class City extends Model
     {
         return $query->where("{$this->getTable()}.name", "like", "%$value%");
     }
+
+    /**
+     * Get Location with City, Department and Country
+     * 
+     * @return string
+     */
+    public function getLocation()
+    {
+        /** @var department $deparment */
+        $deparment = $this->department;
+
+        /** @var Country $country */
+        $country = $deparment->country;
+
+        return "{$this->name}, {$deparment->name}, {$country->name}.";
+    }
 }

@@ -32,23 +32,11 @@
                                 src="{{ asset('assets/adminlte/dist/img/user4-128x128.jpg') }}" alt="User profile picture">
                         </div>
 
-                        <h3 class="profile-username text-center">Nina Mcintire</h3>
+                        <h3 class="profile-username text-center">{{ current_user_information()->fullname }}</h3>
 
-                        <p class="text-muted text-center">Software Engineer</p>
+                        <p class="text-muted text-center">{{ current_user()->roles->first()->title }}</p>
 
-                        <ul class="list-group list-group-unbordered mb-3">
-                            <li class="list-group-item">
-                                <b>Followers</b> <a class="float-right">1,322</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Following</b> <a class="float-right">543</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Friends</b> <a class="float-right">13,287</a>
-                            </li>
-                        </ul>
-
-                        <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                        <a href="#" class="btn btn-primary btn-block"><b>@lang('button.edit-profile')</b></a>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -57,41 +45,73 @@
                 <!-- About Me Box -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">About Me</h3>
+                        <h3 class="card-title">@lang('title.title-user-information')</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <strong><i class="fas fa-book mr-1"></i> Education</strong>
+                        <strong><i class="fas fa-user mr-1"></i>@lang('field.name')</strong>
 
-                        <p class="text-muted">
-                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                        </p>
+                        <p class="text-muted">{{ current_user_information()->fullname }}</p>
 
                         <hr>
 
-                        <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+                        <strong><i class="fas fa-at mr-1"></i>@lang('field.email_fesc')</strong>
 
-                        <p class="text-muted">Malibu, California</p>
-
-                        <hr>
-
-                        <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
-
-                        <p class="text-muted">
-                            <span class="tag tag-danger">UI Design</span>
-                            <span class="tag tag-success">Coding</span>
-                            <span class="tag tag-info">Javascript</span>
-                            <span class="tag tag-warning">PHP</span>
-                            <span class="tag tag-primary">Node.js</span>
-                        </p>
+                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'email_fesc') !!}</p>
 
                         <hr>
 
-                        <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
+                        <strong><i class="fas fa-at mr-1"></i>@lang('field.email')</strong>
 
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Etiam fermentum enim
-                            neque.</p>
+                        <p class="text-muted">{{ current_user()->email }}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-id-card mr-1"></i>@lang('field.document_type')</strong>
+
+                        <p class="text-muted">{{ current_user_information()->document_type->name }}</p>
+
+                        <hr>
+
+                        <strong><i class="far fa-id-card mr-1"></i>@lang('field.document')</strong>
+
+                        <p class="text-muted">{{ current_user_information()->document }}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-map-marker-alt mr-1"></i>@lang('field.birthdate')</strong>
+
+                        <p class="text-muted">{{ current_user_information()->birthdate->format('d/m/Y') }}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-map-marker-alt mr-1"></i>@lang('field.birthday_place')</strong>
+
+                        <p class="text-muted">{{ current_user_information()->birthday_place->getLocation() }}</p>
+
+                        <hr>
+
+                        <strong><i class="far fa-id-card mr-1"></i>@lang('field.address')</strong>
+
+                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'address') !!}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-mobile mr-1"></i>@lang('field.phone')</strong>
+
+                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'phone') !!}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-phone mr-1"></i>@lang('field.telephone')</strong>
+
+                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'telephone') !!}</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-venus-mars mr-1"></i>@lang('field.gender')</strong>
+
+                        <p class="text-muted">{{ current_user_information()->gender->name }}</p>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -156,7 +176,8 @@
                                             alt="User Image">
                                         <span class="username">
                                             <a href="#">Sarah Ross</a>
-                                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                                            <a href="#" class="float-right btn-tool"><i
+                                                    class="fas fa-times"></i></a>
                                         </span>
                                         <span class="description">Sent you a message - 3 days ago</span>
                                     </div>
