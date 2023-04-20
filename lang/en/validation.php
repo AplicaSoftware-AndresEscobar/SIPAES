@@ -212,5 +212,10 @@ return [
         'updated_at'               => 'updated at',
         'username'                 => 'username',
         'year'                     => 'year',
+
+        'company_id' => 'company',
+        'job_title' => 'job title',
+        'start_date' => 'start date',
+        'end_date' => 'end date',
     ],
 ];

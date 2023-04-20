@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Fortify;
+
+use App\Http\Controllers\UserWorkExperienceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,5 @@ Route::view('iniciar-sesion', 'pages.auth.login')->name('login')->middleware('gu
 Route::view('inicio', 'pages.dashboard')->name('home')->middleware('auth');
 
 Route::view('perfil', 'pages.auth.profile')->name('profile')->middleware('auth');
+
+Route::post('perfil/historial-laboral', [UserWorkExperienceController::class, 'store'])->name('profile.work-experiences.store')->middleware('auth');

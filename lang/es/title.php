@@ -20,4 +20,8 @@ return [
     'dashboard' => 'Menú Principal',
 
     'settings' => 'Configuración',
+
+    'form' => [
+        'user-work-experience' => 'Formulario de Registro de Experiencia Laboral'
+    ]
 ];

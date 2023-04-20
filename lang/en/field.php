@@ -25,7 +25,7 @@ return [
 
     'company' => 'Bussiness/Company',
 
-    'job-title' => 'Job Title',
+    'job_title' => 'Job Title',
 
     'start_date' => 'Start Date',
 

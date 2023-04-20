@@ -31,7 +31,7 @@ return [
 
     'company' => 'Empresa/Compañía',
 
-    'job-title' => 'Cargo',
+    'job_title' => 'Cargo',
 
     'start_date' => 'Inicio',
 

@@ -2,6 +2,12 @@
 
 @section('title', __('title.profile'))
 
+@section('css')
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('assets/adminlte/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+@endsection
+
 @section('content')
     <div class="container-fluid my-4">
         <div class="row">
@@ -122,7 +128,7 @@
                                     <table class="table table-sm table-hover table-bordered">
                                         <thead>
                                             <th>@lang('field.company')</th>
-                                            <th>@lang('field.job-title')</th>
+                                            <th>@lang('field.job_title')</th>
                                             <th>@lang('field.start_date')</th>
                                             <th>@lang('field.end_date')</th>
                                             <th>@lang('field.duration')</th>
@@ -138,13 +144,14 @@
                                                     <td>{!! diffBetweenTwoDates($item->pivot->start_date, $item->pivot->end_date) !!}</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <form action="" id="form-delete-{{ $item->id }}"
+                                                            <form action=""
+                                                                id="form-work-experience-delete-{{ $item->id }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
 
                                                                 <button type="submit" class="btn btn-xs btn-danger"
-                                                                    onclick="destroy(event, {{ $item->id }})">
+                                                                    onclick="destroy(event, {{ $item->id }}, 'form-work-experience-delete-')">
                                                                     <i class="fas fa-sm fa-sm fa-trash"></i>
                                                                 </button>
                                                             </form>
@@ -157,7 +164,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <a href="" class="btn btn-primary btn-sm btn-outline">Agregar</a>
+                                <button class="btn btn-primary btn-sm btn-outline" data-toggle="modal"
+                                    data-target="#create-work-experience-modal">@lang('button.add')</button>
                             </div>
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="user-academic-study">
@@ -179,13 +187,14 @@
                                                     <td>{!! $item->pivot->year !!}</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <form action="" id="form-delete-{{ $item->id }}"
+                                                            <form action="{{ route('home') }}"
+                                                                id="form-academic-study-delete-{{ $item->id }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
 
                                                                 <button type="submit" class="btn btn-xs btn-danger"
-                                                                    onclick="destroy(event, {{ $item->id }})">
+                                                                    onclick="destroy(event, {{ $item->id }}, 'form-academic-study-delete-')">
                                                                     <i class="fas fa-sm fa-sm fa-trash"></i>
                                                                 </button>
                                                             </form>
@@ -214,5 +223,96 @@
             <!-- /.col -->
         </div>
         <!-- /.row -->
-    </div><!-- /.container-fluid -->
+    </div>
+
+    <div class="modal fade" id="create-work-experience-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">@lang('title.form.user-work-experience')</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('profile.work-experiences.store') }}" method="POST"
+                        id="form-user-work-experience">
+                        @csrf
+
+                        <div id="errors-work-experience"></div>
+
+                        <!-- Company -->
+                        <div class="form-group">
+                            <label>@lang('field.company')</label>
+                            <select name="company_id" id="company_id" class="custom-select form-control-sm select2bs4">
+                                @forelse ($companies as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @empty
+                                @endforelse
+                            </select>
+                        </div>
+                        <!-- ./Company -->
+
+                        <!-- Job Title -->
+                        <div class="form-group">
+                            <label>@lang('field.job_title')</label>
+                            <input type="text" class="form-control form-control-sm" name="job_title" id="job_title">
+                        </div>
+                        <!-- ./Job Title -->
+
+                        <!-- Start Date -->
+                        <div class="form-group">
+                            <label>@lang('field.start_date')</label>
+                            <input type="date" class="form-control form-control-sm" name="start_date"
+                                id="start_date">
+                        </div>
+                        <!-- ./Start Date -->
+
+                        <!-- End Date -->
+                        <div class="form-group">
+                            <label>@lang('field.end_date')</label>
+                            <input type="date" class="form-control form-control-sm" name="end_date", id="end_date">
+                        </div>
+                        <!-- ./End Date -->
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@lang('button.close')</button>
+                    <button type="button" class="btn btn-primary"
+                        onclick="saveWorkExperience(event)">@lang('button.save')</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+@endsection
+
+@section('js')
+    <!-- Select2 -->
+    <script src="{{ asset('assets/adminlte/plugins/select2/js/select2.full.min.js') }}"></script>
+@endsection
+
+@section('custom-js')
+    @include('partials.messages.delete_item');
+
+    <script>
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+    </script>
+
+    <!-- Create Form User Work Experience -->
+    <script>
+        function saveWorkExperience(e) {
+            e.preventDefault();
+            saveForm('#form-user-work-experience', '#create-work-experience-modal', '#errors-work-experience');
+        }
+
+        function saveAcademicStudy(e) {
+            e.preventDefault();
+        }
+    </script>
+    <!-- ./Create Form User Work Experience -->
 @endsection
