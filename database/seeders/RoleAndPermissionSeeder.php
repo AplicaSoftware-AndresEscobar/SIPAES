@@ -69,7 +69,7 @@ class RoleAndPermissionSeeder extends Seeder
 
             $this->info("\n-Creando el rol: '{$roleItem['title']}'\n");
             $role = $this->roleRepository->create($roleItem);
-            if ($index == 0) {
+            if ($index == 1) {
                 $superRole = $role;
             }
             $this->command->getOutput()->progressAdvance();
