@@ -17,7 +17,7 @@ class UserAcademicStudyFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->words('4', true),
+            'degree' => $this->faker->words('4', true),
             'year' => $this->faker->year('-2 years')
         ];
     }

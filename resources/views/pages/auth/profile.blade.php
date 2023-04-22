@@ -151,7 +151,7 @@
                                                                 @method('DELETE')
 
                                                                 <button type="submit" class="btn btn-xs btn-danger"
-                                                                    onclick="destroy(event, {{ $item->id }}, 'form-work-experience-delete-')">
+                                                                    onclick="destroy(event, {{ $item->pivot->id }}, 'form-work-experience-delete-')">
                                                                     <i class="fas fa-sm fa-sm fa-trash"></i>
                                                                 </button>
                                                             </form>
@@ -225,6 +225,7 @@
         <!-- /.row -->
     </div>
 
+    <!-- User Work Experience Modal -->
     <div class="modal fade" id="create-work-experience-modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -286,7 +287,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->
+    <!-- ./User Work Experience Modal -->
 @endsection
 
 @section('js')

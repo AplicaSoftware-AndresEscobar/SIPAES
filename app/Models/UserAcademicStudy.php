@@ -18,12 +18,6 @@ class UserAcademicStudy extends Pivot
     protected $table = 'user_academic_studies';
 
     /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -32,7 +26,7 @@ class UserAcademicStudy extends Pivot
         'user_id',
         'educational_institute_id',
         'academic_study_level_id',
-        'name',
+        'degree',
         'year',
     ];
 
