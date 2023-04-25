@@ -27,4 +27,6 @@ Route::get('perfil/historial-laboral', [UserWorkExperienceController::class, 'in
 
 Route::get('perfil/historial-laboral/{userWorkExperience}', [UserWorkExperienceController::class, 'show'])->name('profile.work-experiences.show');
 
+Route::delete('perfil/historial-laboral/{userWorkExperience}', [UserWorkExperienceController::class, 'destroy'])->name('profile.work-experiences.destroy');
+
 Route::post('perfil/historial-laboral', [UserWorkExperienceController::class, 'store'])->name('profile.work-experiences.store');

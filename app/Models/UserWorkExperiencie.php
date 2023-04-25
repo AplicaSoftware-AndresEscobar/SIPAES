@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Laracasts\Presenter\PresentableTrait;
 
 class UserWorkExperiencie extends Pivot
 {
-    use HasFactory;
+    use HasFactory, PresentableTrait;
 
     /**
      * The table associated with the model.
@@ -29,6 +30,11 @@ class UserWorkExperiencie extends Pivot
         'start_date',
         'end_date',
     ];
+
+    /**
+     * Presenter for this model.
+     */
+    protected $presenter = 'UserWorkExperiencePresenter';
 
     /**
      * Scope a query to only include Id

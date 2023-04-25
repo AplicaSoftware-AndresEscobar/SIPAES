@@ -85,6 +85,9 @@
     @yield('custom-js')
 
     <script>
+        window.translations_button = {!! json_encode(__('button')) !!};
+        window.csrf = {!! json_encode(csrf_token()) !!}
+
         var Toast = Swal.mixin({
             toast: true,
             position: 'top-end',

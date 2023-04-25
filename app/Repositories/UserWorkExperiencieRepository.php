@@ -43,6 +43,8 @@ class UserWorkExperiencieRepository extends AbstractRepository
             $query->with($with);
         }
 
+        $query->orderBy('start_date');
+
         if (isset($withCount) && $withCount) {
             $query->withCount($withCount);
         }

@@ -172,9 +172,6 @@
                                                                 </form>
                                                             </div>
                                                         </div>
-                                                        <div class="btn-group btn-group-sm">
-
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             @empty

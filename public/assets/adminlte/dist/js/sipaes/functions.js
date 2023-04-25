@@ -5,20 +5,21 @@ function saveForm(modalId, errorsId, tableId) {
     const formMethod = form.attr("method");
     const formData = form.serializeArray();
 
-    $.ajax({
-        url: formAction,
-        type: formMethod,
-        data: formData,
-        success: function (response) {
-            modal.modal("hide");
-            showMessageAlert(response.icon, response.title);
-        },
-        error: function (response) {
-            clearInputs(form);
-            var errors = response.responseJSON.errors;
-            showErrors(errors, errorsId);
-        },
-    });
+    resetTableBody(tableId);
+    // $.ajax({
+    //     url: formAction,
+    //     type: formMethod,
+    //     data: formData,
+    //     success: function (response) {
+    //         modal.modal("hide");
+    //         showMessageAlert(response.icon, response.title);
+    //     },
+    //     error: function (response) {
+    //         clearInputs(form);
+    //         var errors = response.responseJSON.errors;
+    //         showErrors(errors, errorsId);
+    //     },
+    // });
 }
 function editForm(modalId, route) {
     const modal = $(modalId);
@@ -73,4 +74,54 @@ function showMessageAlert(icon, message) {
 
 function resetTableBody(tableId) {
     const table = $(tableId);
+    const tbody = table.find("tbody").empty();
+    const route = table.data("route");
+    $.ajax({
+        url: route,
+        type: "GET",
+        success: function (response) {
+            var htmlTd = "";
+            response.forEach((item) => {
+                htmlTd += `
+                    <tr>
+                        <td>${item.company}</td>
+                        <td>${item.job_title}</td>
+                        <td>${item.start_date}</td>
+                        <td>${item.end_date}</td>
+                        <td>${item.diff}</td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button"
+                                    class="dropdown-toggle btn btn-sm btn-block btn-danger"
+                                    data-toggle="dropdown">
+                                    <span class="fas fa-cog"></span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button type="button"
+                                        onclick="editWorkExperience(event, '${item.routes.show}')"
+                                        class="dropdown-item">
+                                        <i class="fas fa-sm fa-sm fa-edit"></i>
+                                        ${window.translations_button["edit"]}
+                                    </button>
+                                    <form action=""
+                                        id="form-work-experience-delete-${item.id}"
+                                        method="post">
+                                        <input type="hidden" name="_token" value="${window.csrf}">
+                                        <input type="hidden" name="_method" value="DELETE">
+
+                                        <button type="submit" class="dropdown-item"
+                                            onclick="destroy(event, ${item.id}, 'form-work-experience-delete-')">
+                                            <i class="fas fa-sm fa-sm fa-trash"></i>
+                                            ${window.translations_button["edit"]}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.html(htmlTd);
+        },
+    });
 }

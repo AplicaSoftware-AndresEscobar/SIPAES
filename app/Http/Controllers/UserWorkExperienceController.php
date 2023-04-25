@@ -34,7 +34,7 @@ class UserWorkExperienceController extends Controller
         $this->userRepository = $userRepository;
         $this->userWorkExperiencieRepository = $userWorkExperiencieRepository;
 
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -44,7 +44,20 @@ class UserWorkExperienceController extends Controller
     {
         $workExperiences = [];
         try {
-            $workExperiences = current_user()->work_experiencies;
+            $workExperiences = $this->userWorkExperiencieRepository->search(['user_id' => current_user()->id], ['company'])->get()->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'company' => $item->company->name,
+                    'job_title' => $item->job_title,
+                    'start_date' => $item->start_date,
+                    'end_date' => $item->end_date,
+                    'diff' => diffBetweenTwoDates($item->start_date, $item->end_date),
+                    'routes' => [
+                        'show' => route('profile.work-experiences.show', $item->id),
+                        'delete' => route('profile.work-experiences.destroy', $item->id)
+                    ]
+                ];
+            });
         } catch (Exception $e) {
             Log::error("@Web/Controllers/UserWorkExperienceController:Index/Exception: {$e->getMessage()}");
         }
