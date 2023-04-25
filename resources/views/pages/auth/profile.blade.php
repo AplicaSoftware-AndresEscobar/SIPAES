@@ -138,7 +138,7 @@
                                         </thead>
                                         <tbody>
                                             @forelse ($userWorkExperiencies as $item)
-                                                <tr>
+                                                <tr id="user-work-experiencie-tr-{!! $item->pivot->id !!}">
                                                     <td>{!! $item->name !!}</td>
                                                     <td>{!! $item->pivot->job_title !!}</td>
                                                     <td>{!! $item->pivot->start_date !!}</td>
@@ -158,14 +158,15 @@
                                                                     <i class="fas fa-sm fa-sm fa-edit"></i>
                                                                     @lang('button.edit')
                                                                 </button>
-                                                                <form action=""
-                                                                    id="form-work-experience-delete-{{ $item->id }}"
+                                                                <form
+                                                                    action="{{ route('profile.work-experiences.destroy', $item->pivot->id) }}"
+                                                                    id="form-work-experience-delete-{{ $item->pivot->id }}"
                                                                     method="post">
                                                                     @csrf
                                                                     @method('DELETE')
 
                                                                     <button type="submit" class="dropdown-item"
-                                                                        onclick="destroy(event, {{ $item->pivot->id }}, 'form-work-experience-delete-')">
+                                                                        onclick="deleteWorkExperience(event, {{ $item->pivot->id }})">
                                                                         <i class="fas fa-sm fa-sm fa-trash"></i>
                                                                         @lang('button.delete')
                                                                     </button>
@@ -315,8 +316,6 @@
 @endsection
 
 @section('custom-js')
-    @include('partials.messages.delete_item');
-
     <script>
         $('.select2bs4').select2({
             theme: 'bootstrap4'
@@ -327,7 +326,8 @@
     <script>
         function saveWorkExperience(e) {
             e.preventDefault();
-            saveForm('#create-work-experience-modal', '#errors-work-experience', '#user-work-experiencie-table');
+            saveForm('#create-work-experience-modal', '#errors-work-experience');
+            resetTableBody('#user-work-experiencie-table');
         }
 
         function editWorkExperience(e, route) {
@@ -335,8 +335,9 @@
             editForm('#create-work-experience-modal', route);
         }
 
-        function saveAcademicStudy(e) {
+        function deleteWorkExperience(e, id) {
             e.preventDefault();
+            deleteItem(`#form-work-experience-delete-${id}`, `#user-work-experiencie-tr-${id}`);
         }
     </script>
     <!-- ./Create Form User Work Experience -->

@@ -1,25 +1,24 @@
-function saveForm(modalId, errorsId, tableId) {
+function saveForm(modalId, errorsId) {
     const modal = $(modalId);
     const form = modal.find("form");
     const formAction = form.attr("action");
     const formMethod = form.attr("method");
     const formData = form.serializeArray();
 
-    resetTableBody(tableId);
-    // $.ajax({
-    //     url: formAction,
-    //     type: formMethod,
-    //     data: formData,
-    //     success: function (response) {
-    //         modal.modal("hide");
-    //         showMessageAlert(response.icon, response.title);
-    //     },
-    //     error: function (response) {
-    //         clearInputs(form);
-    //         var errors = response.responseJSON.errors;
-    //         showErrors(errors, errorsId);
-    //     },
-    // });
+    $.ajax({
+        url: formAction,
+        type: formMethod,
+        data: formData,
+        success: function (response) {
+            modal.modal("hide");
+            showMessageAlert(response.icon, response.title);
+        },
+        error: function (response) {
+            clearInputs(form);
+            var errors = response.responseJSON.errors;
+            showErrors(errors, errorsId);
+        },
+    });
 }
 function editForm(modalId, route) {
     const modal = $(modalId);
@@ -74,12 +73,13 @@ function showMessageAlert(icon, message) {
 
 function resetTableBody(tableId) {
     const table = $(tableId);
-    const tbody = table.find("tbody").empty();
     const route = table.data("route");
+    const tbody = table.find("tbody").empty();
     $.ajax({
         url: route,
         type: "GET",
         success: function (response) {
+            console.log(response);
             var htmlTd = "";
             response.forEach((item) => {
                 htmlTd += `
@@ -123,5 +123,37 @@ function resetTableBody(tableId) {
             });
             tbody.html(htmlTd);
         },
+    });
+}
+
+function deleteItem(formId, trId) {
+    const form = $(formId);
+    const formAction = form.attr("action");
+    const formMethod = form.attr("method");
+    const formData = form.serializeArray();
+
+    const tr = $(trId);
+
+    Swal.fire({
+        title: window.translations_messages.confirm_delete,
+        showCancelButton: true,
+        confirmButtonText: window.translations_button.confirm,
+        cancelButtonText: window.translations_button.cancel,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: formAction,
+                type: formMethod,
+                data: formData,
+                success: function (response) {
+                    console.log(response);
+                    showMessageAlert(response.icon, response.title);
+                    tr.remove();
+                },
+                error: function (response) {
+                    showMessageAlert(response.icon, response.title);
+                },
+            });
+        }
     });
 }

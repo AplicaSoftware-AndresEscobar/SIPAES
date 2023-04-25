@@ -25,8 +25,10 @@ Route::view('perfil', 'pages.auth.profile')->name('profile')->middleware('auth')
 
 Route::get('perfil/historial-laboral', [UserWorkExperienceController::class, 'index'])->name('profile.work-experiences.index');
 
+Route::post('perfil/historial-laboral', [UserWorkExperienceController::class, 'store'])->name('profile.work-experiences.store');
+
 Route::get('perfil/historial-laboral/{userWorkExperience}', [UserWorkExperienceController::class, 'show'])->name('profile.work-experiences.show');
 
-Route::delete('perfil/historial-laboral/{userWorkExperience}', [UserWorkExperienceController::class, 'destroy'])->name('profile.work-experiences.destroy');
+Route::put('perfil/historial-laboral/{userWorkExperience}', [UserWorkExperienceController::class, 'update'])->name('profile.work-experiences.update');
 
-Route::post('perfil/historial-laboral', [UserWorkExperienceController::class, 'store'])->name('profile.work-experiences.store');
+Route::delete('perfil/historial-laboral/{userWorkExperience}', [UserWorkExperienceController::class, 'destroy'])->name('profile.work-experiences.destroy');

@@ -6,13 +6,16 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\JsonResponse;
 use Exception;
 
 use App\Http\Requests\UserWorkExperience\StoreRequest;
+
+use App\Services\ModelServices\UserModelService;
+
 use App\Repositories\UserRepository;
 use App\Repositories\UserWorkExperiencieRepository;
-use App\Services\ModelServices\UserModelService;
-use Illuminate\Support\Facades\DB;
 
 class UserWorkExperienceController extends Controller
 {
@@ -39,12 +42,18 @@ class UserWorkExperienceController extends Controller
 
     /**
      * Display a listing of the resource.
+     * 
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
         $workExperiences = [];
+
+        $params = $request->all();
+        $params['user_id'] = current_user()->id;
         try {
-            $workExperiences = $this->userWorkExperiencieRepository->search(['user_id' => current_user()->id], ['company'])->get()->map(function ($item) {
+            $workExperiences = $this->userWorkExperiencieRepository->search($params, ['company'])->get()->map(function ($item) {
                 return [
                     'id' => $item->id,
                     'company' => $item->company->name,
@@ -69,8 +78,12 @@ class UserWorkExperienceController extends Controller
      */
     public function show(Request $request, $userWorkExperience)
     {
-        $userWorkExperience = $this->userWorkExperiencieRepository->search(['id' => $userWorkExperience])->first();
-
+        $userWorkExperience = [];
+        try {
+            $userWorkExperience = $this->userWorkExperiencieRepository->search(['id' => $userWorkExperience])->first();
+        } catch (Exception $e) {
+            Log::error("@Web/Controllers/UserWorkExperienceController:Show/Exception: {$e->getMessage()}");
+        }
         return response()->json($userWorkExperience);
     }
 
@@ -106,9 +119,22 @@ class UserWorkExperienceController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 
+     * @param int $id
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $response = ['title' => __('Models/UserWorkExperience.delete-error'), 'icon' => 'error'];
+        try {
+            DB::beginTransaction();
+            $userWorkExperience = $this->userWorkExperiencieRepository->getById($id);
+            $this->userWorkExperiencieRepository->delete($userWorkExperience);
+            DB::commit();
+            $response = ['title' => __('Models/UserWorkExperience.delete-success'), 'icon' => 'success'];
+        } catch (QueryException $qe) {
+            DB::rollBack();
+            Log::error("@Web/Controllers/UserWorkExperienceController:Destroy/QueryException: {$qe->getMessage()}");
+        }
+        return response()->json($response);
     }
 }
