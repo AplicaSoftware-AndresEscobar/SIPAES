@@ -9,18 +9,56 @@ use Illuminate\Http\Request;
 use Exception;
 
 use App\Http\Requests\UserWorkExperience\StoreRequest;
-
+use App\Repositories\UserRepository;
 use App\Repositories\UserWorkExperiencieRepository;
+use App\Services\ModelServices\UserModelService;
 use Illuminate\Support\Facades\DB;
 
 class UserWorkExperienceController extends Controller
 {
+    /** @var UserModelService */
+    protected $userModelService;
+
+    /** @var UserRepository */
+    protected $userRepository;
+
     /** @var UserWorkExperiencieRepository */
     protected $userWorkExperiencieRepository;
 
-    public function __construct(UserWorkExperiencieRepository $userWorkExperiencieRepository)
-    {
+    public function __construct(
+        UserModelService $userModelService,
+        UserRepository $userRepository,
+        UserWorkExperiencieRepository $userWorkExperiencieRepository
+    ) {
+        $this->userModelService = $userModelService;
+        $this->userRepository = $userRepository;
         $this->userWorkExperiencieRepository = $userWorkExperiencieRepository;
+
+        $this->middleware('auth');
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $workExperiences = [];
+        try {
+            $workExperiences = current_user()->work_experiencies;
+        } catch (Exception $e) {
+            Log::error("@Web/Controllers/UserWorkExperienceController:Index/Exception: {$e->getMessage()}");
+        }
+        return response()->json($workExperiences);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Request $request, $userWorkExperience)
+    {
+        $userWorkExperience = $this->userWorkExperiencieRepository->search(['id' => $userWorkExperience])->first();
+
+        return response()->json($userWorkExperience);
     }
 
     /**
@@ -28,15 +66,21 @@ class UserWorkExperienceController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        $response = ['title' => __('Models/UserWorkExperience.save-error'), 'icon' => 'error'];
         try {
-            if ($request->isJson()) {
-                return response()->json($request->all());
-            }
+            DB::beginTransaction();
+
+            $this->userModelService->attachWorkExperience(current_user(), $request->get('company_id'), $request->only(['job_title', 'start_date', 'end_date']));
+            DB::commit();
+            $response = ['title' => __('Models/UserWorkExperience.save-success'), 'icon' => 'success'];
         } catch (QueryException $qe) {
+            DB::rollBack();
             Log::error("@Web/Controllers/UserWorkExperienceController:Store/QueryException: {$qe->getMessage()}");
         } catch (Exception $e) {
             Log::error("@Web/Controllers/UserWorkExperienceController:Store/Exception: {$e->getMessage()}");
         }
+
+        return response()->json($response, 200);
     }
 
     /**

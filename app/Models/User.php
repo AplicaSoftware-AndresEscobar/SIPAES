@@ -83,7 +83,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Company::class, 'user_work_experiencies')
             ->using(UserWorkExperiencie::class)
-            ->withPivot(['id', 'job_title', 'start_date', 'end_date']);
+            ->withPivot(['id', 'job_title', 'start_date', 'end_date'])
+            ->orderByPivot('start_date');
     }
 
     /**

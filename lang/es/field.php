@@ -42,6 +42,8 @@ return [
     'educational_institute' => 'Institución Educativa',
     
     'academic_study_level' => 'Nivel Educativo',
+    
+    'degree' => 'Titulo',
 
     'year' => 'Año',
 ];

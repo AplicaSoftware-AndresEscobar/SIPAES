@@ -125,7 +125,9 @@
                         <div class="tab-content">
                             <div class="active tab-pane" id="user-work-experiencie">
                                 <div class="table-responsive">
-                                    <table class="table table-sm table-hover table-bordered">
+                                    <table class="table table-sm table-hover table-bordered"
+                                        id="user-work-experiencie-table"
+                                        data-route="{{ route('profile.work-experiences.index') }}">
                                         <thead>
                                             <th>@lang('field.company')</th>
                                             <th>@lang('field.job_title')</th>
@@ -135,7 +137,7 @@
                                             <th></th>
                                         </thead>
                                         <tbody>
-                                            @forelse (current_user()->work_experiencies as $item)
+                                            @forelse ($userWorkExperiencies as $item)
                                                 <tr>
                                                     <td>{!! $item->name !!}</td>
                                                     <td>{!! $item->pivot->job_title !!}</td>
@@ -144,17 +146,34 @@
                                                     <td>{!! diffBetweenTwoDates($item->pivot->start_date, $item->pivot->end_date) !!}</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <form action=""
-                                                                id="form-work-experience-delete-{{ $item->id }}"
-                                                                method="post">
-                                                                @csrf
-                                                                @method('DELETE')
-
-                                                                <button type="submit" class="btn btn-xs btn-danger"
-                                                                    onclick="destroy(event, {{ $item->pivot->id }}, 'form-work-experience-delete-')">
-                                                                    <i class="fas fa-sm fa-sm fa-trash"></i>
+                                                            <button type="button"
+                                                                class="dropdown-toggle btn btn-sm btn-block btn-danger"
+                                                                data-toggle="dropdown">
+                                                                <span class="fas fa-cog"></span>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <button type="button"
+                                                                    onclick="editWorkExperience(event, '{{ route('profile.work-experiences.show', $item->pivot->id) }}')"
+                                                                    class="dropdown-item">
+                                                                    <i class="fas fa-sm fa-sm fa-edit"></i>
+                                                                    @lang('button.edit')
                                                                 </button>
-                                                            </form>
+                                                                <form action=""
+                                                                    id="form-work-experience-delete-{{ $item->id }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @method('DELETE')
+
+                                                                    <button type="submit" class="dropdown-item"
+                                                                        onclick="destroy(event, {{ $item->pivot->id }}, 'form-work-experience-delete-')">
+                                                                        <i class="fas fa-sm fa-sm fa-trash"></i>
+                                                                        @lang('button.delete')
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="btn-group btn-group-sm">
+
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -174,7 +193,7 @@
                                         <thead>
                                             <th>@lang('field.educational_institute')</th>
                                             <th>@lang('field.academic_study_level')</th>
-                                            <th>@lang('field.name')</th>
+                                            <th>@lang('field.degree')</th>
                                             <th>@lang('field.year')</th>
                                             <th></th>
                                         </thead>
@@ -183,10 +202,13 @@
                                                 <tr>
                                                     <td>{!! $item->name !!}</td>
                                                     <td>{!! $item->pivot->academic_study_level->name !!}</td>
-                                                    <td>{!! $item->pivot->name !!}</td>
+                                                    <td>{!! $item->pivot->degree !!}</td>
                                                     <td>{!! $item->pivot->year !!}</td>
                                                     <td>
                                                         <div class="btn-group">
+                                                            <button class="btn btn-xs btn-danger">
+                                                                <i class="fas fa-sm fa-sm fa-edit"></i>
+                                                            </button>
                                                             <form action="{{ route('home') }}"
                                                                 id="form-academic-study-delete-{{ $item->id }}"
                                                                 method="post">
@@ -225,7 +247,7 @@
         <!-- /.row -->
     </div>
 
-    <!-- User Work Experience Modal -->
+    <!-- Create User Work Experience Modal -->
     <div class="modal fade" id="create-work-experience-modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -237,7 +259,7 @@
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('profile.work-experiences.store') }}" method="POST"
-                        id="form-user-work-experience">
+                        id="form-user-work-experience" data-table="user-work-experiencie-table">
                         @csrf
 
                         <div id="errors-work-experience"></div>
@@ -287,7 +309,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!-- ./User Work Experience Modal -->
+    <!-- ./Create User Work Experience Modal -->
 @endsection
 
 @section('js')
@@ -308,7 +330,12 @@
     <script>
         function saveWorkExperience(e) {
             e.preventDefault();
-            saveForm('#form-user-work-experience', '#create-work-experience-modal', '#errors-work-experience');
+            saveForm('#create-work-experience-modal', '#errors-work-experience', '#user-work-experiencie-table');
+        }
+
+        function editWorkExperience(e, route) {
+            e.preventDefault();
+            editForm('#create-work-experience-modal', route);
         }
 
         function saveAcademicStudy(e) {

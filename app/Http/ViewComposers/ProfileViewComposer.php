@@ -17,9 +17,11 @@ class ProfileViewComposer
 
     public function compose(View $view)
     {
+        $userWorkExperiencies = current_user()->work_experiencies;
+
         $companies = $this->companyRepository->all()->pluck('name', 'id')->prepend('---Seleccione una ');
 
-        $view->with(compact('companies'));
+        $view->with(compact('companies', 'userWorkExperiencies'));
     }
     
 }

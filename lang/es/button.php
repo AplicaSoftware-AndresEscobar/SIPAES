@@ -18,5 +18,9 @@ return [
     'cancel' => 'Cancelar',
 
     'add' => 'Agregar',
-    'save' => 'Guardar'
+    'save' => 'Guardar',
+
+    'show' => 'Visualizar',
+    'edit' => 'Editar',
+    'delete' => 'Eliminar',
 ];

@@ -1,5 +1,6 @@
-function saveForm(formId, modalId, errorsId) {
-    const form = $(formId);
+function saveForm(modalId, errorsId, tableId) {
+    const modal = $(modalId);
+    const form = modal.find("form");
     const formAction = form.attr("action");
     const formMethod = form.attr("method");
     const formData = form.serializeArray();
@@ -9,12 +10,8 @@ function saveForm(formId, modalId, errorsId) {
         type: formMethod,
         data: formData,
         success: function (response) {
-            console.log(response);
-            $(modalId).modal("hide");
-            showMessageAlert();
-            setTimeout(() => {
-                location.reload();
-            }, 5000);
+            modal.modal("hide");
+            showMessageAlert(response.icon, response.title);
         },
         error: function (response) {
             clearInputs(form);
@@ -23,9 +20,21 @@ function saveForm(formId, modalId, errorsId) {
         },
     });
 }
+function editForm(modalId, route) {
+    const modal = $(modalId);
+    const form = modal.find("form");
+
+    $.ajax({
+        url: route,
+        type: "GET",
+        success: function (response) {
+            modal.modal("show");
+            addDataInputs(form, response);
+        },
+    });
+}
 
 function showErrors(errors, divError) {
-    console.log(errors);
     var errorHtml = "";
     $.each(errors, function (key, value) {
         $("#" + key).addClass("is-invalid");
@@ -35,6 +44,19 @@ function showErrors(errors, divError) {
     $(divError).html(errorHtml);
 }
 
+function addDataInputs(form, data) {
+    const formData = form.serializeArray();
+    formData.forEach(function (item) {
+        var dataInput = $("#" + item.name);
+        if (dataInput.hasClass("custom-select")) {
+            console.log(data);
+            dataInput.val(data[item.name]).change();
+        } else {
+            dataInput.val(data[item.name]);
+        }
+    });
+}
+
 function clearInputs(form) {
     const formData = form.serializeArray();
     formData.forEach(function (item) {
@@ -42,9 +64,13 @@ function clearInputs(form) {
     });
 }
 
-function showMessageAlert() {
+function showMessageAlert(icon, message) {
     Toast.fire({
-        icon: "success",
-        title: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.",
+        icon: icon,
+        title: message,
     });
+}
+
+function resetTableBody(tableId) {
+    const table = $(tableId);
 }
