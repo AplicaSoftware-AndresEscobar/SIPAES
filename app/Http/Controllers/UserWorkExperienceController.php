@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Exception;
 
 use App\Http\Requests\UserWorkExperience\StoreRequest;
+use App\Http\Requests\UserWorkExperience\UpdateRequest;
 
 use App\Services\ModelServices\UserModelService;
 
@@ -63,6 +64,7 @@ class UserWorkExperienceController extends Controller
                     'diff' => diffBetweenTwoDates($item->start_date, $item->end_date),
                     'routes' => [
                         'show' => route('profile.work-experiences.show', $item->id),
+                        'update' => route('profile.work-experiences.update', $item->id),
                         'delete' => route('profile.work-experiences.destroy', $item->id)
                     ]
                 ];
@@ -76,11 +78,11 @@ class UserWorkExperienceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, $userWorkExperience)
+    public function show($id)
     {
         $userWorkExperience = [];
         try {
-            $userWorkExperience = $this->userWorkExperiencieRepository->search(['id' => $userWorkExperience])->first();
+            $userWorkExperience = $this->userWorkExperiencieRepository->search(['id' => $id])->first();
         } catch (Exception $e) {
             Log::error("@Web/Controllers/UserWorkExperienceController:Show/Exception: {$e->getMessage()}");
         }
@@ -92,13 +94,13 @@ class UserWorkExperienceController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $response = ['title' => __('models.user_work_experience.save-error'), 'icon' => 'error'];
+        $response = ['title' => __('models.user_work_experience.messages.save-error'), 'icon' => 'error'];
         try {
             DB::beginTransaction();
 
             $this->userModelService->attachWorkExperience(current_user(), $request->get('company_id'), $request->only(['job_title', 'start_date', 'end_date']));
             DB::commit();
-            $response = ['title' => __('models.user_work_experience.save-success'), 'icon' => 'success'];
+            $response = ['title' => __('models.user_work_experience.messages.save-success'), 'icon' => 'success'];
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error("@Web/Controllers/UserWorkExperienceController:Store/QueryException: {$qe->getMessage()}");
@@ -106,15 +108,32 @@ class UserWorkExperienceController extends Controller
             Log::error("@Web/Controllers/UserWorkExperienceController:Store/Exception: {$e->getMessage()}");
         }
 
-        return response()->json($response, 200);
+        return response()->json($response);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, string $id)
     {
-        //
+        $response = ['title' => __('models.user_work_experience.messages.update-error'), 'icon' => 'error'];
+        try {
+            $data = $request->all();
+            $data['user_id'] = current_user()->id;
+            Log::info($data);
+
+            $userWorkExperience = $this->userWorkExperiencieRepository->getById($id);
+            DB::beginTransaction();
+            $this->userWorkExperiencieRepository->update($userWorkExperience, $data);
+            DB::commit();
+            $response = ['title' => __('models.user_work_experience.messages.update-success'), 'icon' => 'success'];
+        } catch (QueryException $qe) {
+            DB::rollBack();
+            Log::error("@Web/Controllers/UserWorkExperienceController:Update/QueryException: {$qe->getMessage()}");
+        } catch (Exception $e) {
+            Log::error("@Web/Controllers/UserWorkExperienceController:Update/Exception: {$e->getMessage()}");
+        }
+        return response()->json($response);
     }
 
     /**
@@ -124,13 +143,13 @@ class UserWorkExperienceController extends Controller
      */
     public function destroy($id)
     {
-        $response = ['title' => __('models.user_work_experience.delete-error'), 'icon' => 'error'];
+        $response = ['title' => __('models.user_work_experience.messages.delete-error'), 'icon' => 'error'];
         try {
             DB::beginTransaction();
             $userWorkExperience = $this->userWorkExperiencieRepository->getById($id);
             $this->userWorkExperiencieRepository->delete($userWorkExperience);
             DB::commit();
-            $response = ['title' => __('models.user_work_experience.delete-success'), 'icon' => 'success'];
+            $response = ['title' => __('models.user_work_experience.messages.delete-success'), 'icon' => 'success'];
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error("@Web/Controllers/UserWorkExperienceController:Destroy/QueryException: {$qe->getMessage()}");

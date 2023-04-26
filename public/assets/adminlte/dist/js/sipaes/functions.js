@@ -6,29 +6,33 @@ function closeModal(modal) {
     modal.modal("hide");
 }
 
-function saveForm(modal, errorsDiv, table) {
+function saveForm(modal, errorDiv, table) {
     const form = modal.find("form");
     const formAction = form.attr("action");
     const formMethod = form.attr("method");
     const formData = form.serializeArray();
-
+    
     $.ajax({
         url: formAction,
         type: formMethod,
         data: formData,
         success: function (response) {
-            modal.modal("hide");
             showMessageAlert(response.icon, response.title);
             resetTableBody(table);
+            clearErrorInputs(form);
+            clearInputs(form);
+            removeErrorsDiv(errorDiv);
+            removeInputMethod(form);
+            closeModal(modal);
         },
         error: function (response) {
             var errors = response.responseJSON.errors;
-            showErrors(errors, errorsDiv);
+            showErrors(errors, errorDiv);
         },
     });
 }
 
-function editForm(modal, route) {
+function editFormMode(modal, route) {
     const form = modal.find("form");
     const title = modal.find("h5");
 
@@ -40,6 +44,7 @@ function editForm(modal, route) {
             title.text(
                 window.translations_models.user_work_experience.forms.edit
             );
+
             addDataInputs(form, response);
         },
     });
@@ -97,59 +102,6 @@ function showMessageAlert(icon, message) {
     });
 }
 
-function resetTableBody(table) {
-    const route = table.data("route");
-    const tbody = table.find("tbody").empty();
-    $.ajax({
-        url: route,
-        type: "GET",
-        success: function (response) {
-            var htmlTd = "";
-            response.forEach((item) => {
-                htmlTd += `
-                    <tr>
-                        <td>${item.company}</td>
-                        <td>${item.job_title}</td>
-                        <td>${item.start_date}</td>
-                        <td>${item.end_date}</td>
-                        <td>${item.diff}</td>
-                        <td>
-                            <div class="btn-group">
-                                <button type="button"
-                                    class="dropdown-toggle btn btn-sm btn-block btn-danger"
-                                    data-toggle="dropdown">
-                                    <span class="fas fa-cog"></span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <button type="button"
-                                        onclick="openWorkExperienceModal(true, '${item.routes.show}')"
-                                        class="dropdown-item">
-                                        <i class="fas fa-sm fa-sm fa-edit"></i>
-                                        ${window.translations_button["edit"]}
-                                    </button>
-                                    <form action=""
-                                        id="form-work-experience-delete-${item.id}"
-                                        method="post">
-                                        <input type="hidden" name="_token" value="${window.csrf}">
-                                        <input type="hidden" name="_method" value="DELETE">
-
-                                        <button type="submit" class="dropdown-item"
-                                            onclick="destroy(event, ${item.id}, 'form-work-experience-delete-')">
-                                            <i class="fas fa-sm fa-sm fa-trash"></i>
-                                            ${window.translations_button["edit"]}
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-            tbody.html(htmlTd);
-        },
-    });
-}
-
 function deleteItem(formId, trId) {
     const form = $(formId);
     const formAction = form.attr("action");
@@ -179,4 +131,18 @@ function deleteItem(formId, trId) {
             });
         }
     });
+}
+
+function addInputMethod(form, method = "PUT") {
+    const escapeValue = unescape(method);
+    form.append(
+        `<input id='method' name='_method' type='hidden' value='${method}'>`
+    );
+}
+
+function removeInputMethod(form) {
+    const input = form.find("#method");
+    if (input) {
+        input.remove();
+    }
 }

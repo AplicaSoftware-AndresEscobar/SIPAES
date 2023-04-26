@@ -153,7 +153,8 @@
                                                             </button>
                                                             <div class="dropdown-menu">
                                                                 <button type="button"
-                                                                    onclick="openWorkExperienceModal(true, '{{ route('profile.work-experiences.show', $item->pivot->id) }}')"
+                                                                    onclick="openWorkExperienceModal(true, '{{ route('profile.work-experiences.show', $item->pivot->id) }}',
+                                                                    '{{ route('profile.work-experiences.update', $item->pivot->id) }}')"
                                                                     class="dropdown-item">
                                                                     <i class="fas fa-sm fa-sm fa-edit"></i>
                                                                     @lang('button.edit')
@@ -246,18 +247,15 @@
     </div>
 
     <!-- Create User Work Experience Modal -->
-    <div class="modal fade" id="create-work-experience-modal">
+    <div class="modal fade" id="work-experience-modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title font-weight-bold">@lang('models.user_work_experience.forms.create')</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('profile.work-experiences.store') }}" method="POST"
-                        id="form-user-work-experience" data-table="user-work-experiencie-table">
+                    <form method="POST" id="form-user-work-experience" data-table="user-work-experiencie-table">
+
                         @csrf
 
                         <div id="errors-work-experience"></div>
@@ -301,7 +299,7 @@
                     <button type="button" class="btn btn-default"
                         onclick="closeWorkExperienceModal()">@lang('button.close')</button>
                     <button type="button" class="btn btn-primary"
-                        onclick="saveWorkExperience(event)">@lang('button.save')</button>
+                        onclick="submitWorkExperienceForm(event)">@lang('button.save')</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -325,15 +323,19 @@
 
     <script>
         /** Estructura para abrir el modal de Experiencias Laborales **/
-        function openWorkExperienceModal(editMode = false, route = null) {
-            const modal = $('#create-work-experience-modal');
+        function openWorkExperienceModal(editMode = false, routeShow = null, routeUpdate = null) {
+            const modal = $('#work-experience-modal');
             const errorDiv = $('#errors-work-experience');
             const title = modal.find('h5');
+            const form = modal.find('form');
 
             if (editMode) {
+                form.attr('action', routeUpdate);
                 title.text(window.translations_models.user_work_experience.forms.edit);
-                editForm(modal, route);
+                editFormMode(modal, routeShow);
+                addInputMethod(form, 'PUT');
             } else {
+                form.attr('action', "{{ route('profile.work-experiences.store') }}");
                 title.text(window.translations_models.user_work_experience.forms.create);
             }
 
@@ -343,24 +345,38 @@
 
         /** Estructura para cerrar el modal de Experiencias Laborales **/
         function closeWorkExperienceModal() {
-            const modal = $('#create-work-experience-modal');
+            const modal = $('#work-experience-modal');
             const form = modal.find('form');
             const errorDiv = $('#errors-work-experience');
             clearErrorInputs(form);
             clearInputs(form);
             removeErrorsDiv(errorDiv);
+            removeInputMethod(form);
             closeModal(modal);
         }
         /** ./Estructura para cerrar el modal de Experiencias Laborales **/
 
         /** Estructura para guardar el formulario dentro del modal de Experiencias Laborales **/
-        function saveWorkExperience(e) {
+        function submitWorkExperienceForm(e) {
             e.preventDefault();
-            const modal = $('#create-work-experience-modal');
+            const modal = $('#work-experience-modal');
+
             const errorDiv = $('#errors-work-experience');
             const table = $('#user-work-experiencie-table');
             saveForm(modal, errorDiv, table);
         }
+
+        /** Estructura para actualizar el formulario dentro del modal de Experiencias Laborales **/
+        function updateWorkExperience(e) {
+            e.preventDefault();
+            const modal = $('#work-experience-modal');
+            const errorDiv = $('#errors-work-experience');
+            const table = $('#user-work-experiencie-table');
+            saveForm(modal, errorDiv, table);
+        }
+        /** Estructura para actualizar el formulario dentro del modal de Experiencias Laborales **/
+
+
         /** ./Estructura para guardar el formulario dentro del modal de Experiencias Laborales **/
 
         /** Estructura para eliminar la Experiencia Laboral **/
@@ -371,5 +387,60 @@
             deleteItem(form, tr);
         }
         /** ./Estructura para eliminar la Experiencia Laboral **/
+
+        /** Reseteo de la tabla **/
+        function resetTableBody(table) {
+            const route = table.data("route");
+            const tbody = table.find("tbody").empty();
+            $.ajax({
+                url: route,
+                type: "GET",
+                success: function(response) {
+                    var htmlTd = "";
+                    response.forEach((item) => {
+                        htmlTd += `
+                    <tr>
+                        <td>${item.company}</td>
+                        <td>${item.job_title}</td>
+                        <td>${item.start_date}</td>
+                        <td>${item.end_date}</td>
+                        <td>${item.diff}</td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button"
+                                    class="dropdown-toggle btn btn-sm btn-block btn-danger"
+                                    data-toggle="dropdown">
+                                    <span class="fas fa-cog"></span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button type="button"
+                                        onclick="openWorkExperienceModal(true, '${item.routes.show}', '${item.routes.update}')"
+                                        class="dropdown-item">
+                                        <i class="fas fa-sm fa-sm fa-edit"></i>
+                                        ${window.translations_button["edit"]}
+                                    </button>
+                                    <form action=""
+                                        id="form-work-experience-delete-${item.id}"
+                                        method="post">
+                                        <input type="hidden" name="_token" value="${window.csrf}">
+                                        <input type="hidden" name="_method" value="DELETE">
+
+                                        <button type="submit" class="dropdown-item"
+                                            onclick="destroy(event, ${item.id}, 'form-work-experience-delete-')">
+                                            <i class="fas fa-sm fa-sm fa-trash"></i>
+                                            ${window.translations_button["edit"]}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                    });
+                    tbody.html(htmlTd);
+                },
+            });
+        }
+        /** ./Reseteo de la tabla **/
     </script>
 @endsection
