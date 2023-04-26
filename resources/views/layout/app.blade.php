@@ -87,6 +87,9 @@
     <script>
         window.translations_button = {!! json_encode(__('button')) !!};
         window.translations_messages = {!! json_encode(__('messages')) !!}
+        window.translations_titles = {!! json_encode(__('title')) !!}
+        window.translations_models = {!! json_encode(__('models')) !!}
+
         window.csrf = {!! json_encode(csrf_token()) !!}
 
         var Toast = Swal.mixin({

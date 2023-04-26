@@ -19,9 +19,8 @@ class ProfileViewComposer
     {
         $userWorkExperiencies = current_user()->work_experiencies;
 
-        $companies = $this->companyRepository->all()->pluck('name', 'id')->prepend('---Seleccione una ');
+        $companies = $this->companyRepository->all()->pluck('name', 'id')->prepend('---Seleccione una ', -1);
 
         $view->with(compact('companies', 'userWorkExperiencies'));
     }
-    
 }

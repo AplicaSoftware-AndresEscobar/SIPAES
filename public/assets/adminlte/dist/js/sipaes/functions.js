@@ -1,5 +1,12 @@
-function saveForm(modalId, errorsId) {
-    const modal = $(modalId);
+function openModal(modal) {
+    modal.modal({ backdrop: "static", keyboard: false, show: true });
+}
+
+function closeModal(modal) {
+    modal.modal("hide");
+}
+
+function saveForm(modal, errorsDiv, table) {
     const form = modal.find("form");
     const formAction = form.attr("action");
     const formMethod = form.attr("method");
@@ -12,23 +19,27 @@ function saveForm(modalId, errorsId) {
         success: function (response) {
             modal.modal("hide");
             showMessageAlert(response.icon, response.title);
+            resetTableBody(table);
         },
         error: function (response) {
-            clearInputs(form);
             var errors = response.responseJSON.errors;
-            showErrors(errors, errorsId);
+            showErrors(errors, errorsDiv);
         },
     });
 }
-function editForm(modalId, route) {
-    const modal = $(modalId);
+
+function editForm(modal, route) {
     const form = modal.find("form");
+    const title = modal.find("h5");
 
     $.ajax({
         url: route,
         type: "GET",
         success: function (response) {
-            modal.modal("show");
+            clearErrorInputs(form);
+            title.text(
+                window.translations_models.user_work_experience.forms.edit
+            );
             addDataInputs(form, response);
         },
     });
@@ -41,7 +52,7 @@ function showErrors(errors, divError) {
         errorHtml +=
             "<p class='text-danger font-weight-bold'>" + value[0] + "</p>";
     });
-    $(divError).html(errorHtml);
+    divError.html(errorHtml);
 }
 
 function addDataInputs(form, data) {
@@ -49,7 +60,6 @@ function addDataInputs(form, data) {
     formData.forEach(function (item) {
         var dataInput = $("#" + item.name);
         if (dataInput.hasClass("custom-select")) {
-            console.log(data);
             dataInput.val(data[item.name]).change();
         } else {
             dataInput.val(data[item.name]);
@@ -57,11 +67,27 @@ function addDataInputs(form, data) {
     });
 }
 
-function clearInputs(form) {
+function clearErrorInputs(form) {
     const formData = form.serializeArray();
     formData.forEach(function (item) {
         $("#" + item.name).removeClass("is-invalid");
     });
+}
+
+function clearInputs(form) {
+    const formData = form.serializeArray();
+    formData.forEach(function (item) {
+        var dataInput = $("#" + item.name);
+        if (dataInput.hasClass("custom-select")) {
+            dataInput.val(-1).change();
+        } else {
+            dataInput.val("");
+        }
+    });
+}
+
+function removeErrorsDiv(divError) {
+    divError.empty();
 }
 
 function showMessageAlert(icon, message) {
@@ -71,15 +97,13 @@ function showMessageAlert(icon, message) {
     });
 }
 
-function resetTableBody(tableId) {
-    const table = $(tableId);
+function resetTableBody(table) {
     const route = table.data("route");
     const tbody = table.find("tbody").empty();
     $.ajax({
         url: route,
         type: "GET",
         success: function (response) {
-            console.log(response);
             var htmlTd = "";
             response.forEach((item) => {
                 htmlTd += `
@@ -98,7 +122,7 @@ function resetTableBody(tableId) {
                                 </button>
                                 <div class="dropdown-menu">
                                     <button type="button"
-                                        onclick="editWorkExperience(event, '${item.routes.show}')"
+                                        onclick="openWorkExperienceModal(true, '${item.routes.show}')"
                                         class="dropdown-item">
                                         <i class="fas fa-sm fa-sm fa-edit"></i>
                                         ${window.translations_button["edit"]}
@@ -146,7 +170,6 @@ function deleteItem(formId, trId) {
                 type: formMethod,
                 data: formData,
                 success: function (response) {
-                    console.log(response);
                     showMessageAlert(response.icon, response.title);
                     tr.remove();
                 },

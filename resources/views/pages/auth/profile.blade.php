@@ -153,7 +153,7 @@
                                                             </button>
                                                             <div class="dropdown-menu">
                                                                 <button type="button"
-                                                                    onclick="editWorkExperience(event, '{{ route('profile.work-experiences.show', $item->pivot->id) }}')"
+                                                                    onclick="openWorkExperienceModal(true, '{{ route('profile.work-experiences.show', $item->pivot->id) }}')"
                                                                     class="dropdown-item">
                                                                     <i class="fas fa-sm fa-sm fa-edit"></i>
                                                                     @lang('button.edit')
@@ -181,8 +181,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <button class="btn btn-primary btn-sm btn-outline" data-toggle="modal"
-                                    data-target="#create-work-experience-modal">@lang('button.add')</button>
+                                <button class="btn btn-primary btn-sm btn-outline"
+                                    onclick="openWorkExperienceModal()">@lang('button.add')</button>
                             </div>
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="user-academic-study">
@@ -250,7 +250,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title font-weight-bold">@lang('title.form.user-work-experience')</h5>
+                    <h5 class="modal-title font-weight-bold">@lang('models.user_work_experience.forms.create')</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -298,7 +298,8 @@
                     </form>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">@lang('button.close')</button>
+                    <button type="button" class="btn btn-default"
+                        onclick="closeWorkExperienceModal()">@lang('button.close')</button>
                     <button type="button" class="btn btn-primary"
                         onclick="saveWorkExperience(event)">@lang('button.save')</button>
                 </div>
@@ -322,23 +323,53 @@
         })
     </script>
 
-    <!-- Create Form User Work Experience -->
     <script>
+        /** Estructura para abrir el modal de Experiencias Laborales **/
+        function openWorkExperienceModal(editMode = false, route = null) {
+            const modal = $('#create-work-experience-modal');
+            const errorDiv = $('#errors-work-experience');
+            const title = modal.find('h5');
+
+            if (editMode) {
+                title.text(window.translations_models.user_work_experience.forms.edit);
+                editForm(modal, route);
+            } else {
+                title.text(window.translations_models.user_work_experience.forms.create);
+            }
+
+            openModal(modal);
+        }
+        /** ./Estructura para abrir el modal de Experiencias Laborales **/
+
+        /** Estructura para cerrar el modal de Experiencias Laborales **/
+        function closeWorkExperienceModal() {
+            const modal = $('#create-work-experience-modal');
+            const form = modal.find('form');
+            const errorDiv = $('#errors-work-experience');
+            clearErrorInputs(form);
+            clearInputs(form);
+            removeErrorsDiv(errorDiv);
+            closeModal(modal);
+        }
+        /** ./Estructura para cerrar el modal de Experiencias Laborales **/
+
+        /** Estructura para guardar el formulario dentro del modal de Experiencias Laborales **/
         function saveWorkExperience(e) {
             e.preventDefault();
-            saveForm('#create-work-experience-modal', '#errors-work-experience');
-            resetTableBody('#user-work-experiencie-table');
+            const modal = $('#create-work-experience-modal');
+            const errorDiv = $('#errors-work-experience');
+            const table = $('#user-work-experiencie-table');
+            saveForm(modal, errorDiv, table);
         }
+        /** ./Estructura para guardar el formulario dentro del modal de Experiencias Laborales **/
 
-        function editWorkExperience(e, route) {
-            e.preventDefault();
-            editForm('#create-work-experience-modal', route);
-        }
-
+        /** Estructura para eliminar la Experiencia Laboral **/
         function deleteWorkExperience(e, id) {
             e.preventDefault();
-            deleteItem(`#form-work-experience-delete-${id}`, `#user-work-experiencie-tr-${id}`);
+            const form = $(`#form-work-experience-delete-${id}`);
+            const tr = $(`#user-work-experiencie-tr-${id}`);
+            deleteItem(form, tr);
         }
+        /** ./Estructura para eliminar la Experiencia Laboral **/
     </script>
-    <!-- ./Create Form User Work Experience -->
 @endsection
