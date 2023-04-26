@@ -71,7 +71,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(EducationalInstitute::class, 'user_academic_studies')
             ->using(UserAcademicStudy::class)
-            ->withPivot(['id', 'degree', 'year', 'academic_study_level_id']);
+            ->withPivot(['id', 'degree', 'year', 'academic_study_level_id'])
+            ->orderByPivot('year');
     }
 
     /**

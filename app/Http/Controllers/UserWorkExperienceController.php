@@ -76,20 +76,6 @@ class UserWorkExperienceController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        $userWorkExperience = [];
-        try {
-            $userWorkExperience = $this->userWorkExperiencieRepository->search(['id' => $id])->first();
-        } catch (Exception $e) {
-            Log::error("@Web/Controllers/UserWorkExperienceController:Show/Exception: {$e->getMessage()}");
-        }
-        return response()->json($userWorkExperience);
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreRequest $request)
@@ -109,6 +95,22 @@ class UserWorkExperienceController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    /**
+     * Display the specified resource.
+     * 
+     * @param int $id
+     */
+    public function show($id)
+    {
+        $userWorkExperience = [];
+        try {
+            $userWorkExperience = $this->userWorkExperiencieRepository->search(['id' => $id])->first();
+        } catch (Exception $e) {
+            Log::error("@Web/Controllers/UserWorkExperienceController:Show/Exception: {$e->getMessage()}");
+        }
+        return response()->json($userWorkExperience);
     }
 
     /**

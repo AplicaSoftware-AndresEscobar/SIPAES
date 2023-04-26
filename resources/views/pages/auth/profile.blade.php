@@ -125,8 +125,7 @@
                         <div class="tab-content">
                             <div class="active tab-pane" id="user-work-experiencie">
                                 <div class="table-responsive">
-                                    <table class="table table-sm table-hover table-bordered"
-                                        id="user-work-experiencie-table"
+                                    <table class="table table-sm table-hover table-bordered" id="table-work-experiencie"
                                         data-route="{{ route('profile.work-experiences.index') }}">
                                         <thead>
                                             <th>@lang('field.company')</th>
@@ -138,7 +137,7 @@
                                         </thead>
                                         <tbody>
                                             @forelse ($userWorkExperiencies as $item)
-                                                <tr id="user-work-experiencie-tr-{!! $item->pivot->id !!}">
+                                                <tr id="tr-work-experience-{!! $item->pivot->id !!}">
                                                     <td>{!! $item->name !!}</td>
                                                     <td>{!! $item->pivot->job_title !!}</td>
                                                     <td>{!! $item->pivot->start_date !!}</td>
@@ -188,7 +187,8 @@
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="user-academic-study">
                                 <div class="table-responsive">
-                                    <table class="table table-sm table-hover table-bordered">
+                                    <table class="table table-sm table-hover table-bordered" id="table-academic-study"
+                                        data-route="{{ route('profile.academic-studies.index') }}">
                                         <thead>
                                             <th>@lang('field.educational_institute')</th>
                                             <th>@lang('field.academic_study_level')</th>
@@ -198,27 +198,40 @@
                                         </thead>
                                         <tbody>
                                             @forelse (current_user()->academic_studies as $item)
-                                                <tr>
+                                                <tr id="tr-academic-study-{!! $item->pivot->id !!}">
                                                     <td>{!! $item->name !!}</td>
                                                     <td>{!! $item->pivot->academic_study_level->name !!}</td>
                                                     <td>{!! $item->pivot->degree !!}</td>
                                                     <td>{!! $item->pivot->year !!}</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <button class="btn btn-xs btn-danger">
-                                                                <i class="fas fa-sm fa-sm fa-edit"></i>
+                                                            <button type="button"
+                                                                class="dropdown-toggle btn btn-sm btn-block btn-danger"
+                                                                data-toggle="dropdown">
+                                                                <span class="fas fa-cog"></span>
                                                             </button>
-                                                            <form action="{{ route('home') }}"
-                                                                id="form-academic-study-delete-{{ $item->id }}"
-                                                                method="post">
-                                                                @csrf
-                                                                @method('DELETE')
-
-                                                                <button type="submit" class="btn btn-xs btn-danger"
-                                                                    onclick="destroy(event, {{ $item->id }}, 'form-academic-study-delete-')">
-                                                                    <i class="fas fa-sm fa-sm fa-trash"></i>
+                                                            <div class="dropdown-menu">
+                                                                <button type="button"
+                                                                    onclick="openAcademicStudyModal(true, '{{ route('profile.academic-studies.show', $item->pivot->id) }}',
+                                                                    '{{ route('profile.academic-studies.update', $item->pivot->id) }}')"
+                                                                    class="dropdown-item">
+                                                                    <i class="fas fa-sm fa-sm fa-edit"></i>
+                                                                    @lang('button.edit')
                                                                 </button>
-                                                            </form>
+                                                                <form
+                                                                    action="{{ route('profile.academic-studies.destroy', $item->pivot->id) }}"
+                                                                    id="form-academic-study-delete-{{ $item->pivot->id }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @method('DELETE')
+
+                                                                    <button type="submit" class="dropdown-item"
+                                                                        onclick="deleteAcademicStudy(event, {{ $item->pivot->id }})">
+                                                                        <i class="fas fa-sm fa-sm fa-trash"></i>
+                                                                        @lang('button.delete')
+                                                                    </button>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -228,6 +241,8 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <button class="btn btn-primary btn-sm btn-outline"
+                                    onclick="openAcademicStudyModal()">@lang('button.add')</button>
                             </div>
                             <!-- /.tab-pane -->
 
@@ -246,15 +261,15 @@
         <!-- /.row -->
     </div>
 
-    <!-- Create User Work Experience Modal -->
-    <div class="modal fade" id="work-experience-modal">
+    <!-- User Work Experience Modal -->
+    <div class="modal fade" id="modal-work-experience">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title font-weight-bold">@lang('models.user_work_experience.forms.create')</h5>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" id="form-user-work-experience" data-table="user-work-experiencie-table">
+                    <form method="POST" id="form-user-work-experience">
 
                         @csrf
 
@@ -306,7 +321,75 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!-- ./Create User Work Experience Modal -->
+    <!-- ./User Work Experience Modal -->
+
+    <!-- User Academic Studies Modal -->
+    <div class="modal fade" id="modal-academic-study">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">@lang('models.user_academic_studies.forms.create')</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="form-user-academic-study">
+
+                        @csrf
+
+                        <div id="errors-academic-study"></div>
+
+                        <!-- Institute -->
+                        <div class="form-group">
+                            <label>@lang('field.educational_institute')</label>
+                            <select name="educational_institute_id" id="educational_institute_id"
+                                class="custom-select form-control-sm select2bs4">
+                                @forelse ($institutes as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @empty
+                                @endforelse
+                            </select>
+                        </div>
+                        <!-- ./Institute -->
+
+                        <!-- Academic Study Level -->
+                        <div class="form-group">
+                            <label>@lang('field.academic_study_level')</label>
+                            <select name="academic_study_level_id" id="academic_study_level_id"
+                                class="custom-select form-control-sm select2bs4">
+                                @forelse ($studyLevels as $key => $value)
+                                    <option value="{{ $key }}">{{ $value }}</option>
+                                @empty
+                                @endforelse
+                            </select>
+                        </div>
+                        <!-- ./Academic Study Level -->
+
+                        <!-- Degree -->
+                        <div class="form-group">
+                            <label>@lang('field.degree')</label>
+                            <input type="text" class="form-control form-control-sm" name="degree" id="degree">
+                        </div>
+                        <!-- ./Degree -->
+
+                        <!-- Year -->
+                        <div class="form-group">
+                            <label>@lang('field.year')</label>
+                            <input type="text" class="form-control form-control-sm" name="year" id="year" min="1900" max="{{ now()->format('Y') }}" minlength="4" maxlength="4">
+                        </div>
+                        <!-- ./Year -->
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default"
+                        onclick="closeAcademicStudyModal()">@lang('button.close')</button>
+                    <button type="button" class="btn btn-primary"
+                        onclick="submitAcademicStudyForm(event)">@lang('button.save')</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- ./User Academic Studies Modal -->
 @endsection
 
 @section('js')
@@ -324,7 +407,7 @@
     <script>
         /** Estructura para abrir el modal de Experiencias Laborales **/
         function openWorkExperienceModal(editMode = false, routeShow = null, routeUpdate = null) {
-            const modal = $('#work-experience-modal');
+            const modal = $('#modal-work-experience');
             const errorDiv = $('#errors-work-experience');
             const title = modal.find('h5');
             const form = modal.find('form');
@@ -345,7 +428,7 @@
 
         /** Estructura para cerrar el modal de Experiencias Laborales **/
         function closeWorkExperienceModal() {
-            const modal = $('#work-experience-modal');
+            const modal = $('#modal-work-experience');
             const form = modal.find('form');
             const errorDiv = $('#errors-work-experience');
             clearErrorInputs(form);
@@ -359,37 +442,40 @@
         /** Estructura para guardar el formulario dentro del modal de Experiencias Laborales **/
         function submitWorkExperienceForm(e) {
             e.preventDefault();
-            const modal = $('#work-experience-modal');
+            const modal = $('#modal-work-experience');
 
             const errorDiv = $('#errors-work-experience');
-            const table = $('#user-work-experiencie-table');
-            saveForm(modal, errorDiv, table);
+            const table = $('#table-work-experiencie');
+            const saved = saveForm(modal, errorDiv, table);
+            if (saved) {
+                resetTableBodyWorkExperience(table);
+            }
         }
 
         /** Estructura para actualizar el formulario dentro del modal de Experiencias Laborales **/
         function updateWorkExperience(e) {
             e.preventDefault();
-            const modal = $('#work-experience-modal');
+            const modal = $('#modal-work-experience');
             const errorDiv = $('#errors-work-experience');
-            const table = $('#user-work-experiencie-table');
-            saveForm(modal, errorDiv, table);
+            const table = $('#table-work-experiencie');
+            const updated = saveForm(modal, errorDiv, table);
+            if (updated) {
+                resetTableBodyWorkExperience(table);
+            }
         }
-        /** Estructura para actualizar el formulario dentro del modal de Experiencias Laborales **/
-
-
-        /** ./Estructura para guardar el formulario dentro del modal de Experiencias Laborales **/
+        /** ./Estructura para actualizar el formulario dentro del modal de Experiencias Laborales **/
 
         /** Estructura para eliminar la Experiencia Laboral **/
         function deleteWorkExperience(e, id) {
             e.preventDefault();
             const form = $(`#form-work-experience-delete-${id}`);
-            const tr = $(`#user-work-experiencie-tr-${id}`);
+            const tr = $(`#tr-work-experience-${id}`);
             deleteItem(form, tr);
         }
         /** ./Estructura para eliminar la Experiencia Laboral **/
 
         /** Reseteo de la tabla **/
-        function resetTableBody(table) {
+        function resetTableBodyWorkExperience(table) {
             const route = table.data("route");
             const tbody = table.find("tbody").empty();
             $.ajax({
@@ -399,7 +485,7 @@
                     var htmlTd = "";
                     response.forEach((item) => {
                         htmlTd += `
-                    <tr>
+                    <tr id="tr-work-experience-${item.id}">
                         <td>${item.company}</td>
                         <td>${item.job_title}</td>
                         <td>${item.start_date}</td>
@@ -419,16 +505,16 @@
                                         <i class="fas fa-sm fa-sm fa-edit"></i>
                                         ${window.translations_button["edit"]}
                                     </button>
-                                    <form action=""
+                                    <form action="${item.routes.delete}"
                                         id="form-work-experience-delete-${item.id}"
                                         method="post">
                                         <input type="hidden" name="_token" value="${window.csrf}">
                                         <input type="hidden" name="_method" value="DELETE">
 
                                         <button type="submit" class="dropdown-item"
-                                            onclick="destroy(event, ${item.id}, 'form-work-experience-delete-')">
+                                            onclick="deleteWorkExperience(event, ${item.id})">
                                             <i class="fas fa-sm fa-sm fa-trash"></i>
-                                            ${window.translations_button["edit"]}
+                                            ${window.translations_button["delete"]}
                                         </button>
                                     </form>
                                 </div>
@@ -436,6 +522,131 @@
                         </td>
                     </tr>
                 `;
+                    });
+                    tbody.html(htmlTd);
+                },
+            });
+        }
+        /** ./Reseteo de la tabla **/
+    </script>
+
+    <script>
+        /** Estructura para abrir el modal de Experiencias Laborales **/
+        function openAcademicStudyModal(editMode = false, routeShow = null, routeUpdate = null) {
+            const modal = $('#modal-academic-study');
+            const errorDiv = $('#errors-academic-study');
+            const title = modal.find('h5');
+            const form = modal.find('form');
+
+            if (editMode) {
+                form.attr('action', routeUpdate);
+                title.text(window.translations_models.user_academic_studies.forms.edit);
+                editFormMode(modal, routeShow);
+                addInputMethod(form, 'PUT');
+            } else {
+                form.attr('action', "{{ route('profile.academic-studies.store') }}");
+                title.text(window.translations_models.user_academic_studies.forms.create);
+            }
+
+            openModal(modal);
+        }
+        /** ./Estructura para abrir el modal de Experiencias Laborales **/
+
+        /** Estructura para cerrar el modal de Experiencias Laborales **/
+        function closeAcademicStudyModal() {
+            const modal = $('#modal-academic-study');
+            const form = modal.find('form');
+            const errorDiv = $('#errors-academic-study');
+            clearErrorInputs(form);
+            clearInputs(form);
+            removeErrorsDiv(errorDiv);
+            removeInputMethod(form);
+            closeModal(modal);
+        }
+        /** ./Estructura para cerrar el modal de Experiencias Laborales **/
+
+        /** Estructura para guardar el formulario dentro del modal de Experiencias Laborales **/
+        function submitAcademicStudyForm(e) {
+            e.preventDefault();
+            const modal = $('#modal-academic-study');
+
+            const errorDiv = $('#errors-academic-study');
+            const table = $('#table-academic-study');
+            const saved = saveForm(modal, errorDiv);
+            if (saved) {
+                resetTableBodyAcademicStudy(table);
+            }
+        }
+
+        /** Estructura para actualizar el formulario dentro del modal de Experiencias Laborales **/
+        function updateAcademicStudy(e) {
+            e.preventDefault();
+            const modal = $('#modal-academic-study');
+            const errorDiv = $('#errors-academic-study');
+            const table = $('#table-academic-study');
+            const updated = saveForm(modal, errorDiv, table);
+            if (updated) {
+                resetTableBodyAcademicStudy(table);
+            }
+        }
+        /** ./Estructura para actualizar el formulario dentro del modal de Experiencias Laborales **/
+
+        /** Estructura para eliminar la Experiencia Laboral **/
+        function deleteAcademicStudy(e, id) {
+            e.preventDefault();
+            const form = $(`#form-academic-study-delete-${id}`);
+            const tr = $(`#tr-academic-study-${id}`);
+            deleteItem(form, tr);
+        }
+        /** ./Estructura para eliminar la Experiencia Laboral **/
+
+        /** Reseteo de la tabla **/
+        function resetTableBodyAcademicStudy(table) {
+            const route = table.data("route");
+            const tbody = table.find("tbody").empty();
+            $.ajax({
+                url: route,
+                type: "GET",
+                success: function(response) {
+                    var htmlTd = "";
+                    response.forEach((item) => {
+                        htmlTd += `
+                <tr id="tr-academic-study-${item.id}">
+                    <td>${item.educational_institute}</td>
+                    <td>${item.academic_study_level}</td>
+                    <td>${item.degree}</td>
+                    <td>${item.year}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button"
+                                class="dropdown-toggle btn btn-sm btn-block btn-danger"
+                                data-toggle="dropdown">
+                                <span class="fas fa-cog"></span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <button type="button"
+                                    onclick="openAcademicStudyModal(true, '${item.routes.show}', '${item.routes.update}')"
+                                    class="dropdown-item">
+                                    <i class="fas fa-sm fa-sm fa-edit"></i>
+                                    ${window.translations_button["edit"]}
+                                </button>
+                                <form action="${item.routes.delete}"
+                                    id="form-academic-study-delete-${item.id}"
+                                    method="post">
+                                    <input type="hidden" name="_token" value="${window.csrf}">
+                                    <input type="hidden" name="_method" value="DELETE">
+
+                                    <button type="submit" class="dropdown-item"
+                                        onclick="deleteAcademicStudy(event, ${item.id})">
+                                        <i class="fas fa-sm fa-sm fa-trash"></i>
+                                        ${window.translations_button["delete"]}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `;
                     });
                     tbody.html(htmlTd);
                 },

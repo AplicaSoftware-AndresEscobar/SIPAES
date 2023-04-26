@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use Laracasts\Presenter\PresentableTrait;
 
 class UserWorkExperiencie extends Pivot
 {
-    use HasFactory, PresentableTrait;
+    use HasFactory;
 
     /**
      * The table associated with the model.
@@ -32,9 +31,11 @@ class UserWorkExperiencie extends Pivot
     ];
 
     /**
-     * Presenter for this model.
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
      */
-    protected $presenter = 'UserWorkExperiencePresenter';
+    public $timestamps = true;
 
     /**
      * Scope a query to only include Id

@@ -6,45 +6,47 @@ function closeModal(modal) {
     modal.modal("hide");
 }
 
-function saveForm(modal, errorDiv, table) {
+function saveForm(modal, errorDiv) {
     const form = modal.find("form");
     const formAction = form.attr("action");
     const formMethod = form.attr("method");
     const formData = form.serializeArray();
-    
+
+    let result = false;
+
     $.ajax({
         url: formAction,
         type: formMethod,
         data: formData,
+        async: false,
         success: function (response) {
             showMessageAlert(response.icon, response.title);
-            resetTableBody(table);
             clearErrorInputs(form);
             clearInputs(form);
             removeErrorsDiv(errorDiv);
             removeInputMethod(form);
             closeModal(modal);
+            result = true;
         },
         error: function (response) {
             var errors = response.responseJSON.errors;
+            clearErrorInputs(form);
             showErrors(errors, errorDiv);
+            result = false;
         },
     });
+
+    return result;
 }
 
 function editFormMode(modal, route) {
     const form = modal.find("form");
-    const title = modal.find("h5");
 
     $.ajax({
         url: route,
         type: "GET",
         success: function (response) {
             clearErrorInputs(form);
-            title.text(
-                window.translations_models.user_work_experience.forms.edit
-            );
-
             addDataInputs(form, response);
         },
     });

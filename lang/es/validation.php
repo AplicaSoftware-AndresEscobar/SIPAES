@@ -217,5 +217,9 @@ return [
         'job_title' => 'cargo',
         'start_date' => 'fecha de inicio',
         'end_date' => 'fecha de finalización',
+        
+        'educational_institute_id' => 'institución educativa',
+        'academic_study_level_id' => 'nivel académico',
+        'degree' => 'título',
     ],
 ];
