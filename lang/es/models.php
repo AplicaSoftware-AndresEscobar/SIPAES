@@ -3,6 +3,19 @@
 return [
     'companies' => [],
 
+    'user_information' => [
+        'messages' => [
+            'save-success' => 'Se ha guardado correctamente la información del usuario',
+            'save-error' => 'No se ha guardado correctamente la información del usuario',
+
+            'update-success' => 'Se ha actualizado correctamente la información del usuario',
+            'update-error' => 'No se ha actualizado correctamente la información del usuario',
+
+            'delete-success' => 'Se ha eliminado correctamente la información del usuario',
+            'delete-error' => 'No se ha eliminado correctamente la información del usuario',
+        ],
+    ],
+
     'user_work_experience' => [
         'single' => 'Experiencia Laboral del Usuario',
         'multiple' => 'Experiencias Laborales del Usuario',

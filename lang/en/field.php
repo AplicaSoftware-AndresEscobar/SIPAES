@@ -7,7 +7,7 @@ return [
 
     'email' => 'Email',
     
-    'email_fesc' => 'Fesc Email',
+    'email_personal' => 'Personal Email',
     
     'document_type' => 'Document Type',
     

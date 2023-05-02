@@ -42,7 +42,7 @@ class UserInformation extends Model
     protected $fillable = [
         'fullname',
         'gender_id',
-        'email_fesc',
+        'email_personal',
         'document',
         'document_type_id',
         'address',
@@ -59,15 +59,6 @@ class UserInformation extends Model
         'gender',
         'document_type',
         'birthday_place',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'birthdate' => 'date:Y-m-d',
     ];
 
     /**
@@ -131,7 +122,7 @@ class UserInformation extends Model
      */
     public function scopeByEmailFesc($query, $value)
     {
-        return $query->where("{$this->getTable()}.email_fesc", $value);
+        return $query->where("{$this->getTable()}.email_personal", $value);
     }
 
     /**

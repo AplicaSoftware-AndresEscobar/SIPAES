@@ -19,7 +19,7 @@ class UserInformationFactory extends Factory
         $randomPrefix = ['310', '311', '312', '313', '314', '315', '316', '317', '318', '320'];
         return [
             'fullname' => "{$this->faker->name} {$this->faker->lastName}",
-            'email_fesc' => $this->faker->unique()->companyEmail(),
+            'email_personal' => $this->faker->unique()->freeEmail(),
             'document' => "1090{$this->faker->unique()->randomNumber(8)}",
             'address' => $this->faker->address(),
             'phone' => $randomPrefix[rand(0, count($randomPrefix) - 1)] . $this->faker->randomNumber(7),

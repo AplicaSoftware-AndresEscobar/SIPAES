@@ -25,12 +25,12 @@
 
                         <p class="text-muted text-center">{{ current_user()->roles->first()->title }}</p>
 
-                        <a href="#" class="btn btn-primary btn-block"><b>@lang('button.edit-profile')</b></a>
+                        <button href="#" class="btn btn-primary btn-block"
+                            onclick="openProfile()"><b>@lang('button.edit-profile')</b></button>
                     </div>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
-
 
                 <!-- About Me Box -->
                 <div class="card card-primary">
@@ -41,67 +41,68 @@
                     <div class="card-body">
                         <strong><i class="fas fa-user mr-1"></i>@lang('field.name')</strong>
 
-                        <p class="text-muted">{{ current_user_information()->fullname }}</p>
+                        <p id="profile-fullname" class="text-muted">{{ current_user_information()->fullname }}</p>
 
                         <hr>
 
-                        <strong><i class="fas fa-at mr-1"></i>@lang('field.email_fesc')</strong>
+                        <strong><i class="fas fa-at mr-1"></i>@lang('field.email_personal')</strong>
 
-                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'email_fesc') !!}</p>
+                        <p id="profile-" class="text-muted">{!! getModelAttribute(current_user_information(), 'email_personal') !!}</p>
 
                         <hr>
 
                         <strong><i class="fas fa-at mr-1"></i>@lang('field.email')</strong>
 
-                        <p class="text-muted">{{ current_user()->email }}</p>
+                        <p id="profile-" class="text-muted">{{ current_user()->email }}</p>
 
                         <hr>
 
                         <strong><i class="fas fa-id-card mr-1"></i>@lang('field.document_type')</strong>
 
-                        <p class="text-muted">{{ current_user_information()->document_type->name }}</p>
+                        <p id="profile-" class="text-muted">{{ current_user_information()->document_type->name }}</p>
 
                         <hr>
 
                         <strong><i class="far fa-id-card mr-1"></i>@lang('field.document')</strong>
 
-                        <p class="text-muted">{{ current_user_information()->document }}</p>
+                        <p id="profile-" class="text-muted">{{ current_user_information()->document }}</p>
 
                         <hr>
 
                         <strong><i class="fas fa-map-marker-alt mr-1"></i>@lang('field.birthdate')</strong>
 
-                        <p class="text-muted">{{ current_user_information()->birthdate->format('d/m/Y') }}</p>
+                        <p id="profile-" class="text-muted">{{ current_user_information()->birthdate }}</p>
 
                         <hr>
 
                         <strong><i class="fas fa-map-marker-alt mr-1"></i>@lang('field.birthday_place')</strong>
 
-                        <p class="text-muted">{{ current_user_information()->birthday_place->getLocation() }}</p>
+                        <p id="profile-" class="text-muted">
+                            {{ current_user_information()->birthday_place->getLocation() }}</p>
 
                         <hr>
 
                         <strong><i class="far fa-id-card mr-1"></i>@lang('field.address')</strong>
 
-                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'address') !!}</p>
+                        <p id="profile-" class="text-muted">{!! getModelAttribute(current_user_information(), 'address') !!}</p>
 
                         <hr>
 
                         <strong><i class="fas fa-mobile mr-1"></i>@lang('field.phone')</strong>
 
-                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'phone') !!}</p>
+                        <p id="profile-" class="text-muted">{!! getModelAttribute(current_user_information(), 'phone') !!}</p>
 
                         <hr>
 
                         <strong><i class="fas fa-phone mr-1"></i>@lang('field.telephone')</strong>
 
-                        <p class="text-muted">{!! getModelAttribute(current_user_information(), 'telephone') !!}</p>
+                        <p id="profile-" class="text-muted">{!! getModelAttribute(current_user_information(), 'telephone') !!}</p>
 
                         <hr>
 
                         <strong><i class="fas fa-venus-mars mr-1"></i>@lang('field.gender')</strong>
 
-                        <p class="text-muted">{{ current_user_information()->gender->name }}</p>
+                        <p id="profile-" class="text-muted">{{ current_user_information()->gender->name }}</p>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -261,6 +262,134 @@
         <!-- /.row -->
     </div>
 
+    <!-- User Profile Modal -->
+    <div class="modal fade" id="modal-profile">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">@lang('title.title-user-information')</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="form-user-profile">
+
+                        @csrf
+                        @method('PUT')
+
+                        <div id="errors-profile"></div>
+
+                        <!-- Name -->
+                        <div class="form-group">
+                            <label>@lang('field.name')</label>
+                            <input type="text" class="form-control form-control-sm" name="fullname" id="fullname"
+                                value="{{ current_user_information()->fullname }}">
+                        </div>
+                        <!-- ./Name -->
+
+                        <!-- Email Personal -->
+                        <div class="form-group">
+                            <label>@lang('field.email_personal')</label>
+                            <input type="text" class="form-control form-control-sm" name="email_personal"
+                                id="email_personal" value="{{ current_user_information()->email_personal }}">
+                        </div>
+                        <!-- . Email Personal -->
+
+                        <!-- Document Type -->
+                        <div class="form-group">
+                            <label>@lang('field.document_type')</label>
+                            <select name="document_type_id" id="document_type_id" class="form-control select2bs4"
+                                data-dropdown-css-class="select2-danger" style="width: 100%">
+                                @forelse ($documentTypes as $key => $value)
+                                    <option value="{{ $key }}" {!! optionIsSelected($key, current_user_information()->document_type_id) !!}>{{ $value }}
+                                    </option>
+                                @empty
+                                @endforelse
+                            </select>
+                        </div>
+                        <!-- ./Document Type -->
+
+                        <!-- Document -->
+                        <div class="form-group">
+                            <label>@lang('field.document')</label>
+                            <input type="text" class="form-control form-control-sm" name="document" id="document"
+                                value="{{ current_user_information()->document }}">
+                        </div>
+                        <!-- ./Document -->
+
+                        <!-- Birthdate -->
+                        <div class="form-group">
+                            <label>@lang('field.birthdate')</label>
+                            <input type="date" class="form-control form-control-sm" name="birthdate" id="birthdate"
+                                value="{{ current_user_information()->birthdate }}">
+                        </div>
+                        <!-- ./Birthdate -->
+
+                        <!-- Birthdate Place -->
+                        <div class="form-group">
+                            <label>@lang('field.birthday_place')</label>
+                            <select name="birthday_place_id" id="birthday_place_id" class="form-control select2bs4"
+                                data-dropdown-css-class="select2-danger" style="width: 100%">
+                                @forelse ($cities as $key => $value)
+                                    <option value="{{ $key }}" {!! optionIsSelected($key, current_user_information()->birthday_place_id) !!}>{{ $value }}
+                                    </option>
+                                @empty
+                                @endforelse
+                            </select>
+                        </div>
+                        <!-- ./Birthdate Place -->
+
+                        <!-- Address -->
+                        <div class="form-group">
+                            <label>@lang('field.address')</label>
+                            <input type="text" class="form-control form-control-sm" name="address" id="address"
+                                value="{{ current_user_information()->address }}">
+                        </div>
+                        <!-- ./Address -->
+
+                        <!-- Phone -->
+                        <div class="form-group">
+                            <label>@lang('field.phone')</label>
+                            <input type="text" class="form-control form-control-sm" name="phone" id="phone"
+                                value="{{ current_user_information()->phone }}">
+                        </div>
+                        <!-- ./Phone -->
+
+                        <!-- Telephone -->
+                        <div class="form-group">
+                            <label>@lang('field.telephone')</label>
+                            <input type="text" class="form-control form-control-sm" name="telephone" id="telephone"
+                                value="{{ current_user_information()->telephone }}">
+                        </div>
+                        <!-- ./Telephone -->
+
+                        <!-- Gender -->
+                        <div class="form-group">
+                            <label>@lang('field.gender')</label>
+                            <select name="gender_id" id="gender_id" class="form-control select2bs4"
+                                data-dropdown-css-class="select2-danger" style="width: 100%">
+                                @forelse ($genders as $key => $value)
+                                    <option value="{{ $key }}" {!! optionIsSelected($key, current_user_information()->gender_id) !!}>{{ $value }}
+                                    </option>
+                                @empty
+                                @endforelse
+                            </select>
+                        </div>
+                        <!-- ./Gender -->
+
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default"
+                        onclick="closeProfileModal()">@lang('button.close')</button>
+                    <button type="button" class="btn btn-primary"
+                        onclick="submitProfileForm(event)">@lang('button.save')</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- ./User Profile Modal -->
+
     <!-- User Work Experience Modal -->
     <div class="modal fade" id="modal-work-experience">
         <div class="modal-dialog">
@@ -373,7 +502,8 @@
                         <!-- Year -->
                         <div class="form-group">
                             <label>@lang('field.year')</label>
-                            <input type="text" class="form-control form-control-sm" name="year" id="year" min="1900" max="{{ now()->format('Y') }}" minlength="4" maxlength="4">
+                            <input type="text" class="form-control form-control-sm" name="year" id="year"
+                                min="1900" max="{{ now()->format('Y') }}" minlength="4" maxlength="4">
                         </div>
                         <!-- ./Year -->
                     </form>
@@ -399,16 +529,83 @@
 
 @section('custom-js')
     <script>
+        //Initialize Select2 Elements
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
     </script>
 
+    <!-- PROFILE MODAL -->
+    <script>
+        /** Estructura para abrir el modal de perfil **/
+        function openProfile(routeUpdate = null) {
+            const modal = $('#modal-profile');
+            openModal(modal);
+        }
+        /** ./Estructura para abrir el modal de perfil **/
+
+        /** Estructura para cerrar el modal de Perfil **/
+        function closeProfileModal() {
+            const modal = $('#modal-profile');
+            const form = modal.find('form');
+            const errorDiv = $('#errors-profile');
+            clearErrorInputs(form);
+            removeErrorsDiv(errorDiv);
+            closeModal(modal);
+        }
+        /** ./Estructura para cerrar el modal de Perfil **/
+
+        /** Estructura para guardar el formulario dentro del modal de Perfil **/
+        function submitProfileForm(e) {
+            e.preventDefault();
+            const modal = $('#modal-profile');
+            const errorDiv = $('#errors-profile');
+            const table = $('#table-work-experiencie');
+            const saved = saveProfileForm(modal, errorDiv);
+        }
+        /** ./Estructura para guardar el formulario dentro del modal de Perfil **/
+
+        /** Funcionalidad para guardar específicamente la información del perfil de usuario **/
+        function saveProfileForm(modal, errorDiv) {
+            const form = modal.find("form");
+            const formAction = form.attr("action");
+            const formMethod = form.attr("method");
+            const formData = form.serializeArray();
+
+            $.ajax({
+                url: formAction,
+                type: formMethod,
+                data: formData,
+                async: false,
+                success: function(response) {
+                    showMessageAlert(response.icon, response.title);
+                    clearErrorInputs(form);
+                    clearInputs(form);
+                    removeErrorsDiv(errorDiv);
+                    removeInputMethod(form);
+                    closeModal(modal);
+                    setTimeout(refresh, 2000);
+                },
+                error: function(response) {
+                    var errors = response.responseJSON.errors;
+                    clearErrorInputs(form);
+                    showErrors(errors, errorDiv);
+                },
+            });
+
+        }
+        /** ./Funcionalidad para guardar específicamente la información del perfil de usuario **/
+
+        function resetUserInformation() {
+            const authUserInfoData = json_encode("{{ current_user_information() }}");
+        }
+    </script>
+    <!-- ./PROFILE MODAL -->
+
     <script>
         /** Estructura para abrir el modal de Experiencias Laborales **/
         function openWorkExperienceModal(editMode = false, routeShow = null, routeUpdate = null) {
             const modal = $('#modal-work-experience');
-            const errorDiv = $('#errors-work-experience');
             const title = modal.find('h5');
             const form = modal.find('form');
 
@@ -446,7 +643,7 @@
 
             const errorDiv = $('#errors-work-experience');
             const table = $('#table-work-experiencie');
-            const saved = saveForm(modal, errorDiv, table);
+            const saved = saveForm(modal, errorDiv);
             if (saved) {
                 resetTableBodyWorkExperience(table);
             }

@@ -30,3 +30,22 @@ if (!function_exists('randomBoolean')) {
         return (bool) rand(0, 1);
     }
 }
+
+if (!function_exists('routeIsActived')) {
+
+    /**
+     * Get if route is actived.
+     * 
+     * @param string $resource
+     * 
+     * @return string
+     */
+    function routeIsActived($resource): string
+    {
+        $currentURL = \Illuminate\Support\Facades\URL::current();
+
+        $array = explode('/', $currentURL);
+
+        return in_array($resource, $array) ? 'active' : '';
+    }
+}

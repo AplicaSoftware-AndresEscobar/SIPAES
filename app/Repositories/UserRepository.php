@@ -23,12 +23,20 @@ class UserRepository extends AbstractRepository
         $query = $this->model
             ->select();
 
+        if (isset($params['id']) && $params['id']) {
+            $query->byId($params['id']);
+        }
+
         if (isset($params['name']) && $params['name']) {
-            $query->where('name', 'like', '%' . $params['name'] . '%');
+            $query->byName($params['name']);
         }
 
         if (isset($params['email']) && $params['email']) {
-            $query->where('email', 'like', '%' . $params['email'] . '%');
+            $query->byEmail($params['email']);
+        }
+
+        if (isset($params['email']) && $params['email']) {
+            $query->byPersonalEmail($params['email']);
         }
 
         if (isset($params['date_from']) && $params['date_from']) {
@@ -39,9 +47,9 @@ class UserRepository extends AbstractRepository
             $query->where('updated_at', '<=', $params['date_to']);
         }
 
-        if (isset($params['except_auth_user']) && $params['except_auth_user']) {
-            $query->where('id', '!=', current_user()->id);
-        }
+        // if (isset($params['except_auth_user']) && $params['except_auth_user']) {
+        //     $query->where('id', '!=', current_user()->id);
+        // }
 
         if (isset($with) && $with) {
             $query->with($with);

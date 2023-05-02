@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserAcademicStudyController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,7 @@ Route::view('iniciar-sesion', 'pages.auth.login')->name('login')->middleware('gu
 Route::view('inicio', 'pages.dashboard')->name('home')->middleware('auth');
 
 Route::view('perfil', 'pages.auth.profile')->name('profile')->middleware('auth');
+Route::put('perfil/actualizar-informacion', [AuthController::class, 'update'])->name('profile.user-information.update');
 
 Route::get('perfil/formacion-laboral', [UserWorkExperienceController::class, 'index'])->name('profile.work-experiences.index');
 Route::post('perfil/formacion-laboral', [UserWorkExperienceController::class, 'store'])->name('profile.work-experiences.store');

@@ -33,7 +33,8 @@
         },
         "files": [
             "app/Supports/Helpers/BaseHelper.php",
-            "app/Supports/Helpers/ModelHelper.php"
+            "app/Supports/Helpers/ModelHelper.php",
+            "app/Supports/Helpers/FormHelper.php"
         ]
     },
     "autoload-dev": {

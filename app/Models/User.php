@@ -53,6 +53,42 @@ class User extends Authenticatable
     ];
 
     /**
+     * Scope a query to only include Username
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param string $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByUsername($query, $value)
+    {
+        return $query->where("{$this->getTable()}.username", $value);
+    }
+
+    /**
+     * Scope a query to only include Email
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param string $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByEmail($query, $value)
+    {
+        return $query->where("{$this->getTable()}.email", $value);
+    }
+
+    /**
+     * Scope a query to only include Email Personal
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param string $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByEmailPersonal($query, $value)
+    {
+        $userInformationTable = 'user_information';
+        return $query->where("$userInformationTable.email_personal", $value);
+    }
+    /**
      * Get User Information
      * 
      * @return HasOne|UserInformation
@@ -86,29 +122,5 @@ class User extends Authenticatable
             ->using(UserWorkExperiencie::class)
             ->withPivot(['id', 'job_title', 'start_date', 'end_date'])
             ->orderByPivot('start_date');
-    }
-
-    /**
-     * Scope a query to only include Username
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param string $value
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeByUsername($query, $value)
-    {
-        return $query->where("{$this->getTable()}.username", $value);
-    }
-
-    /**
-     * Scope a query to only include Email
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param string $value
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeByEmail($query, $value)
-    {
-        return $query->where("{$this->getTable()}.email", $value);
     }
 }

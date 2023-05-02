@@ -7,7 +7,7 @@ return [
 
     'email' => 'Correo Electrónico',
 
-    'email_fesc' => 'Correo Electrónico Institucional',
+    'email_personal' => 'Correo Electrónico Personal',
 
     'document_type' => 'Tipo de Documento',
 
