@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 return [
-    'name' => 'Nombre completo',
+    'username' => 'Usuario',
+
+    'name' => 'Nombre Completo',
 
     'email' => 'Correo Electrónico',
 

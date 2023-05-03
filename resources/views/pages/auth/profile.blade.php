@@ -69,7 +69,7 @@
 
                         <hr>
 
-                        <strong><i class="fas fa-map-marker-alt mr-1"></i>@lang('field.birthdate')</strong>
+                        <strong><i class="fas fa-calendar-alt mr-1"></i>@lang('field.birthdate')</strong>
 
                         <p id="profile-" class="text-muted">{{ current_user_information()->birthdate }}</p>
 
@@ -82,7 +82,7 @@
 
                         <hr>
 
-                        <strong><i class="far fa-id-card mr-1"></i>@lang('field.address')</strong>
+                        <strong><i class="fas fa-home mr-1"></i>@lang('field.address')</strong>
 
                         <p id="profile-" class="text-muted">{!! getModelAttribute(current_user_information(), 'address') !!}</p>
 
@@ -270,12 +270,28 @@
                     <h5 class="modal-title font-weight-bold">@lang('title.title-user-information')</h5>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" id="form-user-profile">
+                    <form action="{{ route('profile.user-information.update') }}" method="POST">
 
                         @csrf
                         @method('PUT')
 
                         <div id="errors-profile"></div>
+
+                        <!-- Username -->
+                        <div class="form-group">
+                            <label>@lang('field.username')</label>
+                            <input type="text" class="form-control form-control-sm" name="username" id="username"
+                                value="{{ current_user()->username }}">
+                        </div>
+                        <!-- ./Username -->
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label>@lang('field.email')</label>
+                            <input type="text" class="form-control form-control-sm" name="email" id="email"
+                                value="{{ current_user()->email }}">
+                        </div>
+                        <!-- ./Email -->
 
                         <!-- Name -->
                         <div class="form-group">
@@ -584,7 +600,9 @@
                     removeErrorsDiv(errorDiv);
                     removeInputMethod(form);
                     closeModal(modal);
-                    setTimeout(refresh, 2000);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 3000);
                 },
                 error: function(response) {
                     var errors = response.responseJSON.errors;

@@ -43,16 +43,15 @@ class AuthController extends Controller
      */
     public function update(UpdateProfileRequest $request)
     {
-        $response = ['title' => __('models.user_information.messages.update-error'), 'icon' => 'error'];
+        $response = ['title' => __('models.auth.user_information.messages.update-error'), 'icon' => 'error'];
         try {
-            $data = $request->all();
-            $data['user_id'] = current_user()->id;
-
-            $userInformation = $this->userInformationRepository->getById(current_user()->id);
+            $dataUser = $request->only(['username', 'email']);
+            $dataUserInformation = $request->except(['username', 'email']);
             DB::beginTransaction();
-            $this->userInformationRepository->update($userInformation, $data);
+            $this->userRepository->update(current_user(), $dataUser);
+            $this->userInformationRepository->update(current_user_information(), $dataUserInformation);
             DB::commit();
-            $response = ['title' => __('models.user_information.messages.update-success'), 'icon' => 'success'];
+            $response = ['title' => __('models.auth.user_information.messages.update-success'), 'icon' => 'success'];
         } catch (QueryException $qe) {
             DB::rollBack();
             Log::error("@Web/Controllers/AuthController:Update/QueryException: {$qe->getMessage()}");

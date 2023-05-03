@@ -76,8 +76,9 @@ function addDataInputs(form, data) {
 
 function clearErrorInputs(form) {
     const formData = form.serializeArray();
+    console.log(formData);
     formData.forEach(function (item) {
-        $("#" + item.name).removeClass("is-invalid");
+        form.find("#" + item.name).removeClass("is-invalid");
     });
 }
 

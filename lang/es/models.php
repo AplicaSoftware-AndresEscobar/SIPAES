@@ -3,6 +3,22 @@
 return [
     'companies' => [],
 
+    'auth' => [
+        'user_information' => [
+            'messages' => [
+                'save-success' => 'Se ha guardado correctamente, en breve podrás ver los cambios.',
+                'save-error' => 'No se ha guardado correctamente, en breve podrás ver los cambios.',
+
+                'update-success' => 'Se ha actualizado correctamente, en breve podrás ver los cambios.',
+                'update-error' => 'No se ha actualizado correctamente, en breve podrás ver los cambios.',
+
+                'delete-success' => 'Se ha eliminado correctamente, en breve podrás ver los cambios.',
+                'delete-error' => 'No se ha eliminado correctamente, en breve podrás ver los cambios.',
+            ],
+        ],
+
+    ],
+
     'user_information' => [
         'messages' => [
             'save-success' => 'Se ha guardado correctamente la información del usuario',

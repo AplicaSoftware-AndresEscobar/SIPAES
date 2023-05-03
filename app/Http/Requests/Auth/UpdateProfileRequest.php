@@ -22,12 +22,14 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'username' => ['required', 'unique:users,username,' . current_user()->id],
+            'email' => ['required', 'unique:users,email,' . current_user()->id],
             'fullname' => ['required', 'string'],
-            'email_personal' => ['nullable', 'email', 'unique:user_information'],
-            'document_type_id' => ['required', 'exists:document_types'],
-            'document' => ['required', 'string', 'max:15', 'numeric'],
+            'email_personal' => ['nullable', 'email', 'unique:user_information,email_personal,' . current_user()->id . ',user_id'],
+            'document_type_id' => ['required', 'exists:document_types,id'],
+            'document' => ['required', 'string', 'numeric', 'unique:user_information,document,' . current_user()->id . ',user_id'],
             'address' => ['nullable', 'string'],
-            'phone' => ['nullable', 'string', 'numeric', 'unique:user_information'],
+            'phone' => ['nullable', 'string', 'numeric', 'unique:user_information,phone,' . current_user()->id . ',user_id'],
             'telephone' => ['nullable', 'string', 'numeric'],
             'birthdate' => ['required', 'date'],
             'birthday_place_id' => ['required', 'exists:cities,id'],
