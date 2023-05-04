@@ -3,11 +3,13 @@
 declare(strict_types=1);
 
 return [
-    'name' => 'Nombre completo',
+    'username' => 'Usuario',
+
+    'name' => 'Nombre Completo',
 
     'email' => 'Correo Electrónico',
 
-    'email_fesc' => 'Correo Electrónico Institucional',
+    'email_personal' => 'Correo Electrónico Personal',
 
     'document_type' => 'Tipo de Documento',
 
@@ -31,7 +33,7 @@ return [
 
     'company' => 'Empresa/Compañía',
 
-    'job-title' => 'Cargo',
+    'job_title' => 'Cargo',
 
     'start_date' => 'Inicio',
 
@@ -42,6 +44,8 @@ return [
     'educational_institute' => 'Institución Educativa',
     
     'academic_study_level' => 'Nivel Educativo',
+    
+    'degree' => 'Titulo',
 
     'year' => 'Año',
 ];

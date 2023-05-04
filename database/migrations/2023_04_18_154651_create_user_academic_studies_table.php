@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_academic_studies', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedMediumInteger('educational_institute_id');
             $table->unsignedTinyInteger('academic_study_level_id');
-            $table->string('name');
+            $table->string('degree');
             $table->year('year');
             $table->timestamps();
 
-            $table->unique(['user_id', 'educational_institute_id', 'academic_study_level_id', 'name', 'year'], 'unique_user_academic_studies');
+            $table->unique(['user_id', 'educational_institute_id', 'academic_study_level_id', 'degree', 'year'], 'unique_user_academic_studies');
 
             $table->foreign('user_id', 'fk_users_user_academic_studies')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('educational_institute_id', 'fk_educational_institutes_user_academic_studies')->references('id')->on('educational_institutes')->cascadeOnUpdate()->restrictOnDelete();

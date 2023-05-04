@@ -8,6 +8,7 @@
         "php": "^8.1",
         "almasaeed2010/adminlte": "~3.2",
         "guzzlehttp/guzzle": "^7.2",
+        "laracasts/presenter": "^0.2.6",
         "laravel/fortify": "^1.16",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
@@ -32,7 +33,8 @@
         },
         "files": [
             "app/Supports/Helpers/BaseHelper.php",
-            "app/Supports/Helpers/ModelHelper.php"
+            "app/Supports/Helpers/ModelHelper.php",
+            "app/Supports/Helpers/FormHelper.php"
         ]
     },
     "autoload-dev": {

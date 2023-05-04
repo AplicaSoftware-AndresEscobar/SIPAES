@@ -12,4 +12,15 @@ return [
     'help' => 'Ayuda',
 
     'edit-profile' => 'Editar Perfil',
+
+    'close' => 'Cerrar',
+    'confirm' => 'Confirmar',
+    'cancel' => 'Cancelar',
+
+    'add' => 'Agregar',
+    'save' => 'Guardar',
+
+    'show' => 'Visualizar',
+    'edit' => 'Editar',
+    'delete' => 'Eliminar',
 ];

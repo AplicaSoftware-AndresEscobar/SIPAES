@@ -12,4 +12,11 @@ return [
     'help' => 'Help',
 
     'edit-profile' => 'Edit Profile',
+
+    'close' => 'Close',
+    'confirm' => 'Confirm',
+    'cancel' => 'Cancel',
+
+    'add' => 'Add',
+    'save' => 'Save'
 ];

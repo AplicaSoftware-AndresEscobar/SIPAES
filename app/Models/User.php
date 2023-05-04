@@ -53,40 +53,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get User Information
-     * 
-     * @return HasOne|UserInformation
-     */
-    public function user_information()
-    {
-        return $this->hasOne(UserInformation::class, 'user_id');
-    }
-
-    /**
-     * Get User Academic Studies
-     * 
-     * @return BelongsToMany|Collection<EducationalInstitute>
-     */
-    public function academic_studies()
-    {
-        return $this->belongsToMany(EducationalInstitute::class, 'user_academic_studies')
-            ->using(UserAcademicStudy::class)
-            ->withPivot(['name', 'year', 'academic_study_level_id']);
-    }
-
-    /**
-     * Get User Work Experiencies
-     * 
-     * @return BelongsToMany|Collection<Company>
-     */
-    public function work_experiencies()
-    {
-        return $this->belongsToMany(Company::class, 'user_work_experiencies')
-            ->using(UserWorkExperiencie::class)
-            ->withPivot(['job_title', 'start_date', 'end_date']);
-    }
-
-    /**
      * Scope a query to only include Username
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
@@ -108,5 +74,53 @@ class User extends Authenticatable
     public function scopeByEmail($query, $value)
     {
         return $query->where("{$this->getTable()}.email", $value);
+    }
+
+    /**
+     * Scope a query to only include Email Personal
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param string $value
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByEmailPersonal($query, $value)
+    {
+        $userInformationTable = 'user_information';
+        return $query->where("$userInformationTable.email_personal", $value);
+    }
+    /**
+     * Get User Information
+     * 
+     * @return HasOne|UserInformation
+     */
+    public function user_information()
+    {
+        return $this->hasOne(UserInformation::class, 'user_id');
+    }
+
+    /**
+     * Get User Academic Studies
+     * 
+     * @return BelongsToMany|Collection<EducationalInstitute>
+     */
+    public function academic_studies()
+    {
+        return $this->belongsToMany(EducationalInstitute::class, 'user_academic_studies')
+            ->using(UserAcademicStudy::class)
+            ->withPivot(['id', 'degree', 'year', 'academic_study_level_id'])
+            ->orderByPivot('year');
+    }
+
+    /**
+     * Get User Work Experiencies
+     * 
+     * @return BelongsToMany|Collection<Company>
+     */
+    public function work_experiencies()
+    {
+        return $this->belongsToMany(Company::class, 'user_work_experiencies')
+            ->using(UserWorkExperiencie::class)
+            ->withPivot(['id', 'job_title', 'start_date', 'end_date'])
+            ->orderByPivot('start_date');
     }
 }

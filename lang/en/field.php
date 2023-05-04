@@ -7,7 +7,7 @@ return [
 
     'email' => 'Email',
     
-    'email_fesc' => 'Fesc Email',
+    'email_personal' => 'Personal Email',
     
     'document_type' => 'Document Type',
     
@@ -25,7 +25,7 @@ return [
 
     'company' => 'Bussiness/Company',
 
-    'job-title' => 'Job Title',
+    'job_title' => 'Job Title',
 
     'start_date' => 'Start Date',
 

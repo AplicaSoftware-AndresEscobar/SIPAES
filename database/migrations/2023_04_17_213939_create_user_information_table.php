@@ -15,17 +15,17 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id', false)->primary();
             $table->string('fullname');
             $table->unsignedTinyInteger('gender_id');
-            $table->string('email_fesc')->nullable();
-            $table->string('document');
+            $table->string('email_personal')->nullable();
             $table->unsignedSmallInteger('document_type_id');
+            $table->string('document');
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('telephone')->nullable();
-            $table->string('birthdate')->nullable();
+            $table->date('birthdate')->nullable();
             $table->unsignedInteger('birthday_place_id');
             $table->timestamps();
 
-            $table->unique('email_fesc', 'unique_email_fesc_user_information');
+            $table->unique('email_personal', 'unique_email_personal_user_information');
             $table->unique('document', 'unique_document_user_information');
             $table->unique('phone', 'unique_phone_user_information');
 

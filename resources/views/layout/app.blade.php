@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="{{ asset('assets/adminlte/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('assets/adminlte/dist/css/adminlte.min.css') }}">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{ asset('assets/adminlte/plugins/sweetalert2/sweetalert2.min.css') }}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('assets/adminlte/plugins/toastr/toastr.min.css') }}">
 
     @vite('resources/css/app.css')
 
@@ -22,7 +26,7 @@
     @yield('custom-css')
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition text-sm">
     <div class="wrapper">
         <!-- Navbar -->
         @include('partials.navbar')
@@ -61,18 +65,44 @@
 
     <!-- jQuery -->
     <script src="{{ asset('assets/adminlte/plugins/jquery/jquery.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
     <!-- Bootstrap 4 -->
     <script src="{{ asset('assets/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('assets/adminlte/dist/js/adminlte.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('assets/adminlte/dist/js/demo.js') }}"></script>
+    <!-- Sweetalert 2 -->
+    <script src="{{ asset('assets/adminlte/plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('assets/adminlte/plugins/toastr/toastr.min.js') }}"></script>
+
+    <script src="{{ asset('assets/adminlte/dist/js/sipaes/functions.js') }}"></script>
 
     @vite('resources/js/app.js')
 
     @yield('js')
 
     @yield('custom-js')
+
+    <script>
+        initConfigSipaes();
+
+        window.translations_button = {!! json_encode(__('button')) !!};
+        window.translations_messages = {!! json_encode(__('messages')) !!}
+        window.translations_titles = {!! json_encode(__('title')) !!}
+        window.translations_models = {!! json_encode(__('models')) !!}
+
+        window.csrf = {!! json_encode(csrf_token()) !!}
+
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+        });
+    </script>
 
 </body>
 

@@ -39,8 +39,8 @@ return [
     'doesnt_start_with'    => 'El campo :attribute no debe comenzar con uno de los siguientes: :values.',
     'email'                => 'El campo :attribute no es un correo válido.',
     'ends_with'            => 'El campo :attribute debe finalizar con uno de los siguientes valores: :values',
-    'enum'                 => 'El :attribute seleccionado es inválido.',
-    'exists'               => 'El :attribute seleccionado es inválido.',
+    'enum'                 => 'El campo :attribute seleccionado es inválido.',
+    'exists'               => 'El campo :attribute seleccionado es inválido.',
     'file'                 => 'El campo :attribute debe ser un archivo.',
     'filled'               => 'El campo :attribute es obligatorio.',
     'gt'                   => [
@@ -212,5 +212,16 @@ return [
         'updated_at'               => 'actualizado el',
         'username'                 => 'usuario',
         'year'                     => 'año',
+
+        'document' => 'documento de identidad',
+
+        'company_id' => 'empresa',
+        'job_title' => 'cargo',
+        'start_date' => 'fecha de inicio',
+        'end_date' => 'fecha de finalización',
+
+        'educational_institute_id' => 'institución educativa',
+        'academic_study_level_id' => 'nivel académico',
+        'degree' => 'título',
     ],
 ];

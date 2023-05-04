@@ -25,8 +25,38 @@ if (!function_exists('diffBetweenTwoDates')) {
         $dateOne = Carbon::parse($firstDate);
         $dateTwo = Carbon::parse($secondDate);
 
-        $count = $dateOne->diffInYears($dateTwo);
-        $text = $count > 1 ? 'años' : 'año';
-        return "$count $text";
+        $diff = $dateOne->diff($dateTwo);
+
+        $year = $diff->y;
+        $month = $diff->m;
+        $day = $diff->d;
+        $array = [
+            [
+                'value' => $year,
+                'single' => 'año',
+                'multiple' => 'años',
+            ],
+            [
+                'value' => $month,
+                'single' => 'mes',
+                'multiple' => 'meses',
+            ],
+            [
+                'value' => $day,
+                'single' => 'día',
+                'multiple' => 'días',
+            ]
+        ];
+        $text = '';
+
+        foreach ($array as $index => $item) {
+            $value = $item['value'];
+            if (!$value == 0) {
+                $type = ($value > 1) ? $item['multiple'] : $item['single'];
+                $text .= "$value $type ";
+            }
+        }
+
+        return $text;
     }
 }
