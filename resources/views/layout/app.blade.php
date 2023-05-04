@@ -26,7 +26,7 @@
     @yield('custom-css')
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition text-sm">
     <div class="wrapper">
         <!-- Navbar -->
         @include('partials.navbar')
@@ -65,6 +65,8 @@
 
     <!-- jQuery -->
     <script src="{{ asset('assets/adminlte/plugins/jquery/jquery.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
     <!-- Bootstrap 4 -->
     <script src="{{ asset('assets/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
@@ -85,6 +87,8 @@
     @yield('custom-js')
 
     <script>
+        initConfigSipaes();
+
         window.translations_button = {!! json_encode(__('button')) !!};
         window.translations_messages = {!! json_encode(__('messages')) !!}
         window.translations_titles = {!! json_encode(__('title')) !!}
