@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\UpdatePasswordRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Repositories\UserInformationRepository;
 use Illuminate\Http\Request;
@@ -57,6 +58,24 @@ class AuthController extends Controller
             Log::error("@Web/Controllers/AuthController:Update/QueryException: {$qe->getMessage()}");
         } catch (Exception $e) {
             Log::error("@Web/Controllers/AuthController:Update/Exception: {$e->getMessage()}");
+        }
+        return response()->json($response);
+    }
+
+    public function update_password(UpdatePasswordRequest $request)
+    {
+        $response = ['title' => __('models.auth.user_password.messages.update-error'), 'icon' => 'error'];
+        try {
+            $dataUser = $request->only(['password']);
+            DB::beginTransaction();
+            $this->userRepository->update(current_user(), $dataUser);
+            DB::commit();
+            $response = ['title' => __('models.auth.user_information.messages.update-success'), 'icon' => 'success'];
+        } catch (QueryException $qe) {
+            DB::rollBack();
+            Log::error("@Web/Controllers/AuthController:UpdatePassword/QueryException: {$qe->getMessage()}");
+        } catch (Exception $e) {
+            Log::error("@Web/Controllers/AuthController:UpdatePassword/Exception: {$e->getMessage()}");
         }
         return response()->json($response);
     }

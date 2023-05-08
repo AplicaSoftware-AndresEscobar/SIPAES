@@ -16,6 +16,18 @@ return [
                 'delete-error' => 'No se ha eliminado correctamente, en breve podrás ver los cambios.',
             ],
         ],
+        'user_password' => [
+            'messages' => [
+                'save-success' => 'Se ha guardado correctamente la contraseña.',
+                'save-error' => 'No se ha guardado correctamente la contraseña.',
+
+                'update-success' => 'Se ha actualizado correctamente la contraseña.',
+                'update-error' => 'No se ha actualizado correctamente la contraseña.',
+
+                'delete-success' => 'Se ha eliminado correctamente la contraseña.',
+                'delete-error' => 'No se ha eliminado correctamente la contraseña.',
+            ],
+        ],
 
     ],
 

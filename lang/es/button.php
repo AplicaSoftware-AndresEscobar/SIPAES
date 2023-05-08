@@ -12,6 +12,7 @@ return [
     'help' => 'Ayuda',
 
     'edit-profile' => 'Editar Perfil',
+    'change-password' => 'Cambiar Contraseña',
 
     'close' => 'Cerrar',
     'confirm' => 'Confirmar',
