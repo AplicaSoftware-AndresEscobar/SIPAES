@@ -1,4 +1,4 @@
- <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+ <nav class="main-header navbar navbar-expand bg-danger navbar-dark">
      <!-- Left navbar links -->
      <ul class="navbar-nav">
          <li class="nav-item">
@@ -16,15 +16,15 @@
      <ul class="navbar-nav ml-auto">
 
          <!-- Navbar Search -->
-         @include('partials.navbar_search')
+         {{-- @include('partials.navbar_search') --}}
          <!-- ./Navbar Search -->
 
          <!-- Messages Dropdown Menu -->
-         @include('partials.messages')
+         {{-- @include('partials.messages') --}}
          <!-- ./Messages Dropdown Menu -->
 
          <!-- Notifications Dropdown Menu -->
-         @include('partials.notifications')
+         {{-- @include('partials.notifications') --}}
          <!-- ./Notifications Dropdown Menu -->
 
          <li class="nav-item">

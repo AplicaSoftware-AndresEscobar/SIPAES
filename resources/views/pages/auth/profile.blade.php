@@ -8,13 +8,24 @@
     <link rel="stylesheet" href="{{ asset('assets/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endsection
 
+@section('custom-css')
+    <style>
+        .nav-pills .nav-link.active,
+        .nav-pills .show>.nav-link {
+            background-color: red;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="container-fluid my-4">
         <div class="row">
             <div class="col-md-3">
 
                 <!-- Profile Image -->
-                <div class="card card-primary card-outline">
+                <div class="card card-danger card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
                             <img class="profile-user-img img-fluid img-circle"
@@ -25,15 +36,17 @@
 
                         <p class="text-muted text-center">{{ current_user()->roles->first()->title }}</p>
 
-                        <button href="#" class="btn btn-primary btn-block"
+                        <button href="#" class="btn btn-outline-danger btn-block"
                             onclick="openProfile()"><b>@lang('button.edit-profile')</b></button>
+                        <button href="#" class="btn btn-outline-danger btn-block"
+                            onclick="openPassword()"><b>@lang('button.change-password')</b></button>
                     </div>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
 
                 <!-- About Me Box -->
-                <div class="card card-primary">
+                <div class="card card-danger">
                     <div class="card-header">
                         <h3 class="card-title">@lang('title.title-user-information')</h3>
                     </div>
@@ -125,16 +138,20 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="active tab-pane" id="user-work-experiencie">
-                                <div class="table-responsive">
+                                <button class="btn btn-sm btn-outline-danger"
+                                onclick="openWorkExperienceModal()">@lang('button.add')</button>
+                                <div class="table-responsive mt-2">
                                     <table class="table table-sm table-hover table-bordered" id="table-work-experiencie"
                                         data-route="{{ route('profile.work-experiences.index') }}">
                                         <thead>
-                                            <th>@lang('field.company')</th>
-                                            <th>@lang('field.job_title')</th>
-                                            <th>@lang('field.start_date')</th>
-                                            <th>@lang('field.end_date')</th>
-                                            <th>@lang('field.duration')</th>
-                                            <th></th>
+                                            <tr class="bg-danger text-white">
+                                                <th>@lang('field.company')</th>
+                                                <th>@lang('field.job_title')</th>
+                                                <th>@lang('field.start_date')</th>
+                                                <th>@lang('field.end_date')</th>
+                                                <th>@lang('field.duration')</th>
+                                                <th></th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             @forelse ($userWorkExperiencies as $item)
@@ -144,12 +161,12 @@
                                                     <td>{!! $item->pivot->start_date !!}</td>
                                                     <td>{!! $item->pivot->end_date !!}</td>
                                                     <td>{!! diffBetweenTwoDates($item->pivot->start_date, $item->pivot->end_date) !!}</td>
-                                                    <td>
+                                                    <td class="text-center">
                                                         <div class="btn-group">
                                                             <button type="button"
-                                                                class="dropdown-toggle btn btn-sm btn-block btn-danger"
+                                                                class="dropdown-toggle btn btn-xs btn-block btn-danger"
                                                                 data-toggle="dropdown">
-                                                                <span class="fas fa-cog"></span>
+                                                                <span class="fas fa-cog fa-xs"></span>
                                                             </button>
                                                             <div class="dropdown-menu">
                                                                 <button type="button"
@@ -182,20 +199,22 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <button class="btn btn-primary btn-sm btn-outline"
-                                    onclick="openWorkExperienceModal()">@lang('button.add')</button>
                             </div>
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="user-academic-study">
-                                <div class="table-responsive">
+                                <button class="btn btn-sm btn-outline-danger"
+                                    onclick="openAcademicStudyModal()">@lang('button.add')</button>
+                                <div class="table-responsive mt-2">
                                     <table class="table table-sm table-hover table-bordered" id="table-academic-study"
                                         data-route="{{ route('profile.academic-studies.index') }}">
                                         <thead>
-                                            <th>@lang('field.educational_institute')</th>
-                                            <th>@lang('field.academic_study_level')</th>
-                                            <th>@lang('field.degree')</th>
-                                            <th>@lang('field.year')</th>
-                                            <th></th>
+                                            <tr class="bg-danger text-white">
+                                                <th>@lang('field.educational_institute')</th>
+                                                <th>@lang('field.academic_study_level')</th>
+                                                <th>@lang('field.degree')</th>
+                                                <th>@lang('field.year')</th>
+                                                <th></th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             @forelse (current_user()->academic_studies as $item)
@@ -204,12 +223,12 @@
                                                     <td>{!! $item->pivot->academic_study_level->name !!}</td>
                                                     <td>{!! $item->pivot->degree !!}</td>
                                                     <td>{!! $item->pivot->year !!}</td>
-                                                    <td>
+                                                    <td class="text-center">
                                                         <div class="btn-group">
                                                             <button type="button"
-                                                                class="dropdown-toggle btn btn-sm btn-block btn-danger"
+                                                                class="dropdown-toggle btn btn-xs btn-block btn-danger"
                                                                 data-toggle="dropdown">
-                                                                <span class="fas fa-cog"></span>
+                                                                <span class="fas fa-cog fa-xs"></span>
                                                             </button>
                                                             <div class="dropdown-menu">
                                                                 <button type="button"
@@ -242,13 +261,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <button class="btn btn-primary btn-sm btn-outline"
-                                    onclick="openAcademicStudyModal()">@lang('button.add')</button>
                             </div>
                             <!-- /.tab-pane -->
 
                             <div class="tab-pane" id="settings">
-                                <div id="userSetting"></div>
+
                             </div>
                             <!-- /.tab-pane -->
                         </div>
@@ -396,7 +413,7 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default"
                         onclick="closeProfileModal()">@lang('button.close')</button>
-                    <button type="button" class="btn btn-primary"
+                    <button type="button" class="btn btn-danger"
                         onclick="submitProfileForm(event)">@lang('button.save')</button>
                 </div>
             </div>
@@ -405,6 +422,50 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- ./User Profile Modal -->
+
+    <!-- User Password Modal -->
+    <div class="modal fade" id="modal-password">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold">@lang('title.title-user-information')</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('profile.user-password.update') }}" method="POST">
+
+                        @csrf
+                        @method('PATCH')
+
+                        <div id="errors-password"></div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label>@lang('field.password')</label>
+                            <input type="password" class="form-control form-control-sm" name="password" id="password">
+                        </div>
+                        <!-- ./Password -->
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label>@lang('field.password_confirmation')</label>
+                            <input type="password" class="form-control form-control-sm" name="password_confirmation"
+                                id="password_confirmation">
+                        </div>
+                        <!-- ./Password -->
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default"
+                        onclick="closePasswordModal()">@lang('button.close')</button>
+                    <button type="button" class="btn btn-danger"
+                        onclick="submitPasswordForm(event)">@lang('button.save')</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- ./User Password Modal -->
 
     <!-- User Work Experience Modal -->
     <div class="modal fade" id="modal-work-experience">
@@ -458,7 +519,7 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default"
                         onclick="closeWorkExperienceModal()">@lang('button.close')</button>
-                    <button type="button" class="btn btn-primary"
+                    <button type="button" class="btn btn-danger"
                         onclick="submitWorkExperienceForm(event)">@lang('button.save')</button>
                 </div>
             </div>
@@ -527,7 +588,7 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default"
                         onclick="closeAcademicStudyModal()">@lang('button.close')</button>
-                    <button type="button" class="btn btn-primary"
+                    <button type="button" class="btn btn-danger"
                         onclick="submitAcademicStudyForm(event)">@lang('button.save')</button>
                 </div>
             </div>
@@ -551,7 +612,7 @@
         })
     </script>
 
-    <!-- PROFILE MODAL -->
+    <!-- Profile Modal -->
     <script>
         /** Estructura para abrir el modal de perfil **/
         function openProfile(routeUpdate = null) {
@@ -618,8 +679,70 @@
             const authUserInfoData = json_encode("{{ current_user_information() }}");
         }
     </script>
-    <!-- ./PROFILE MODAL -->
+    <!-- ./Profile Modal -->
 
+    <!-- Password Modal -->
+    <script>
+        /** Estructura para abrir el modal de perfil **/
+        function openPassword(routeUpdate = null) {
+            const modal = $('#modal-password');
+            openModal(modal);
+        }
+        /** ./Estructura para abrir el modal de perfil **/
+
+        /** Estructura para cerrar el modal de Perfil **/
+        function closePasswordModal() {
+            const modal = $('#modal-password');
+            const form = modal.find('form');
+            const errorDiv = $('#errors-password');
+            clearErrorInputs(form);
+            removeErrorsDiv(errorDiv);
+            closeModal(modal);
+        }
+        /** ./Estructura para cerrar el modal de Perfil **/
+
+        /** Estructura para guardar el formulario dentro del modal de Perfil **/
+        function submitPasswordForm(e) {
+            e.preventDefault();
+            const modal = $('#modal-password');
+            const errorDiv = $('#errors-password');
+            const table = $('#table-work-experiencie');
+            const saved = savePasswordForm(modal, errorDiv);
+        }
+        /** ./Estructura para guardar el formulario dentro del modal de Perfil **/
+
+        /** Funcionalidad para guardar específicamente la información del perfil de usuario **/
+        function savePasswordForm(modal, errorDiv) {
+            const form = modal.find("form");
+            const formAction = form.attr("action");
+            const formMethod = form.attr("method");
+            const formData = form.serializeArray();
+
+            $.ajax({
+                url: formAction,
+                type: formMethod,
+                data: formData,
+                async: false,
+                success: function(response) {
+                    showMessageAlert(response.icon, response.title);
+                    clearErrorInputs(form);
+                    clearInputs(form);
+                    removeErrorsDiv(errorDiv);
+                    removeInputMethod(form);
+                    closeModal(modal);
+                },
+                error: function(response) {
+                    var errors = response.responseJSON.errors;
+                    clearErrorInputs(form);
+                    showErrors(errors, errorDiv);
+                },
+            });
+
+        }
+    </script>
+    <!-- ./Password Modal -->
+
+    <!-- User Work Experiences -->
     <script>
         /** Estructura para abrir el modal de Experiencias Laborales **/
         function openWorkExperienceModal(editMode = false, routeShow = null, routeUpdate = null) {
@@ -744,9 +867,11 @@
         }
         /** ./Reseteo de la tabla **/
     </script>
+    <!-- ./User Work Experiences -->
 
+    <!-- User Academy Study -->
     <script>
-        /** Estructura para abrir el modal de Experiencias Laborales **/
+        /** Estructura para abrir el modal de Historial Académico **/
         function openAcademicStudyModal(editMode = false, routeShow = null, routeUpdate = null) {
             const modal = $('#modal-academic-study');
             const errorDiv = $('#errors-academic-study');
@@ -765,9 +890,9 @@
 
             openModal(modal);
         }
-        /** ./Estructura para abrir el modal de Experiencias Laborales **/
+        /** ./Estructura para abrir el modal de Historial Académico **/
 
-        /** Estructura para cerrar el modal de Experiencias Laborales **/
+        /** Estructura para cerrar el modal de Historial Académico **/
         function closeAcademicStudyModal() {
             const modal = $('#modal-academic-study');
             const form = modal.find('form');
@@ -778,9 +903,9 @@
             removeInputMethod(form);
             closeModal(modal);
         }
-        /** ./Estructura para cerrar el modal de Experiencias Laborales **/
+        /** ./Estructura para cerrar el modal de Historial Académico **/
 
-        /** Estructura para guardar el formulario dentro del modal de Experiencias Laborales **/
+        /** Estructura para guardar el formulario dentro del modal de Historial Académico **/
         function submitAcademicStudyForm(e) {
             e.preventDefault();
             const modal = $('#modal-academic-study');
@@ -793,7 +918,7 @@
             }
         }
 
-        /** Estructura para actualizar el formulario dentro del modal de Experiencias Laborales **/
+        /** Estructura para actualizar el formulario dentro del modal de Historial Académico **/
         function updateAcademicStudy(e) {
             e.preventDefault();
             const modal = $('#modal-academic-study');
@@ -804,7 +929,7 @@
                 resetTableBodyAcademicStudy(table);
             }
         }
-        /** ./Estructura para actualizar el formulario dentro del modal de Experiencias Laborales **/
+        /** ./Estructura para actualizar el formulario dentro del modal de Historial Académico **/
 
         /** Estructura para eliminar la Experiencia Laboral **/
         function deleteAcademicStudy(e, id) {
@@ -869,4 +994,5 @@
         }
         /** ./Reseteo de la tabla **/
     </script>
+    <!-- ./User Academy Study -->
 @endsection

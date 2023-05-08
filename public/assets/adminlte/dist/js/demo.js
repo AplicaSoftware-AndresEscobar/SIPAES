@@ -251,64 +251,6 @@ function changeSidebarMiniXS() {
     }
 }
 
-function initNavbarColor($container) {
-    const navbar_dark_skins = getNavbarDarkSkins();
-    const navbar_light_skins = getNavbarLightSkins();
-
-    var navbar_variants = $("<div />", {
-        class: "d-flex",
-    });
-
-    var navbar_all_colors = navbar_dark_skins.concat(navbar_light_skins);
-    var $navbar_variants_colors = createSkinBlock(
-        navbar_all_colors,
-        function () {
-            const color = $.cookie("navbar_color");
-
-            var $main_header = $(".main-header");
-            $main_header.removeClass("navbar-dark").removeClass("navbar-light");
-            navbar_all_colors.forEach(function (color) {
-                $main_header.removeClass(color);
-            });
-
-            $(this)
-                .removeClass()
-                .addClass("custom-select mb-3 text-light border-0 ");
-            if (navbar_dark_skins.indexOf(color) > -1) {
-                $main_header.addClass("navbar-dark");
-                $(this).addClass(color).addClass("text-light");
-            } else {
-                $main_header.addClass("navbar-dark");
-                $(this).addClass(color);
-            }
-
-            $main_header.addClass(color);
-        }
-    );
-
-    var active_navbar_color = null;
-    $(".main-header")[0].classList.forEach(function (className) {
-        if (
-            navbar_all_colors.indexOf(className) > -1 &&
-            active_navbar_color === null
-        ) {
-            active_navbar_color = className.replace("navbar-", "bg-");
-        }
-    });
-
-    $navbar_variants_colors
-        .find("option." + active_navbar_color)
-        .prop("selected", true);
-    $navbar_variants_colors
-        .removeClass()
-        .addClass("custom-select mb-3 text-light border-0 ")
-        .addClass(active_navbar_color);
-
-    navbar_variants.append($navbar_variants_colors);
-
-    $container.append(navbar_variants);
-}
-
 function footerFixed() {
     const footer_fixed_checked = Boolean(
         parseInt($.cookie("footer_fixed_checked"))
@@ -792,20 +734,18 @@ function footerFixed() {
 
     var sidebar_skins = getSidebarSkins();
 
-    $container.append("<h6>Variantes de Barra de Navegación</h6>");
+    // Navbar Variants
 
-    /** Navbar Variants */
+    $container.append("<h6>Navbar Variants</h6>");
 
     var $navbar_variants = $("<div />", {
         class: "d-flex",
     });
-
     var navbar_all_colors = navbar_dark_skins.concat(navbar_light_skins);
     var $navbar_variants_colors = createSkinBlock(
         navbar_all_colors,
         function () {
-            const color = $.cookie("navbar_color");
-
+            var color = $(this).find("option:selected").attr("class");
             var $main_header = $(".main-header");
             $main_header.removeClass("navbar-dark").removeClass("navbar-light");
             navbar_all_colors.forEach(function (color) {
@@ -815,11 +755,12 @@ function footerFixed() {
             $(this)
                 .removeClass()
                 .addClass("custom-select mb-3 text-light border-0 ");
+
             if (navbar_dark_skins.indexOf(color) > -1) {
                 $main_header.addClass("navbar-dark");
                 $(this).addClass(color).addClass("text-light");
             } else {
-                $main_header.addClass("navbar-dark");
+                $main_header.addClass("navbar-light");
                 $(this).addClass(color);
             }
 
@@ -846,7 +787,10 @@ function footerFixed() {
         .addClass(active_navbar_color);
 
     $navbar_variants.append($navbar_variants_colors);
-    /** ./Navbar Variants */
+
+    $container.append($navbar_variants);
+
+    // Sidebar Colors
 
     $container.append("<h6>Accent Color Variants</h6>");
     var $accent_variants = $("<div />", {

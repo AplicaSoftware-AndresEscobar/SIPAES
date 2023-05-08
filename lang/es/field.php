@@ -27,6 +27,8 @@ return [
 
     'password' => 'Contraseña',
 
+    'password_confirmation' => 'Repetir Contraseña',
+
     'remember_me' => 'Recuérdame',
 
     'gender' => 'Género',
