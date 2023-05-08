@@ -138,16 +138,20 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="active tab-pane" id="user-work-experiencie">
-                                <div class="table-responsive">
+                                <button class="btn btn-sm btn-outline-danger"
+                                onclick="openWorkExperienceModal()">@lang('button.add')</button>
+                                <div class="table-responsive mt-2">
                                     <table class="table table-sm table-hover table-bordered" id="table-work-experiencie"
                                         data-route="{{ route('profile.work-experiences.index') }}">
                                         <thead>
-                                            <th>@lang('field.company')</th>
-                                            <th>@lang('field.job_title')</th>
-                                            <th>@lang('field.start_date')</th>
-                                            <th>@lang('field.end_date')</th>
-                                            <th>@lang('field.duration')</th>
-                                            <th></th>
+                                            <tr class="bg-danger text-white">
+                                                <th>@lang('field.company')</th>
+                                                <th>@lang('field.job_title')</th>
+                                                <th>@lang('field.start_date')</th>
+                                                <th>@lang('field.end_date')</th>
+                                                <th>@lang('field.duration')</th>
+                                                <th></th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             @forelse ($userWorkExperiencies as $item)
@@ -157,12 +161,12 @@
                                                     <td>{!! $item->pivot->start_date !!}</td>
                                                     <td>{!! $item->pivot->end_date !!}</td>
                                                     <td>{!! diffBetweenTwoDates($item->pivot->start_date, $item->pivot->end_date) !!}</td>
-                                                    <td>
+                                                    <td class="text-center">
                                                         <div class="btn-group">
                                                             <button type="button"
-                                                                class="dropdown-toggle btn btn-sm btn-block btn-danger"
+                                                                class="dropdown-toggle btn btn-xs btn-block btn-danger"
                                                                 data-toggle="dropdown">
-                                                                <span class="fas fa-cog"></span>
+                                                                <span class="fas fa-cog fa-xs"></span>
                                                             </button>
                                                             <div class="dropdown-menu">
                                                                 <button type="button"
@@ -195,20 +199,22 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <button class="btn btn-danger btn-sm btn-outline"
-                                    onclick="openWorkExperienceModal()">@lang('button.add')</button>
                             </div>
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="user-academic-study">
-                                <div class="table-responsive">
+                                <button class="btn btn-sm btn-outline-danger"
+                                    onclick="openAcademicStudyModal()">@lang('button.add')</button>
+                                <div class="table-responsive mt-2">
                                     <table class="table table-sm table-hover table-bordered" id="table-academic-study"
                                         data-route="{{ route('profile.academic-studies.index') }}">
                                         <thead>
-                                            <th>@lang('field.educational_institute')</th>
-                                            <th>@lang('field.academic_study_level')</th>
-                                            <th>@lang('field.degree')</th>
-                                            <th>@lang('field.year')</th>
-                                            <th></th>
+                                            <tr class="bg-danger text-white">
+                                                <th>@lang('field.educational_institute')</th>
+                                                <th>@lang('field.academic_study_level')</th>
+                                                <th>@lang('field.degree')</th>
+                                                <th>@lang('field.year')</th>
+                                                <th></th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             @forelse (current_user()->academic_studies as $item)
@@ -217,12 +223,12 @@
                                                     <td>{!! $item->pivot->academic_study_level->name !!}</td>
                                                     <td>{!! $item->pivot->degree !!}</td>
                                                     <td>{!! $item->pivot->year !!}</td>
-                                                    <td>
+                                                    <td class="text-center">
                                                         <div class="btn-group">
                                                             <button type="button"
-                                                                class="dropdown-toggle btn btn-sm btn-block btn-danger"
+                                                                class="dropdown-toggle btn btn-xs btn-block btn-danger"
                                                                 data-toggle="dropdown">
-                                                                <span class="fas fa-cog"></span>
+                                                                <span class="fas fa-cog fa-xs"></span>
                                                             </button>
                                                             <div class="dropdown-menu">
                                                                 <button type="button"
@@ -255,8 +261,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <button class="btn btn-danger btn-sm btn-outline"
-                                    onclick="openAcademicStudyModal()">@lang('button.add')</button>
                             </div>
                             <!-- /.tab-pane -->
 
