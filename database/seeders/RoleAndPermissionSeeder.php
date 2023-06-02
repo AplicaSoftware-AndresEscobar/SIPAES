@@ -48,7 +48,6 @@ class RoleAndPermissionSeeder extends Seeder
         $this->command->getOutput()->progressStart(count($permissionModulesArray));
 
         foreach ($permissionModulesArray as $permissionModuleItem) {
-            sleep(1);
             $this->info("\n-Creando el módulo de permiso: '{$permissionModuleItem['title']}'\n");
             $this->permissionModuleRepository->create($permissionModuleItem);
             $this->command->getOutput()->progressAdvance();
@@ -65,8 +64,6 @@ class RoleAndPermissionSeeder extends Seeder
         /** @var \App\Models\SpatieRolesPermissions\Role $superRole */
         $superRole = null;
         foreach ($rolesArray as $index => $roleItem) {
-            sleep(1);
-
             $this->info("\n-Creando el rol: '{$roleItem['title']}'\n");
             $role = $this->roleRepository->create($roleItem);
             if ($index == 1) {
@@ -85,7 +82,6 @@ class RoleAndPermissionSeeder extends Seeder
 
         $permissionCollection = collect();
         foreach ($permissionsArray as $permissionItem) {
-            sleep(1);
             $this->info("\n-Creando el permiso: '{$permissionItem['title']}'\n");
             $permission = $this->permissionRepository->create($permissionItem);
             $permissionCollection->push($permission);

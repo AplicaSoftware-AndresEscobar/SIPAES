@@ -33,7 +33,6 @@ class GenderSeeder extends Seeder
 
         foreach ($gendersArray as $genderItem) {
             $this->info("\n-Creando Género: '{$genderItem['name']}'\n");
-            sleep(1);
             $this->genderRepository->create($genderItem);
             $this->command->getOutput()->progressAdvance();
         }

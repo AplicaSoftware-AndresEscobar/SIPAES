@@ -34,7 +34,6 @@ class SchoolLocationSeeder extends Seeder
 
         foreach ($schoolLocationsArray as $schoolLocation) {
             $this->info("\n-Creando Sede: '{$schoolLocation['name']}'\n");
-            sleep(1);
             $this->schoolLocationRepository->create($schoolLocation);
             $this->command->getOutput()->progressAdvance();
         }

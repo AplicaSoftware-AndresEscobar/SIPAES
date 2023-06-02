@@ -26,7 +26,7 @@ class JourneySeeder extends Seeder
      */
     public function run(): void
     {
-        $journeysArray = config('database.default-data.school_locations');
+        $journeysArray = config('database.default-data.journeys');
 
         $this->info('Creando las jornadas disponibles para la aplicación');
 
@@ -34,7 +34,6 @@ class JourneySeeder extends Seeder
 
         foreach ($journeysArray as $journey) {
             $this->info("\n-Creando Jornada: '{$journey['name']}'\n");
-            sleep(1);
             $this->journeyRepository->create($journey);
             $this->command->getOutput()->progressAdvance();
         }

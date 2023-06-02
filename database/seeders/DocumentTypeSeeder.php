@@ -34,7 +34,6 @@ class DocumentTypeSeeder extends Seeder
 
         foreach ($documentTypesArray as $documentTypeItem) {
             $this->info("\n-Creando Tipo de Documentación: '{$documentTypeItem['name']}'\n");
-            sleep(1);
             $this->documentTypeRepository->create($documentTypeItem);
             $this->command->getOutput()->progressAdvance();
         }

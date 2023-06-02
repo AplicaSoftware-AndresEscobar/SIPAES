@@ -35,7 +35,6 @@ class AcademicStudyLevelSeeder extends Seeder
 
         foreach ($academicStudyLevels as $academicStudyLevel) {
             $this->info("\n-Creando Nivel Académico: '{$academicStudyLevel['name']}'\n");
-            sleep(1);
             $this->academicStudyLevelRepository->create($academicStudyLevel);
             $this->command->getOutput()->progressAdvance();
         }

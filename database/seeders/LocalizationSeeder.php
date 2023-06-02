@@ -73,7 +73,6 @@ class LocalizationSeeder extends Seeder
 
         foreach ($departmentsCollection as $departmentCollectionItem) {
             $this->info("\n-Registrando los Municipios/Ciudades de: '{$departmentCollectionItem['department']->name}'\n");
-            sleep(1);
             $cities = $departmentCollectionItem['cities'];
             $this->command->getOutput()->progressStart(count($cities));
             foreach ($cities as $cityItem) {
