@@ -28,7 +28,6 @@ class EducationalInstituteSeeder extends Seeder
             $this->command->getOutput()->progressStart(count($educationalInstitutes));
 
             foreach ($educationalInstitutes as $educationalInstitute) {
-                sleep(1);
                 $this->info("\n-Creando Institución Educativa/Universidad: '{$educationalInstitute->name}'\n");
                 $educationalInstitute->save();
                 $this->command->getOutput()->progressAdvance();

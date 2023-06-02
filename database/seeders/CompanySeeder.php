@@ -29,7 +29,6 @@ class CompanySeeder extends Seeder
             $this->command->getOutput()->progressStart(count($companies));
 
             foreach ($companies as $company) {
-                sleep(1);
                 $this->info("\n-Creando Empresa/Compañía: '{$company->name}'\n");
                 $company->save();
                 $this->command->getOutput()->progressAdvance();
