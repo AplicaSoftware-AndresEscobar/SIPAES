@@ -27,7 +27,7 @@ class GenderSeeder extends Seeder
     {
         $gendersArray = config('database.default-data.genders');
 
-        $this->info('Creando el géneros disponibles para la aplicación');
+        $this->info('Creando los géneros disponibles para la aplicación');
 
         $this->command->getOutput()->progressStart(count($gendersArray));
 

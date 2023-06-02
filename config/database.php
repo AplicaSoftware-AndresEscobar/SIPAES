@@ -211,6 +211,34 @@ return [
             array(
                 'name' => 'Postdoctorado'
             ),
+        ],
+        'school_locations' => [
+            array(
+                'name' => 'Sede Principal',
+                'slug' => 'fesc',
+                'address' => 'Avenida 4, 15-38 Barrio La Playa',
+                'phone' => '5831383',
+            ),
+            array(
+                'name' => 'Sede Ocaña',
+                'slug' => 'fesco',
+                'address' => 'KDX 194-785 VIA UNIVERSITARIA',
+                'phone' => '5831383',
+            )
+        ],
+        'journeys' => [
+            array(
+                'name' => 'Diurna',
+            ),
+            array(
+                'name' => 'Nocturna',
+            ),
+            array(
+                'name' => 'Distancia',
+            ),
+            array(
+                'name' => 'Virtual',
+            ),
         ]
     ]
 

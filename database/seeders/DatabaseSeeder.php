@@ -20,7 +20,9 @@ class DatabaseSeeder extends Seeder
             DocumentTypeSeeder::class,
             LocalizationSeeder::class,
             RoleAndPermissionSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            SchoolLocationSeeder::class,
+            JourneySeeder::class,
         ]);
     }
 }
